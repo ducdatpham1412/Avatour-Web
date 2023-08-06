@@ -1,4 +1,4 @@
-export const HomeIcon: React.FC<BaseIconProps> = ({ className }) => (
+const HomeIcon: React.FC<BaseIconProps> = ({ className }) => (
   <svg
     width="1em"
     height="1em"
@@ -23,3 +23,5 @@ export const HomeIcon: React.FC<BaseIconProps> = ({ className }) => (
     />
   </svg>
 );
+
+export default HomeIcon;

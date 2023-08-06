@@ -1,4 +1,4 @@
-export const LogoIcon: React.FC<BaseIconProps> = ({ className }) => (
+const LogoIcon: React.FC<BaseIconProps> = ({ className }) => (
   <svg
     width="1em"
     height="1em"
@@ -144,3 +144,5 @@ export const LogoIcon: React.FC<BaseIconProps> = ({ className }) => (
     </defs>
   </svg>
 );
+
+export default LogoIcon;

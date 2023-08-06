@@ -1,4 +1,4 @@
-export const MoneyIcon: React.FC<BaseIconProps> = ({ className }) => (
+const MoneyIcon: React.FC<BaseIconProps> = ({ className }) => (
   <svg
     className={className}
     width="1em"
@@ -23,3 +23,5 @@ export const MoneyIcon: React.FC<BaseIconProps> = ({ className }) => (
     />
   </svg>
 );
+
+export default MoneyIcon;

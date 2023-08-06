@@ -1,6 +1,6 @@
 import { cn } from '@/lib';
 
-export const LoadingIcon: React.FC<BaseIconProps> = ({ className }) => (
+const LoadingIcon: React.FC<BaseIconProps> = ({ className }) => (
   <svg
     className={cn('animate-spin', className)}
     fill="none"
@@ -23,3 +23,5 @@ export const LoadingIcon: React.FC<BaseIconProps> = ({ className }) => (
     ></path>
   </svg>
 );
+
+export default LoadingIcon;

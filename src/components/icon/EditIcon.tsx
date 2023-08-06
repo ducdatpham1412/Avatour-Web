@@ -1,4 +1,4 @@
-export const EditIcon: React.FC<BaseIconProps> = ({ className }) => (
+const EditIcon: React.FC<BaseIconProps> = ({ className }) => (
   <svg width="1em" height="1em" className={className} viewBox="0 0 24 24" fill="none">
     <path
       d="M4.75 6.06519H3.5C2.83696 6.06519 2.20107 6.32858 1.73223 6.79742C1.26339 7.26626 1 7.90214 1 8.56519V19.8152C1 20.4782 1.26339 21.1141 1.73223 21.583C2.20107 22.0518 2.83696 22.3152 3.5 22.3152H14.75C15.413 22.3152 16.0489 22.0518 16.5178 21.583C16.9866 21.1141 17.25 20.4782 17.25 19.8152V18.5652"
@@ -16,3 +16,5 @@ export const EditIcon: React.FC<BaseIconProps> = ({ className }) => (
     ></path>
   </svg>
 );
+
+export default EditIcon;

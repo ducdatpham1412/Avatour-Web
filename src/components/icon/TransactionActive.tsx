@@ -1,4 +1,4 @@
-export const TransactionActive: React.FC<BaseIconProps> = ({ className }) => (
+const TransactionActive: React.FC<BaseIconProps> = ({ className }) => (
   <svg
     width="1em"
     height="1em"
@@ -31,3 +31,5 @@ export const TransactionActive: React.FC<BaseIconProps> = ({ className }) => (
     />
   </svg>
 );
+
+export default TransactionActive;

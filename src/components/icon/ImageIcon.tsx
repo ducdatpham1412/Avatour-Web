@@ -1,4 +1,4 @@
-export const ImageIcon: React.FC<BaseIconProps> = ({ className }) => (
+const ImageIcon: React.FC<BaseIconProps> = ({ className }) => (
   <svg
     stroke="currentColor"
     fill="currentColor"
@@ -29,3 +29,5 @@ export const ImageIcon: React.FC<BaseIconProps> = ({ className }) => (
     ></path>
   </svg>
 );
+
+export default ImageIcon;

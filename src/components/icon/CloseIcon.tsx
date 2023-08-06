@@ -1,4 +1,4 @@
-export const CloseIcon: React.FC<BaseIconProps> = ({ className }) => (
+const CloseIcon: React.FC<BaseIconProps> = ({ className }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}
@@ -13,3 +13,5 @@ export const CloseIcon: React.FC<BaseIconProps> = ({ className }) => (
     />
   </svg>
 );
+
+export default CloseIcon;
