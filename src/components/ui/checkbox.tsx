@@ -1,6 +1,15 @@
 'use client';
-
-import * as React from 'react';
+import {
+  ComponentPropsWithoutRef,
+  ElementRef,
+  Fragment,
+  ReactElement,
+  forwardRef,
+  useCallback,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+} from 'react';
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import { Check } from 'lucide-react';
 
@@ -8,28 +17,28 @@ import { cn } from '@/lib/utils';
 
 import { Show } from './show';
 
-const Checkbox = React.forwardRef<
-  React.ElementRef<typeof CheckboxPrimitive.Root>,
-  Omit<React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>, 'children'> & {
-    children?: (value: boolean | string | undefined) => React.ReactElement;
+const Checkbox = forwardRef<
+  ElementRef<typeof CheckboxPrimitive.Root>,
+  Omit<ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>, 'children'> & {
+    children?: (value: boolean | string | undefined) => ReactElement;
   }
 >(({ className, children, ...props }, ref) => {
-  const componentRef = React.useRef<HTMLButtonElement>(null);
-  const style = React.useMemo(
+  const componentRef = useRef<HTMLButtonElement>(null);
+  const style = useMemo(
     () => (children ? { width: 0, height: 0, border: 0, padding: 0 } : {}),
     [children],
   );
 
-  React.useImperativeHandle(ref, () => componentRef.current!);
+  useImperativeHandle(ref, () => componentRef.current!);
 
-  const onClick = React.useCallback(() => {
+  const onClick = useCallback(() => {
     if (componentRef.current) {
       componentRef.current.click();
     }
   }, []);
 
   return (
-    <React.Fragment>
+    <Fragment>
       <CheckboxPrimitive.Root
         ref={componentRef}
         className={cn(
@@ -50,7 +59,7 @@ const Checkbox = React.forwardRef<
           {children && children(!!props.checked)}
         </div>
       </Show>
-    </React.Fragment>
+    </Fragment>
   );
 });
 Checkbox.displayName = CheckboxPrimitive.Root.displayName;

@@ -1,6 +1,13 @@
 'use client';
 
-import * as React from 'react';
+import {
+  ComponentPropsWithoutRef,
+  ElementRef,
+  Fragment,
+  HTMLAttributes,
+  ReactElement,
+  forwardRef,
+} from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 
 import { cn } from '@/lib/utils';
@@ -16,9 +23,9 @@ const DialogPortal = ({ className, ...props }: DialogPrimitive.DialogPortalProps
   <DialogPrimitive.Portal className={cn(className)} {...props} />
 );
 
-const DialogOverlay = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Overlay>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
+const DialogOverlay = forwardRef<
+  ElementRef<typeof DialogPrimitive.Overlay>,
+  ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Overlay
     ref={ref}
@@ -30,10 +37,10 @@ const DialogOverlay = React.forwardRef<
   />
 ));
 
-const DialogContent = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
-    closeButton?: React.ReactElement;
+const DialogContent = forwardRef<
+  ElementRef<typeof DialogPrimitive.Content>,
+  ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
+    closeButton?: ReactElement;
   }
 >(({ className, closeButton, children, ...props }, ref) => (
   <DialogPortal>
@@ -54,10 +61,10 @@ const DialogContent = React.forwardRef<
         <Show.Const
           when={!!closeButton}
           fallback={
-            <React.Fragment>
+            <Fragment>
               <Icon name="close" />
               <span className="sr-only">Close</span>
-            </React.Fragment>
+            </Fragment>
           }
         >
           {closeButton}
@@ -67,20 +74,20 @@ const DialogContent = React.forwardRef<
   </DialogPortal>
 ));
 
-const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+const DialogHeader = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => (
   <div className={cn('flex flex-col space-y-1.5 text-center sm:text-left', className)} {...props} />
 );
 
-const DialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+const DialogFooter = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2', className)}
     {...props}
   />
 );
 
-const DialogTitle = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Title>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
+const DialogTitle = forwardRef<
+  ElementRef<typeof DialogPrimitive.Title>,
+  ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Title
     ref={ref}
@@ -89,9 +96,9 @@ const DialogTitle = React.forwardRef<
   />
 ));
 
-const DialogDescription = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Description>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
+const DialogDescription = forwardRef<
+  ElementRef<typeof DialogPrimitive.Description>,
+  ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Description
     ref={ref}
