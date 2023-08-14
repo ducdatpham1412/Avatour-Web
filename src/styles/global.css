@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'colors';
+@import 'radix';
+
+* {
+  font-weight: 500;
+}
+
+input::placeholder {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 0.25s;
+}
+
+input:focus::placeholder {
+  transform: translateX(0.3em);
+}
+
+.beautìul-scrollbar {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.beautìul-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+
+.beautìul-scrollbar::-webkit-scrollbar-thumb {
+  background-color: theme('colors.gray_400');
+}
+
+input:-internal-autofill-selected {
+  appearance: none;
+  -webkit-appearance: none;
+}
