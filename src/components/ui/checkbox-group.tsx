@@ -92,7 +92,7 @@ export const CheckBoxGroup = forwardRef(
 
           return itemProps;
         }),
-      [currentValue],
+      [currentValue, onChange],
     );
 
     return (
@@ -187,7 +187,7 @@ export function RadioGroup({
 
         return itemProps;
       }),
-    [currentValue],
+    [currentValue, onChange],
   );
 
   return (
