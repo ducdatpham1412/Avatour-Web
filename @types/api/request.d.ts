@@ -1,6 +1,7 @@
 interface RequestOptions extends RequestInit {
   baseUrl?: string;
   queries?: URLSearchParams;
+  authorize?: boolean;
 }
 
 interface API {

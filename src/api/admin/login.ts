@@ -24,10 +24,14 @@ const GET_PROFILE_URL = '/common/passport';
 const adminLogin = async (email: string, password: string): Promise<ActionResponse> => {
   const cookies = getCookies();
   try {
-    const { data, success } = await request.post<LoginResponse>(LOGIN_URL, {
-      username: email,
-      password,
-    });
+    const { data, success } = await request.post<LoginResponse>(
+      LOGIN_URL,
+      {
+        username: email,
+        password,
+      },
+      { authorize: false },
+    );
 
     if (!success) {
       return {
@@ -58,19 +62,8 @@ const adminLogin = async (email: string, password: string): Promise<ActionRespon
 };
 
 const getProfile = async (): Promise<ActionResponse> => {
-  const cookies = getCookies();
-  const token = cookies.get('token');
-  const refreshToken = cookies.get('refresh_token');
-  if (!token || !refreshToken) {
-    return unAuthorized();
-  }
-
   try {
-    const response = await request<ProfileResponse>(GET_PROFILE_URL, undefined, {
-      headers: {
-        Authorization: `Bearer ${token.value}`,
-      },
-    });
+    const response = await request<ProfileResponse>(GET_PROFILE_URL, undefined);
 
     if (!response.success) {
       throw new Error('');
@@ -81,17 +74,13 @@ const getProfile = async (): Promise<ActionResponse> => {
     };
   } catch (error) {
     console.log(error);
-    return unAuthorized();
+    return {
+      error: {
+        message: 'missing token in cookie',
+        code: 401,
+      },
+    };
   }
 };
-
-function unAuthorized() {
-  return Promise.resolve({
-    error: {
-      message: 'missing token in cookie',
-      code: 401,
-    },
-  });
-}
 
 export { adminLogin, getProfile };

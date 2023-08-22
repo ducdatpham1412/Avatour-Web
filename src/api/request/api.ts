@@ -1,8 +1,9 @@
 'use server';
 import nodeFetch from 'node-fetch';
+import { cookies as getCookies } from 'next/headers';
 
 import { API_ENDPOINT } from '@/configs';
-import { logger, paramsToUrl } from '@/lib';
+import { paramsToUrl } from '@/lib';
 
 import { StatusCode, statusText } from './constants';
 
@@ -32,6 +33,7 @@ const api: API = async <T>(
   params?: Record<string, any>,
   options?: RequestOptions,
 ) => {
+  const authorize = options?.authorize ?? true;
   options ??= {};
   const method = (options.method ?? 'get').toLowerCase();
   const headers = new Headers(options.headers);
@@ -48,6 +50,16 @@ const api: API = async <T>(
     }
   } else if (params) {
     url += `?${paramsToUrl(params)}`;
+  }
+
+  if (authorize) {
+    const cookies = getCookies();
+    const token = cookies.get('token');
+    if (!token) {
+      throw new Error('Unauthorized');
+    }
+
+    headers.set('Authorization', `Bearer ${token.value}`);
   }
 
   console.error('LOG', url);
