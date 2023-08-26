@@ -3,7 +3,7 @@ import nodeFetch from 'node-fetch';
 import { cookies as getCookies } from 'next/headers';
 
 import { API_ENDPOINT } from '@/configs';
-import { paramsToUrl } from '@/lib';
+import { logger, paramsToUrl } from '@/lib';
 
 import { StatusCode, statusText } from './constants';
 
@@ -62,7 +62,7 @@ const api: API = async <T>(
     headers.set('Authorization', `Bearer ${token.value}`);
   }
 
-  console.error('LOG', url);
+  logger.log(url);
 
   const response = await fetcher(url, { ...options, method, body, headers });
   const data = parseData<T>(response);
@@ -74,6 +74,8 @@ const api: API = async <T>(
 };
 
 const request = Object.assign(api, {
+  get: (path: string, params?: Record<string, any>, options?: RequestOptions) =>
+    api(path, params, { ...options }),
   post: (path: string, params?: Record<string, any>, options?: RequestOptions) =>
     api(path, params, { ...options, method: 'POST' }),
   put: (path: string, params?: Record<string, any>, options?: RequestOptions) =>

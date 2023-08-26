@@ -1,7 +1,7 @@
 'use server';
 import { revalidatePath, revalidateTag } from 'next/cache';
 
-import { makeError } from '@/lib';
+import { logger, makeError } from '@/lib';
 import { request } from '@/api/request';
 
 const SUPPLIERS_PATH = '/admin/suppliers';
@@ -9,14 +9,14 @@ const SUPPLILERS_TAG = '/admin/suppliers';
 
 const getSuppliers = async (options: Partial<GetSuppliersFilter>) => {
   try {
-    const { data } = await request<{ data: TypeSupplier[] }>(SUPPLIERS_PATH, undefined, {
+    const { data } = await request.get<{ data: TypeSupplier[] }>(SUPPLIERS_PATH, undefined, {
       next: {
         tags: [SUPPLILERS_TAG],
       },
     });
     return applyFilterSuppliers(data, options);
   } catch (error) {
-    console.log('error', error);
+    logger.error('error', error);
     throw error;
   }
 };

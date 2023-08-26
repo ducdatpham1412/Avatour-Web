@@ -43,7 +43,6 @@ export const Pagination = ({ total, page, onPageChange }: PaginationProps) => {
         }`}
         key={index}
         onClick={() => {
-          console.log('?', index);
           if (typeof index === 'number') {
             onPageChange && onPageChange(index);
           }

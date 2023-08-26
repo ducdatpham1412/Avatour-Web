@@ -9,6 +9,7 @@ interface API {
 }
 
 interface HTTPRequest extends API {
+  get: API;
   post: API;
   put: API;
   delete: API;

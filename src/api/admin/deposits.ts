@@ -4,7 +4,7 @@ import { revalidateTag } from 'next/cache';
 import { JOIN_ESTIMATE_FILTER_STATUS } from '@/configs/constants';
 import { request } from '@/api/request';
 import { TransactionData } from '@/features/admin/transactions';
-import { makeError } from '@/lib';
+import { logger, makeError } from '@/lib';
 
 const joinEstimateFilterStatus = Object.values(JOIN_ESTIMATE_FILTER_STATUS);
 
@@ -13,7 +13,7 @@ const GET_ESTIMATE_PATH = '/admin/estimates';
 const getDeposits = async (query: Record<string, string | string[] | undefined>) => {
   const filter = parseDepositFilter(query);
   try {
-    const data = await request<TransactionData>('/admin/estimates', filter, {
+    const data = await request.get<TransactionData>('/admin/estimates', filter, {
       next: {
         tags: [GET_ESTIMATE_PATH, new URLSearchParams(filter).toString()],
         revalidate: 10,
@@ -45,7 +45,7 @@ const confirmDeposit = async (id: number) => {
     return {};
   } catch (e) {
     const error = makeError(e);
-    console.log('confirm deposit error', e);
+    logger.error('confirm deposit error', e);
 
     return {
       error: {

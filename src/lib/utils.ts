@@ -28,4 +28,6 @@ function formatPrice(value: number) {
   return value.toLocaleString('vi-VN');
 }
 
-export { cn, omit, formatPrice, paramsToUrl };
+const isDev = process.env.NODE_ENV === 'development';
+
+export { cn, omit, formatPrice, paramsToUrl, isDev };

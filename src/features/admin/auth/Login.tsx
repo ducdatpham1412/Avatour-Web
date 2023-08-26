@@ -6,6 +6,7 @@ import { Icon } from '@/components/icon';
 import { Button, Input } from '@/components/ui';
 import { adminLogin } from '@/api/admin/login';
 import { useToast } from '@/hooks';
+import { logger } from '@/lib';
 
 const AdminLogin = () => {
   const router = useRouter();
@@ -33,7 +34,7 @@ const AdminLogin = () => {
         }
       })
       .catch(err => {
-        console.log('err', err.message);
+        logger.error('err', err.message);
         toast({
           variant: 'destructive',
           title: 'Thông báo',

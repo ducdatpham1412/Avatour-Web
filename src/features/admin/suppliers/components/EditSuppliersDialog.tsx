@@ -12,6 +12,7 @@ import { Icon } from '@/components/icon';
 import { useToast } from '@/hooks';
 import { updateSupplier } from '@/api';
 import { ToastAction } from '@/components/ui';
+import { logger } from '@/lib';
 
 import EditSuppliersForm from './SuppliersForm';
 import { SupplierData } from '../types';
@@ -74,7 +75,7 @@ const EditSuppliersDialog: React.FC<EditSuppliersDialogProps> = ({
         });
         router.refresh();
       } catch (error) {
-        console.log(error);
+        logger.error(error);
         toast({
           title: 'Thông báo',
           description: 'Cập nhật Supplier thất bại',

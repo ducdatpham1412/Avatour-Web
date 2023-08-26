@@ -1,7 +1,7 @@
 'use server';
 import { cookies as getCookies } from 'next/headers';
 
-import { makeError } from '@/lib';
+import { logger, makeError } from '@/lib';
 
 import request from '../request/api';
 
@@ -63,7 +63,7 @@ const adminLogin = async (email: string, password: string): Promise<ActionRespon
 
 const getProfile = async (): Promise<ActionResponse> => {
   try {
-    const response = await request<ProfileResponse>(GET_PROFILE_URL, undefined);
+    const response = await request.get<ProfileResponse>(GET_PROFILE_URL, undefined);
 
     if (!response.success) {
       throw new Error('');
@@ -73,7 +73,7 @@ const getProfile = async (): Promise<ActionResponse> => {
       data: response.data,
     };
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     return {
       error: {
         message: 'missing token in cookie',

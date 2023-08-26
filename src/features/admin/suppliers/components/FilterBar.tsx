@@ -28,8 +28,6 @@ const FilterBar = memo(
       };
     }, [query]);
 
-    console.log('filter', filter);
-
     const accountFilterOptions = useMemo(
       () => filterSuppliersFields.account_type.options.map(o => ({ name: o.name, value: o.id })),
       [],
@@ -53,10 +51,6 @@ const FilterBar = memo(
     ) {
       const newQuery = new URLSearchParams();
       const newFilter = { ...filter, [key]: value };
-      console.log('oldFilter', filter);
-      console.log('to', key, value);
-
-      console.log('newFilter', newFilter);
 
       if (newFilter.account_type) {
         newQuery.append('at', newFilter.account_type.toString());
