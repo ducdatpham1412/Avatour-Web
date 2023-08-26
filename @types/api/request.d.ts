@@ -1,6 +1,7 @@
 interface RequestOptions extends RequestInit {
   baseUrl?: string;
   queries?: URLSearchParams;
+  authorize?: boolean;
 }
 
 interface API {
@@ -8,6 +9,7 @@ interface API {
 }
 
 interface HTTPRequest extends API {
+  get: API;
   post: API;
   put: API;
   delete: API;

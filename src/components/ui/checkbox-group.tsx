@@ -1,14 +1,14 @@
 'use client';
 import { forwardRef, useId, useMemo, useState } from 'react';
 
-import { cn } from '@/lib';
+import { cn, omit } from '@/lib';
 
 import { Checkbox } from './checkbox';
 import { Label } from './label';
 
 type CheckboxProps = Omit<React.ComponentProps<typeof Checkbox>, 'children' | 'label' | 'key'> & {
   label?: string;
-  index: string;
+  key: string;
 };
 
 export type CheckBoxGroupProps = {
@@ -44,13 +44,13 @@ export const CheckBoxGroup = forwardRef(
       return insideValue;
     }, [insideValue, value]);
 
-    const renderChildren = useMemo(
+    const childrenProps = useMemo(
       () =>
         options.map((item, index: number) => {
           let itemProps: CheckboxProps & { children: string };
           if (typeof item === 'string') {
             itemProps = {
-              index: `${index}`,
+              key: `${index}`,
               children: item,
               checked: insideValue.includes(item),
               label: item,
@@ -70,7 +70,7 @@ export const CheckBoxGroup = forwardRef(
             };
           } else {
             itemProps = {
-              index: `${index}`,
+              key: `${index}`,
               children: item.name,
               checked: insideValue.includes(item.value),
               label: item.name,
@@ -90,27 +90,25 @@ export const CheckBoxGroup = forwardRef(
             };
           }
 
-          if (children) {
-            return children(itemProps, index.toString());
-          }
-
-          const key = groupId + itemProps.index;
-
-          return (
-            <div key={index} className="flex items-center gap-2">
-              <Checkbox id={key} {...{ ...itemProps, children: undefined }} />
-              <Label className="cursor-pointer" htmlFor={key}>
-                {itemProps.children}
-              </Label>
-            </div>
-          );
+          return itemProps;
         }),
-      [children, currentValue],
+      [currentValue, onChange],
     );
 
     return (
       <div ref={ref} {...props} className={cn('flex flex-col gap-2', className)}>
-        {renderChildren}
+        {childrenProps.map(cProps =>
+          children ? (
+            children(cProps, cProps.key.toString())
+          ) : (
+            <div key={cProps.key} className="flex items-center gap-2">
+              <Checkbox id={groupId + cProps.key} {...omit(cProps, 'children', 'key')} />
+              <Label className="cursor-pointer" htmlFor={groupId + cProps.key}>
+                {cProps.children}
+              </Label>
+            </div>
+          ),
+        )}
       </div>
     );
   },
@@ -157,13 +155,13 @@ export function RadioGroup({
     return insideValue;
   }, [insideValue, value]);
 
-  const renderChildren = useMemo(
+  const childrenProps = useMemo(
     () =>
       options.map((item, index: number) => {
         let itemProps: CheckboxProps & { children: string };
         if (typeof item === 'string') {
           itemProps = {
-            index: `${index}`,
+            key: `${index}`,
             children: item,
             checked: item === currentValue,
             onCheckedChange: (e: boolean) => {
@@ -175,7 +173,7 @@ export function RadioGroup({
           };
         } else {
           itemProps = {
-            index: `${index}`,
+            key: `${index}`,
             children: item.name,
             checked: item.value === currentValue,
             onCheckedChange: (e: boolean) => {
@@ -187,27 +185,25 @@ export function RadioGroup({
           };
         }
 
-        if (children) {
-          return children(itemProps);
-        }
-
-        const key = groupId + itemProps.index;
-
-        return (
-          <div key={index} className="flex items-center gap-2">
-            <Checkbox id={key} {...{ ...itemProps, children: undefined }} />
-            <Label htmlFor={key} className="cursor-pointer">
-              {itemProps.children}
-            </Label>
-          </div>
-        );
+        return itemProps;
       }),
-    [children, currentValue],
+    [currentValue, onChange],
   );
 
   return (
     <div {...props} className={cn('flex flex-col gap-2', className)}>
-      {renderChildren}
+      {childrenProps.map(cProps =>
+        children ? (
+          children(cProps)
+        ) : (
+          <div key={cProps.key} className="flex items-center gap-2">
+            <Checkbox id={groupId + cProps.key} {...omit(cProps, 'children', 'key')} />
+            <Label className="cursor-pointer" htmlFor={groupId + cProps.key}>
+              {cProps.children}
+            </Label>
+          </div>
+        ),
+      )}
     </div>
   );
 }
