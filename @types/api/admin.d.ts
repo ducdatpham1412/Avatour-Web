@@ -31,25 +31,41 @@ interface TypeSupplier {
   duration: number | string;
 }
 
+interface TypeJoinPersonal {
+  id: number | null;
+  sale_id: number;
+  amount: number;
+  price: number;
+  deposit: number;
+  creator: number;
+  creator_name: string;
+  creator_avatar: string;
+  created: string;
+  group: {
+    id: number | null;
+    name: string;
+    total_members: number;
+  };
+}
+
 interface TypeJoinEstimate {
   id: number;
   amount: number;
   time_will_buy: string;
   note: string;
-  deposit: number;
-  price: number;
   hash: string;
   creator: number;
   creator_name: string;
-  creator_avatar: string;
   created: string;
   expired: string;
+  status: number;
   sale: {
     id: number;
     name: string;
-    content: string;
+    images: string[];
+    creator_name: string;
   };
-  status: number;
+  list_personals: TypeJoinPersonal[];
 }
 
 interface GetSuppliersFilter {
