@@ -12,7 +12,7 @@ export const Pagination = ({ total, page, onPageChange }: PaginationProps) => {
   const renderPages = useMemo(() => {
     let listPage: Array<number | string> = [];
     if (total <= 6) {
-      listPage = [1, 2, 3, 4, 5, 6];
+      listPage = Array.from({ length: total }, (_, index) => index + 1);
     } else {
       listPage = [page];
       if (page > 1) {
@@ -56,11 +56,17 @@ export const Pagination = ({ total, page, onPageChange }: PaginationProps) => {
 
   return (
     <div className="flex items-center w-full justify-center">
-      <button className="w-[60px] h-[60px] mr-3 flex items-center justify-center rounded-full cursor-pointer">
+      <button
+        disabled={page <= 1}
+        className="w-[60px] h-[60px] mr-3 flex items-center justify-center rounded-full cursor-pointer disabled:opacity-50 disabled:cursor-default"
+      >
         <Icon name="arrow-left" />
       </button>
       {renderPages}
-      <button className="w-[60px] h-[60px] ml-3 rotate-[180deg] flex items-center justify-center  rounded-full cursor-pointer">
+      <button
+        disabled={page >= total}
+        className="w-[60px] h-[60px] ml-3 rotate-[180deg] flex items-center justify-center  rounded-full cursor-pointer disabled:opacity-50 disabled:cursor-default"
+      >
         <Icon name="arrow-left" />
       </button>
     </div>

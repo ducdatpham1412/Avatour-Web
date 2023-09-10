@@ -1,31 +1,42 @@
 import { Fragment, ReactNode, memo } from 'react';
 
-interface ShowProps {
-  when: boolean | undefined;
-  children?: ReactNode;
+interface ShowProps<T> {
+  when: T | undefined;
+  children?: ((value: NonNullable<T>) => ReactNode) | ReactNode;
   fallback?: ReactNode;
 }
 
-interface ShowMemoProps extends ShowProps {
+interface ShowMemoProps<T> extends ShowProps<T> {
   childrenDependencies?: any[];
   fallbackDependencies?: any[];
 }
 
-const ShowDefault = memo<ShowProps>(({ when, children, fallback }) => (
-  <Fragment>{when ? children : fallback}</Fragment>
-));
+type ShowComponent = {
+  <T>({ when, children, fallback }: ShowProps<T>): JSX.Element;
+  displayName: string;
+};
 
-const ShowConst = memo<ShowProps>(
-  ({ when, children, fallback }) => <Fragment>{when ? children : fallback}</Fragment>,
+type ShowMemoComponent = {
+  <T>({ when, children, fallback }: ShowMemoProps<T>): JSX.Element;
+  displayName: string;
+};
+
+const ShowDefault = <T,>({ when, children, fallback }: ShowProps<T>) => {
+  if (typeof children === 'function') {
+    return <Fragment>{when ? children(when) : fallback}</Fragment>;
+  }
+
+  return <Fragment>{when ? children : fallback}</Fragment>;
+};
+
+const ShowConst = memo(
+  <T,>(props: ShowProps<T>) => <ShowDefault {...props} />,
   (prev, next) => prev.when === next.when,
 );
 
-const ShowMemo = memo<ShowMemoProps>(
-  ({ when, children, fallback }) => <Fragment>{when ? children : fallback}</Fragment>,
-  compareDependencies,
-);
+const ShowMemo = memo(<T,>(props: ShowProps<T>) => <ShowDefault {...props} />, compareDependencies);
 
-function compareDependencies(prev: ShowMemoProps, next: ShowMemoProps) {
+function compareDependencies<T>(prev: ShowMemoProps<T>, next: ShowMemoProps<T>) {
   if (prev.when !== next.when) return false;
 
   const prevChilren = prev.childrenDependencies ?? [];
@@ -49,7 +60,10 @@ ShowDefault.displayName = 'ShowDefault';
 ShowConst.displayName = 'ShowConst';
 ShowMemo.displayName = 'ShowMemo';
 
-const Show = Object.assign(ShowDefault, { Memo: ShowMemo, Const: ShowConst });
+const Show = Object.assign(memo(ShowDefault) as ShowComponent, {
+  Memo: ShowMemo as ShowComponent,
+  Const: ShowConst as ShowMemoComponent,
+});
 
 export type { ShowProps, ShowMemoProps };
 export { Show };

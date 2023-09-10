@@ -54,10 +54,12 @@ const Checkbox = forwardRef<
           <Check className="h-4 w-4" />
         </CheckboxPrimitive.Indicator>
       </CheckboxPrimitive.Root>
-      <Show when={typeof children === 'function'}>
-        <div onClick={onClick} className="contents">
-          {children && children(!!props.checked)}
-        </div>
+      <Show when={children}>
+        {child => (
+          <div onClick={onClick} className="contents">
+            {child(!!props.checked)}
+          </div>
+        )}
       </Show>
     </Fragment>
   );
