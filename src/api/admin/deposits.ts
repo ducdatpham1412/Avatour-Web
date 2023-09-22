@@ -1,14 +1,21 @@
 'use server';
 import { revalidateTag } from 'next/cache';
 
-import { JOIN_ESTIMATE_FILTER_STATUS } from '@/configs/constants';
+import { STATUS_JOIN_ESTIMATE } from '@/configs/constants';
 import { request } from '@/api/request';
 import { TransactionData } from '@/features/admin/transactions';
 import { logger, makeError } from '@/lib';
 
-const joinEstimateFilterStatus = Object.values(JOIN_ESTIMATE_FILTER_STATUS);
+const joinEstimateFilterStatus = Object.values(STATUS_JOIN_ESTIMATE);
 
 const GET_ESTIMATE_PATH = '/admin/estimates';
+
+type DepositFilter = {
+  take: string;
+  page_index: string;
+  status: string;
+  hash?: string;
+};
 
 const getDeposits = async (query: Record<string, string | string[] | undefined>) => {
   const filter = parseDepositFilter(query);
@@ -56,7 +63,9 @@ const confirmDeposit = async (id: number) => {
   }
 };
 
-const parseDepositFilter = (query: Record<string, string | string[] | undefined>) => {
+const parseDepositFilter = (
+  query: Record<string, string | string[] | undefined>,
+): DepositFilter => {
   let limit = +(query.limit ?? '');
   if (!isNaN(limit) || limit <= 0) {
     limit = 10;
@@ -72,7 +81,7 @@ const parseDepositFilter = (query: Record<string, string | string[] | undefined>
   if (Array.isArray(status)) {
     parsedStatus = status
       .map(s => +s)
-      .filter(s => !isNaN(s) && joinEstimateFilterStatus.includes(s));
+      .filter(s => !isNaN(s) && joinEstimateFilterStatus.includes(s as STATUS_JOIN_ESTIMATE));
 
     if (parsedStatus.length === 0) {
       parsedStatus = joinEstimateFilterStatus;
@@ -86,6 +95,15 @@ const parseDepositFilter = (query: Record<string, string | string[] | undefined>
     }
   } else {
     parsedStatus = joinEstimateFilterStatus;
+  }
+
+  if (query.hash) {
+    return {
+      take: limit.toString(),
+      page_index: page.toString(),
+      status: JSON.stringify(parsedStatus),
+      hash: query.hash.toString(),
+    };
   }
 
   return {
