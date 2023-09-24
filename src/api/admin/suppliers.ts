@@ -1,7 +1,7 @@
 'use server';
 import { revalidatePath, revalidateTag } from 'next/cache';
 
-import { logger, makeError } from '@/lib';
+import { logger, makeError, parseFormData } from '@/lib';
 import { request } from '@/api/request';
 
 const SUPPLIERS_PATH = '/admin/suppliers';
@@ -39,7 +39,7 @@ const updateSupplier = async (
     };
   }
   try {
-    await request.put(`${SUPPLIERS_PATH}/${id}`, data);
+    await request.put(`${SUPPLIERS_PATH}/${id}`, parseFormData(data));
     revalidateTag(SUPPLILERS_TAG);
     return {};
   } catch (e) {

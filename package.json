@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "debug": "cross-env NODE_OPTIONS='--inspect' next dev",
-    "build": "next build",
+    "build:dev": "cross-env NODE_ENV='dev' next build",
+    "prod": "yarn && next build && next start",
     "start": "next start",
     "lint": "next lint",
     "test": "vitest"
