@@ -2,7 +2,7 @@
 
 ### 6 Enums for deposit status:
 
-![Alt text](image-2.png)
+![Alt text](assets/image-2.png)
 
 1. notActive `(Bị huỷ)`:
 

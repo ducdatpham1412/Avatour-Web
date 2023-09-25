@@ -1,5 +1,3 @@
-const Navbar = async () => {
-  return <div></div>;
-};
+const Navbar = () => <div></div>;
 
 export { Navbar };
