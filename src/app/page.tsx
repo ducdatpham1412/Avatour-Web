@@ -1,5 +1,5 @@
-const Home: NextPage = () => (
-  <main className="flex min-h-screen flex-col bg-p-100/50 items-center justify-between p-24"></main>
-);
+import About from '@/features/about';
 
-export default Home;
+const Page = async () => Promise.resolve(<About />);
+
+export default Page;
