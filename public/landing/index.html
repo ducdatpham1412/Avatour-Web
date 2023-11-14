@@ -18,33 +18,36 @@
       rel="stylesheet"
     />
     <script src="https://cdn.tailwindcss.com"></script>
-    <script
-      src="https://kit.fontawesome.com/130bb4f0d8.js"
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://kit.fontawesome.com/130bb4f0d8.js" crossorigin="anonymous"></script>
     <script>
       tailwind.config = {
         theme: {
           screens: {
-            md: { max: "500px" },
-            sm: { max: "300px" },
+            md: { max: '500px' },
+            sm: { max: '300px' },
           },
         },
       };
     </script>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="/landing/style.css" />
     <script src="https://cdn.jsdelivr.net/npm/swiper@11.0.3/swiper-bundle.min.js"></script>
     <link
       href="https://cdn.jsdelivr.net/npm/swiper@11.0.3/swiper-bundle.min.css"
       rel="stylesheet"
     />
+
+    <script>
+      function scrollToBottom() {
+        document.querySelector('html').scrollTo({
+          top: 20000,
+          behavior: 'smooth',
+        });
+      }
+    </script>
   </head>
 
   <body class="min-h-[100vh] w-full m-0 md:text-[14px]">
-    <div
-      class="bg-white/20 max-w-[100vw] overflow-x-hidden"
-      style="backdrop-filter: blur(4px)"
-    >
+    <div class="bg-white/20 max-w-[100vw] overflow-x-hidden" style="backdrop-filter: blur(4px)">
       <div
         class="bg-white/10 h-full w-full flex flex-col pt-[100px] pb-[100px] md:px-[20px]"
         style="backdrop-filter: blur(4px)"
@@ -52,9 +55,7 @@
         <div
           class="flex justify-center items-center w-full mx-auto md:flex-col md:gap-20 md:px-[10px]"
         >
-          <avatour-tag
-            class="flex flex-col w-[min(700px,_100%)] md:items-center gap-4"
-          >
+          <avatour-tag class="flex flex-col w-[min(700px,_100%)] md:items-center gap-4">
             <avatour-title class="text-start md:text-center">
               Avatour - Gợi ý lịch trình du lịch đậm nét bản địa
             </avatour-title>
@@ -62,68 +63,57 @@
               class="flex flex-col gap-2.5 [&_>_li]:flex [&_>_li]:gap-2 [&_>_li]:items-center [&_i]:text-[rgb(84,179,233)]"
             >
               <li class="flex !items-start">
-                <i
-                  class="fa-solid fa-circle-check w-[1em] h-[1em] pt-[4px]"
-                ></i>
+                <i class="fa-solid fa-circle-check w-[1em] h-[1em] pt-[4px]"></i>
                 <span
-                  >Chỉ mất <span class="text-[#ef4444]">"vài click"</span> để có
-                  ngay một lộ trình khám phá.</span
+                  >Chỉ mất <span class="text-[#ef4444]">"vài click"</span> để có ngay một lộ trình
+                  khám phá.</span
                 >
               </li>
               <li class="flex !items-start">
-                <i
-                  class="fa-solid fa-circle-check w-[1em] h-[1em] pt-[4px]"
-                ></i>
-                Các địa điểm gợi ý được xác thực chặt chẽ bởi Avatour và người
-                dân địa phương.
+                <i class="fa-solid fa-circle-check w-[1em] h-[1em] pt-[4px]"></i>
+                Các địa điểm gợi ý được xác thực chặt chẽ bởi Avatour và người dân địa phương.
               </li>
               <li class="flex !items-start">
-                <i
-                  class="fa-solid fa-circle-check w-[1em] h-[1em] pt-[4px]"
-                ></i>
+                <i class="fa-solid fa-circle-check w-[1em] h-[1em] pt-[4px]"></i>
                 Dễ dàng chỉnh sửa và lưu lại lịch trình theo ý muốn.
               </li>
               <li class="flex !items-start">
-                <i
-                  class="fa-solid fa-circle-check w-[1em] h-[1em] pt-[4px]"
-                ></i>
+                <i class="fa-solid fa-circle-check w-[1em] h-[1em] pt-[4px]"></i>
                 Tham gia mua chung tại các cửa hàng để nhận nhiều ưu đãi
               </li>
             </ul>
-            <avatour-button class="bg-[#f9e062] md:w-full">
+            <avatour-button onClick="scrollToBottom()" class="bg-[#f9e062] md:w-full">
               Tải xuống trên di động
             </avatour-button>
           </avatour-tag>
-          <div
-            class="ml-[150px] md:ml-0 w-[min(400px,_100%)] h-[500px] relative"
-          >
+          <div class="ml-[150px] md:ml-0 w-[min(400px,_100%)] h-[500px] relative">
             <div class="flipster overflow-x-visible absolute left-0">
               <ul>
                 <li>
                   <img
                     class="w-[270px] md:w-[240px] rounded-[20px] !shadow-none"
-                    src="assets/img_home.png"
+                    src="/landing/assets/img_home.png"
                     alt=""
                   />
                 </li>
                 <li>
                   <img
                     class="w-[270px] md:w-[240px] rounded-[20px] !shadow-none"
-                    src="assets/img_editour.png"
+                    src="/landing/assets/img_editour.png"
                     alt=""
                   />
                 </li>
                 <li>
                   <img
                     class="w-[270px] md:w-[240px] rounded-[20px] !shadow-none"
-                    src="assets/img_sale.png"
+                    src="/landing/assets/img_sale.png"
                     alt=""
                   />
                 </li>
                 <li>
                   <img
                     class="w-[270px] md:w-[240px] rounded-[20px] !shadow-none"
-                    src="assets/img_search.png"
+                    src="/landing/assets/img_search.png"
                     alt=""
                   />
                 </li>
@@ -148,7 +138,7 @@
                     style="translate: -20px"
                   >
                     <img
-                      src="assets/img_schedule-1.svg"
+                      src="/landing/assets/img_schedule-1.svg"
                       class="w-full h-full object-contain"
                     />
                   </div>
@@ -157,7 +147,7 @@
                     style="translate: -20px"
                   >
                     <img
-                      src="assets/img_schedule-2.svg"
+                      src="/landing/assets/img_schedule-2.svg"
                       class="w-full h-full object-contain"
                     />
                   </div>
@@ -166,7 +156,7 @@
                     style="translate: -20px"
                   >
                     <img
-                      src="assets/img_schedule-3.svg"
+                      src="/landing/assets/img_schedule-3.svg"
                       class="w-full h-full object-contain"
                     />
                   </div>
@@ -175,7 +165,7 @@
                     style="translate: -20px"
                   >
                     <img
-                      src="assets/img_schedule-4.svg"
+                      src="/landing/assets/img_schedule-4.svg"
                       class="w-full h-full object-contain"
                     />
                   </div>
@@ -192,10 +182,10 @@
                 Mang đến cho bạn một lịch trình như ý chỉ bằng vài cú nhấp chuột
               </avatour-title>
               <span class="md:text-center">
-                Chọn địa điểm bạn muốn đến, số người, thời gian đi và về, số
-                tiền dự tính, việc còn lại để chúng tôi.
+                Chọn địa điểm bạn muốn đến, số người, thời gian đi và về, số tiền dự tính, việc còn
+                lại để chúng tôi.
               </span>
-              <avatour-button class="bg-[#f9e062] md:w-full">
+              <avatour-button onClick="scrollToBottom()" class="bg-[#f9e062] md:w-full">
                 Bắt đầu ngay!
               </avatour-button>
             </avatour-tag>
@@ -204,32 +194,28 @@
         <div
           class="flex items-center justify-between md:flex-col-reverse gap-14 mt-[200px] md:mt-[100px] px-[150px] md:px-0"
         >
-          <avatour-tag
-            class="w-[min(500px,_100%)] flex flex-col gap-4 p-[10px_15px]"
-          >
+          <avatour-tag class="w-[min(500px,_100%)] flex flex-col gap-4 p-[10px_15px]">
             <avatour-title
               class="text-[31px] md:text-[1.5em] leading-[1.3em] text-start md:text-center"
             >
               Tự chỉnh sửa tour theo sở thích
             </avatour-title>
             <span class="md:text-center">
-              Cung cấp công cụ cho bạn tự chỉnh sửa lại lịch trình, sắp xếp thứ
-              tự, thêm, xoá các địa điểm và có thể xem trực tiếp ở trên map.
+              Cung cấp công cụ cho bạn tự chỉnh sửa lại lịch trình, sắp xếp thứ tự, thêm, xoá các
+              địa điểm và có thể xem trực tiếp ở trên map.
             </span>
           </avatour-tag>
           <div class="w-[min(550px,_100%)]">
-            <img src="assets/img_phone1.png" alt="" />
+            <img src="/landing/assets/img_phone1.png" alt="" />
           </div>
         </div>
         <div
           class="flex items-center justify-between md:flex-col gap-14 mt-[200px] md:mt-[100px] px-[150px] md:px-0"
         >
           <div class="w-[min(550px,_100%)]">
-            <img src="assets/img_phone2.png" alt="" />
+            <img src="/landing/assets/img_phone2.png" alt="" />
           </div>
-          <avatour-tag
-            class="w-[min(500px,_100%)] flex flex-col gap-4 p-[10px_15px]"
-          >
+          <avatour-tag class="w-[min(500px,_100%)] flex flex-col gap-4 p-[10px_15px]">
             <avatour-title
               class="text-[31px] md:text-[1.5em] leading-[1.3em] text-start md:text-center"
             >
@@ -237,17 +223,15 @@
               Nhận ngay giá khủng
             </avatour-title>
             <span class="md:text-center">
-              Đặt chỗ các cửa hàng, mua các dịch vụ qua hình thức mua chung.
-              Càng nhiều người mua giá càng ưu đãi.
+              Đặt chỗ các cửa hàng, mua các dịch vụ qua hình thức mua chung. Càng nhiều người mua
+              giá càng ưu đãi.
             </span>
           </avatour-tag>
         </div>
         <div
           class="flex items-center justify-between md:flex-col gap-14 md:gap-8 mt-[200px] md:mt-[100px] px-[150px] md:px-0"
         >
-          <avatour-tag
-            class="w-[min(500px,_100%)] flex flex-col gap-4 p-[10px_15px]"
-          >
+          <avatour-tag class="w-[min(500px,_100%)] flex flex-col gap-4 p-[10px_15px]">
             <avatour-title
               class="text-[31px] md:text-[1.5em] leading-[1.3em] text-start md:text-center"
             >
@@ -259,11 +243,7 @@
             <div
               class="border-[1px] border-[rgba(0,_0,_0,_0.2)] p-[20px] rounded-[10px] flex items-center gap-4"
             >
-              <img
-                class="w-[56px] h-[56px]"
-                src="assets/icon_data1.svg"
-                alt=""
-              />
+              <img class="w-[56px] h-[56px]" src="/landing/assets/icon_data1.svg" alt="" />
               <div class="flex flex-col gap-2">
                 <avatour-title
                   class="text-[18px] md:text-[1.1em] leading-[1em] text-start md:text-center"
@@ -271,19 +251,15 @@
                   Dữ liệu thật
                 </avatour-title>
                 <span
-                  >Tổng hợp dữ liệu từ người dân bản địa và admin các nhóm du
-                  lịch nổi bật để gợi ý cho bạn</span
+                  >Tổng hợp dữ liệu từ người dân bản địa và admin các nhóm du lịch nổi bật để gợi ý
+                  cho bạn</span
                 >
               </div>
             </div>
             <div
               class="border-[1px] border-[rgba(0,_0,_0,_0.2)] p-[20px] rounded-[10px] flex items-center gap-4"
             >
-              <img
-                class="w-[56px] h-[56px]"
-                src="assets/icon_data2.svg"
-                alt=""
-              />
+              <img class="w-[56px] h-[56px]" src="/landing/assets/icon_data2.svg" alt="" />
 
               <div class="flex flex-col gap-2">
                 <avatour-title
@@ -292,8 +268,8 @@
                   Khiến mọi thứ trở lên đơn giản
                 </avatour-title>
                 <span
-                  >Giao diện dễ hiểu, dễ dàng chỉnh sửa và lưu lại lịch trình
-                  ngay trên Avatour</span
+                  >Giao diện dễ hiểu, dễ dàng chỉnh sửa và lưu lại lịch trình ngay trên
+                  Avatour</span
                 >
               </div>
             </div>
@@ -301,14 +277,12 @@
         </div>
       </div>
       <!-- Footer -->
-      <div class="w-full h-[250px] bg-[#54B3E9] md:h-auto">
-        <div
-          class="p-[50px_100px] h-[100%] flex items-center md:px-10 md:flex-col md:gap-7"
-        >
+      <div class="w-full h-[250px] bg-[#FBBD05] md:h-auto">
+        <div class="p-[50px_100px] h-[100%] flex items-center md:px-10 md:flex-col md:gap-7">
           <div class="h-[100%] w-[25%] md:w-full flex flex-col">
             <img
               alt=""
-              src="assets/img_footer-logo.svg"
+              src="/landing/assets/img_footer-logo.svg"
               width="165"
               height="89"
               decoding="async"
@@ -324,15 +298,13 @@
                 rel="noreferrer"
                 ><img
                   class="w-full h-full object-contain"
-                  src="assets/ic_facebook.svg" /></a
+                  src="/landing/assets/ic_facebook.svg" /></a
               ><a
                 class="w-[28px] h-[28x]"
                 href="https://www.youtube.com/watch?v=g8epBllXZjo"
                 target="_blank"
                 rel="noreferrer"
-                ><img
-                  class="w-full h-full object-contain"
-                  src="assets/ic_youtube.svg"
+                ><img class="w-full h-full object-contain" src="/landing/assets/ic_youtube.svg"
               /></a>
             </div>
           </div>
@@ -346,27 +318,28 @@
             <div>
               <a
                 class="hover:underline text-[14px] opacity-70"
-                href="http://www.avatour.life/about-us/terms?fbclid=IwAR2htgDWNlmv0PQVMloAaMrFqqRXnVF3x9u94BqT394ZWcjBqLm-jCn2ZBw"
+                href="https://www.avatour.life/about-us/terms"
                 >Điều khoản sử dụng</a
               >
             </div>
             <div>
               <a
                 class="hover:underline text-[14px] opacity-70"
-                href="http://www.avatour.life/about-us/policy?fbclid=IwAR0g6WSrjUcJi9osSpbWdJiPqNKsmch07y7isXGeZyNwRUc2m4d8HcO_qbA"
+                href="https://www.avatour.life/about-us/policy"
                 >Chính sách bảo mật</a
               >
             </div>
           </div>
           <div class="h-[100%] w-[25%] md:w-full flex flex-col gap-2">
             <h5 class="font-bold mb-2">Thông tin liên hệ</h5>
-            <div class="flex items-center gap-2">
+            <div class="flex items-start gap-2">
               <svg
                 width="16"
                 height="21"
                 viewBox="0 0 16 21"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                class="mt-1"
               >
                 <path
                   d="M8 10.6836C6.9 10.6836 6 9.78359 6 8.68359C6 7.58359 6.9 6.68359 8 6.68359C9.1 6.68359 10 7.58359 10 8.68359C10 9.78359 9.1 10.6836 8 10.6836ZM14 8.88359C14 5.25359 11.35 2.68359 8 2.68359C4.65 2.68359 2 5.25359 2 8.88359C2 11.2236 3.95 14.3236 8 18.0236C12.05 14.3236 14 11.2236 14 8.88359ZM8 0.683594C12.2 0.683594 16 3.90359 16 8.88359C16 12.2036 13.33 16.1336 8 20.6836C2.67 16.1336 0 12.2036 0 8.88359C0 3.90359 3.8 0.683594 8 0.683594Z"
@@ -391,7 +364,7 @@
                 ></path>
               </svg>
               <div class="max-w-[180px] text-[#112211] text-[14px] opacity-70">
-                ducdat.avatour@gmail.com
+                support.avatour@gmail.com
               </div>
             </div>
             <div class="flex items-center gap-2">
@@ -407,9 +380,7 @@
                   fill="black"
                 ></path>
               </svg>
-              <div class="max-w-[175px] text-[#112211] text-[14px] opacity-70">
-                (+84) 886141200
-              </div>
+              <div class="max-w-[175px] text-[#112211] text-[14px] opacity-70">(+84) 886141200</div>
             </div>
           </div>
           <div class="h-[100%] w-[25%] md:w-full flex flex-col gap-2">
@@ -423,7 +394,7 @@
                     href="https://play.google.com/store/apps/details?id=com.doffy.android.production&amp;hl=en"
                     ><img
                       alt=""
-                      src="assets/img_android.svg"
+                      src="/landing/assets/img_android.svg"
                       width="150"
                       height="49"
                       decoding="async"
@@ -437,10 +408,10 @@
                   <a
                     target="_blank"
                     class="border-[1px] min-w-[150px] h-[49px] inline-block overflow-hidden rounded-[5px] relative"
-                    href="https://testflight.apple.com/join/zCTMbACx"
+                    href="https://apps.apple.com/vn/app/avatour-kh%C3%A1m-ph%C3%A1-ch%E1%BA%A5t-b%E1%BA%A3n-%C4%91%E1%BB%8Ba/id6449328273"
                     ><img
                       alt=""
-                      src="assets/img_ios.svg"
+                      src="/landing/assets/img_ios.svg"
                       width="150"
                       height="49"
                       decoding="async"
@@ -454,7 +425,7 @@
               <div class="">
                 <img
                   alt=""
-                  src="assets/img_qrcode.svg"
+                  src="/landing/assets/img_qrcode.svg"
                   width="110"
                   height="110"
                   decoding="async"
@@ -471,16 +442,15 @@
     </div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script>
-      window.jQuery ||
-        document.write('<script src="/js/jquery-1.10.2.min.js"><\/script>');
+      window.jQuery || document.write('<script src="/js/jquery-1.10.2.min.js"><\/script>');
     </script>
     <script src="
     https://cdn.jsdelivr.net/npm/jquery.flipster@1.1.5/dist/jquery.flipster.min.js
     "></script>
     <script>
       $(function () {
-        $(".flipster").flipster({
-          style: "carousel",
+        $('.flipster').flipster({
+          style: 'carousel',
           spacing: -0.5,
           loop: 1,
           start: 1,
@@ -489,7 +459,7 @@
         });
       });
 
-      var swiper = new Swiper(".mySwiper", {
+      var swiper = new Swiper('.mySwiper', {
         slidesPerView: 3,
         centeredSlides: true,
         spaceBetween: 30,
