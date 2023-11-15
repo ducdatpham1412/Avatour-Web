@@ -2,6 +2,8 @@ import { type ClassValue, clsx } from 'clsx';
 import { omit as om } from 'lodash';
 import { twMerge } from 'tailwind-merge';
 
+import logger from './logger';
+
 const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
 const omit = <T extends Record<string | number, any>, K extends keyof T = keyof T>(
@@ -28,6 +30,26 @@ function formatPrice(value: number) {
   return value.toLocaleString('vi-VN');
 }
 
+const parseFormData = (data: Record<string | number, string | number | (string | number)[]>) =>
+  Object.keys(data).reduce(
+    (c, key) => (void convertFormValue(c, key, data[key]), c),
+    new FormData(),
+  );
+
+function convertFormValue<T extends string | number | (string | number)[]>(
+  form: FormData,
+  key: string,
+  value: T | undefined,
+) {
+  if (typeof value === 'object' && value instanceof Blob) {
+    form.set(key.toString(), value);
+  } else if (Array.isArray(value)) {
+    form.set(key.toString(), JSON.stringify(value));
+  } else if (value !== undefined && value !== null) {
+    form.set(key.toString(), value.toString());
+  }
+}
+
 const isDev = process.env.NODE_ENV === 'development';
 
-export { cn, omit, formatPrice, paramsToUrl, isDev };
+export { cn, omit, formatPrice, paramsToUrl, isDev, parseFormData };
