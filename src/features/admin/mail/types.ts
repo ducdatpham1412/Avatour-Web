@@ -1,7 +1,7 @@
 import { Control, RegisterOptions } from 'react-hook-form';
 import { z } from 'zod';
 
-import { mailFormSchema } from './contants';
+import { mailFormSchema } from '@/lib';
 
 export type MailForm = z.infer<typeof mailFormSchema>;
 
