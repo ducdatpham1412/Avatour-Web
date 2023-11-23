@@ -22,7 +22,7 @@ type EditSuppliersDialogProps = {
   open?: boolean;
   onOpenChange?: (status: boolean) => void;
   children?: ReactElement;
-  data?: TypeSupplier;
+  data?: TypeGetProfileResponse;
 };
 
 const EditSuppliersDialog: React.FC<EditSuppliersDialogProps> = ({

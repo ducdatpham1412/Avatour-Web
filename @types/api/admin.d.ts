@@ -14,7 +14,7 @@ interface TypeInputSupplierRequest {
   duration: number;
 }
 
-interface TypeSupplier {
+interface TypeGetProfileResponse {
   id: number;
   account_type: number | string;
   services: number[];
@@ -80,12 +80,12 @@ interface GetDepositsFilter {
 }
 
 interface SuppliersProps {
-  data: TypeSupplier[];
+  data: TypeGetProfileResponse[];
   query: Record<string, any>;
 }
 
 interface SupplierPageProps {
-  data: TypeSupplier[];
+  data: TypeGetProfileResponse[];
 }
 
 interface DynamicObject<T = any> {
@@ -126,3 +126,60 @@ interface AdminProfile {
   };
   new_notifications: number;
 }
+
+interface UpgradeAccount {
+  name: string;
+  location: string;
+  phone: string;
+  bank_code: string;
+  bank_account: string;
+}
+interface UpdateBank {
+  bank_code: string;
+  bank_account: string;
+}
+interface UpdatePrice {
+  sale: {
+    id: number | null;
+    name: string;
+    content: string;
+    images: string[];
+  };
+  prices: TypePrice[];
+}
+
+type TypeAuthRequest = typeof import('@/configs/constants').TYPE_AUTH_REQUEST;
+
+type TypeGetRequestResponse =
+  | {
+      id: number;
+      type: TypeAuthRequest['update_price'];
+      created: string;
+      expired: string;
+      data: UpdatePrice;
+      status: number;
+    }
+  | {
+      id: number;
+      type: TypeAuthRequest['update_bank'];
+      created: string;
+      expired: string;
+      data: UpdateBank;
+      status: number;
+    }
+  | {
+      id: number;
+      type: TypeAuthRequest['upgrade_to_shop'];
+      created: string;
+      expired: string;
+      data: UpgradeAccount;
+      status: number;
+    }
+  | {
+      id: number;
+      type: TypeAuthRequest['suggest_location'];
+      created: string;
+      expired: string;
+      data: TypeGetProfileResponse;
+      status: number;
+    };

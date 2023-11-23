@@ -1,6 +1,6 @@
 import { Control, RegisterOptions } from 'react-hook-form';
 
-type SupplierData = Partial<TypeSupplier>;
+type SupplierData = Partial<TypeGetProfileResponse>;
 
 interface EditSuppliersFormProps {
   defaultValues?: SupplierData;
@@ -19,7 +19,7 @@ type FormFieldProps<T extends Record<string, any>> = {
   placeholder?: string;
   rules?:
     | Omit<
-        RegisterOptions<Partial<TypeSupplier>>,
+        RegisterOptions<Partial<TypeGetProfileResponse>>,
         'setValueAs' | 'disabled' | 'valueAsNumber' | 'valueAsDate'
       >
     | undefined;

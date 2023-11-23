@@ -5,7 +5,9 @@ import { Image } from '@/components/ui';
 
 import { FormFieldProps } from '../types';
 
-type AvatarPreviewProps = Pick<FormFieldProps<TypeSupplier>, 'control'> & { defaultValue?: string };
+type AvatarPreviewProps = Pick<FormFieldProps<TypeGetProfileResponse>, 'control'> & {
+  defaultValue?: string;
+};
 
 const AvatarPreview: React.FC<AvatarPreviewProps> = memo(({ control, defaultValue }) => {
   const [url, setUrl] = useState(defaultValue ?? '');

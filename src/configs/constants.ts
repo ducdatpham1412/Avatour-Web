@@ -1,4 +1,4 @@
-const STATUS_JOIN_ESTIMATE = {
+export const STATUS_JOIN_ESTIMATE = {
   notActive: 0,
   active: 1,
   adminConfirm: 2,
@@ -7,15 +7,20 @@ const STATUS_JOIN_ESTIMATE = {
   supplierConfirmed: 5,
 } as const;
 
-/**
- * @deprecated
- */
-const JOIN_ESTIMATE_FILTER_STATUS = {
-  confirmed: 0, // -> STATUS_JOIN_ESTIMATE.adminConfirm
-  notConfirmed: 1, // -> STATUS_JOIN_ESTIMATE.active
-  expired: 2, // -> STATUS_JOIN_ESTIMATE.overtime
-  cancelled: 3, // -> STATUS_JOIN_ESTIMATE.notActive
+export const TYPE_AUTH_REQUEST = {
+  lock_account: 0,
+  delete_account: 1,
+  upgrade_to_shop: 2,
+  update_price: 3,
+  update_bank: 5,
+  suggest_location: 6,
 } as const;
 
-export { STATUS_JOIN_ESTIMATE, JOIN_ESTIMATE_FILTER_STATUS };
+export const REQUEST_STATUS = {
+  notActive: 0,
+  active: 1,
+  confirmed: 2,
+  rejected: 3,
+};
+
 export type STATUS_JOIN_ESTIMATE = (typeof STATUS_JOIN_ESTIMATE)[keyof typeof STATUS_JOIN_ESTIMATE];
