@@ -1,7 +1,5 @@
 function getTransactionDeposit(data: Partial<TypeJoinEstimate> | undefined, price: number) {
-  const amount = data?.list_personals?.reduce((p, c) => p + c.amount, 0) || 1;
-
-  return price / amount;
+  return data?.list_personals?.reduce((p, c) => p + c.deposit, 0) || 1;
 }
 
 function getTransactionPrice(data: Partial<TypeJoinEstimate> | undefined) {

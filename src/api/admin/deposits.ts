@@ -52,7 +52,6 @@ const confirmDeposit = async (id: number) => {
     return {};
   } catch (e) {
     const error = makeError(e);
-    logger.error('confirm deposit error', e);
 
     return {
       error: {

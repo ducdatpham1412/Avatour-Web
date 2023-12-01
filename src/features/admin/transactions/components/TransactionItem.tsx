@@ -27,7 +27,7 @@ const TransactionItem = memo(({ data }: TransactionItemProps) => {
 
   const price = useMemo(() => getTransactionPrice(data), [data?.list_personals]);
 
-  const deposit = useMemo(() => getTransactionDeposit(data, price), [price, data?.list_personals]);
+  const deposit = data.deposit ?? 0;
 
   const transactionDetail = useMemo(() => ({ ...data, status }), [status, data]);
 

@@ -5,21 +5,28 @@ import { cookies as getCookies } from 'next/headers';
 import { API_ENDPOINT } from '@/configs';
 import { logger, paramsToUrl } from '@/lib';
 
-import { StatusCode, statusText } from './constants';
+import { ERROR_MESSAGE, StatusCode, statusText } from './constants';
 
 const parseData = <T = any>(res: Response) => {
   const contentType = res.headers.get('Content-Type');
   if (contentType?.includes('text')) {
-    return res.text() as T;
+    return res.text() as Promise<T>;
   }
-  return res.json() as T;
+  return res.json() as Promise<T>;
 };
 
 const parseError = <T>(data: T, res: Response) => {
+  console.log('error', data);
+
   if (typeof data === 'string') {
     return new Error(data);
-  } else if (typeof data === 'object' && data && 'message' in data && data.message) {
-    return new Error((data as Record<string, any>)?.message);
+  } else if (
+    typeof data === 'object' &&
+    data &&
+    'errorMessage' in data &&
+    typeof data.errorMessage === 'string'
+  ) {
+    return new Error(getErrorMessage(data.errorMessage) ?? data.errorMessage);
   } else if (res.statusText) {
     return new Error(res.statusText);
   }
@@ -62,12 +69,12 @@ const api: API = async <T>(
     headers.set('Authorization', `Bearer ${token.value}`);
   }
 
-  logger.log(url);
+  logger.log(url, params);
 
   const response = await fetcher(url, { ...options, method, body, headers });
   const data = parseData<T>(response);
   if (!response.ok) {
-    throw parseError(data, response);
+    throw parseError(await data, response);
   }
 
   return data;
@@ -85,6 +92,15 @@ const request = Object.assign(api, {
 } as HTTPRequest);
 
 const useEndpoint = (path: string) => API_ENDPOINT + path;
+
+function getErrorMessage(message: string) {
+  for (const key of Object.keys(ERROR_MESSAGE)) {
+    const messageKey = ERROR_MESSAGE[key as keyof typeof ERROR_MESSAGE];
+    if (message === messageKey) {
+      return message[0].toUpperCase() + message.slice(1).replaceAll('_', ' ');
+    }
+  }
+}
 
 export { useEndpoint };
 export default request;

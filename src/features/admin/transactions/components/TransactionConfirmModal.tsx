@@ -28,7 +28,7 @@ const TransactionConfirmModal = ({ data, children }: TransactionConfirmModalProp
 
   const toggleDialog = useCallback(() => setOpen(prev => !prev), []);
 
-  const price = useMemo(() => getTransactionPrice(data), [data?.list_personals]);
+  const price = useMemo(() => data?.deposit ?? 0, [data?.deposit]);
 
   async function onConfirm() {
     if (!data || !data.id) {

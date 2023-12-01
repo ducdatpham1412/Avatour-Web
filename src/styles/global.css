@@ -55,3 +55,7 @@ input:-internal-autofill-selected {
   justify-content: center;
   align-items: center;
 }
+
+div[role='dialog'] {
+  overflow-y: auto !important;
+}

@@ -2,8 +2,10 @@
 import { cookies as getCookies } from 'next/headers';
 
 import { logger, makeError } from '@/lib';
+import { ACCOUNT_TYPE } from '@/configs/constants';
 
 import request from '../request/api';
+import { ERROR_MESSAGE } from '../request/constants';
 
 interface LoginResponse {
   success: boolean;
@@ -36,11 +38,13 @@ const adminLogin = async (email: string, password: string): Promise<ActionRespon
     if (!success) {
       return {
         error: {
-          message: 'login_fail',
+          message: ERROR_MESSAGE['login_fail'] ?? 'login_fail',
           code: 400,
         },
       };
     }
+
+    await getProfile(data);
 
     const { token, refreshToken } = data;
 
@@ -61,12 +65,33 @@ const adminLogin = async (email: string, password: string): Promise<ActionRespon
   }
 };
 
-const getProfile = async (): Promise<ActionResponse> => {
+const getProfile = async (options?: {
+  token: string;
+}): Promise<ActionResponse<ProfileResponse['data']>> => {
   try {
-    const response = await request.get<ProfileResponse>(GET_PROFILE_URL, undefined);
+    let response: ProfileResponse;
+    if (options?.token) {
+      response = await request.get(GET_PROFILE_URL, undefined, {
+        cache: 'no-store',
+        headers: { Authorization: `Bearer ${options.token}` },
+      });
+    } else {
+      response = await request.get(GET_PROFILE_URL, undefined, { cache: 'no-store' });
+    }
 
     if (!response.success) {
       throw new Error('');
+    }
+    if (
+      response.data?.profile.account_type !== ACCOUNT_TYPE.admin &&
+      response.data?.profile.account_type !== ACCOUNT_TYPE.superAdmin
+    ) {
+      return {
+        error: {
+          message: 'You not is admin, please try another account',
+          code: 401,
+        },
+      };
     }
 
     return {
