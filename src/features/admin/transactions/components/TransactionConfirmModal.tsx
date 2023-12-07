@@ -19,9 +19,10 @@ import { getTransactionPrice } from '../lib/transaction';
 interface TransactionConfirmModalProps {
   data?: TransactionData['data'][number];
   children: ReactElement;
+  onSubmitEnd?: () => Promise<void>;
 }
 
-const TransactionConfirmModal = ({ data, children }: TransactionConfirmModalProps) => {
+const TransactionConfirmModal = ({ data, children, onSubmitEnd }: TransactionConfirmModalProps) => {
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
   const [submiting, setSubmiting] = useState(false);
@@ -44,6 +45,7 @@ const TransactionConfirmModal = ({ data, children }: TransactionConfirmModalProp
       });
       setOpen(false);
     } else {
+      await onSubmitEnd?.();
       toast({
         title: 'Thông báo',
         description: 'Xác nhận đơn hàng thất bại',

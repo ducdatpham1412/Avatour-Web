@@ -53,13 +53,13 @@ export const useQuery = <T, K = T>(
 
   useEffect(() => {
     const cacheData = queryCache.get(queryKey);
-    const newData = cacheData ?? options?.initialValue;
+    const newData = cacheData;
 
     if (!newData) {
-      setLoading(!newData);
+      setLoading(true);
     }
     if (isUseCache) {
-      setData(newData);
+      setData(newData ?? options?.initialValue);
     } else {
       setData(options?.initialValue);
     }

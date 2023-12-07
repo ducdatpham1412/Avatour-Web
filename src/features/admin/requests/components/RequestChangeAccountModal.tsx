@@ -18,7 +18,6 @@ import withRequest from '../hoc/withRequest';
 const RequestChangeAccountModal = withRequest<'upgrade_to_shop'>(
   ({ data, children, active, onConfirm, open, openOpenChange, submiting }) => (
     <>
-      {console.log('open', open)}
       {cloneElement(children, { ...children.props, onClick: () => openOpenChange(true) })}
       <Dialog open={open} onOpenChange={e => openOpenChange(e)}>
         <DialogContent

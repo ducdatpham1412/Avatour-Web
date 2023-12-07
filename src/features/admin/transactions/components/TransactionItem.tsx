@@ -9,14 +9,14 @@ import { STATUS_JOIN_ESTIMATE } from '@/configs/constants';
 import Badge from './Badge';
 import { TransactionData } from '../types';
 import TransactionDetailModal from './TransactionDetailModal';
-import { getTransactionDeposit, getTransactionPrice } from '../lib/transaction';
+import { getTransactionPrice } from '../lib/transaction';
 
 export interface TransactionItemProps {
   data: TransactionData['data'][number];
-  onSubmitEnd?: () => void;
+  onSubmitEnd?: () => Promise<void>;
 }
 
-const TransactionItem = memo(({ data }: TransactionItemProps) => {
+const TransactionItem = memo(({ data, onSubmitEnd }: TransactionItemProps) => {
   const [open, setOpen] = useState(false);
 
   const status = useMemo(() => {
@@ -29,7 +29,7 @@ const TransactionItem = memo(({ data }: TransactionItemProps) => {
 
   const deposit = data.deposit ?? 0;
 
-  const transactionDetail = useMemo(() => ({ ...data, status }), [status, data]);
+  const transactionDetail = { ...data, status };
 
   return (
     <>
@@ -87,7 +87,12 @@ const TransactionItem = memo(({ data }: TransactionItemProps) => {
           </div>
         </td>
       </tr>
-      <TransactionDetailModal open={open} data={transactionDetail} onOpenChange={setOpen} />
+      <TransactionDetailModal
+        open={open}
+        data={transactionDetail}
+        onOpenChange={setOpen}
+        onSubmitEnd={onSubmitEnd}
+      />
     </>
   );
 });
