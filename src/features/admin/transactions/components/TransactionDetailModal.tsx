@@ -1,5 +1,5 @@
-import { memo, useCallback, useMemo } from 'react';
 import dayjs from 'dayjs';
+import { memo, useCallback, useMemo } from 'react';
 
 import { Icon } from '@/components/icon';
 import {
@@ -8,19 +8,18 @@ import {
   DialogContent,
   DialogFooter,
   DialogHeader,
+  Divider,
   Image,
   Show,
-  Divider,
 } from '@/components/ui';
 import { STATUS_JOIN_ESTIMATE } from '@/configs/constants';
 import { formatPrice } from '@/lib';
 
+import { getTransactionDeposit, getTransactionPrice } from '../lib/transaction';
 import { TransactionData } from '../types';
 import Badge from './Badge';
-import TransactionConfirmModal from './TransactionConfirmModal';
 import GroupSlider from './GroupSlider';
-import GroupCard from './GroupCard';
-import { getTransactionDeposit, getTransactionPrice } from '../lib/transaction';
+import TransactionConfirmModal from './TransactionConfirmModal';
 
 interface TransactionDetailModalProps {
   open: boolean;
@@ -46,7 +45,7 @@ const TransactionDetailModal = memo(({ open, data, onOpenChange }: TransactionDe
   );
 
   const timeWillBuy = useMemo(
-    () => dayjs(data?.time_will_buy)?.format('DD/MM/YYYY'),
+    () => dayjs(data?.time_will_buy).format('DD/MM/YYYY'),
     [data?.time_will_buy],
   );
 

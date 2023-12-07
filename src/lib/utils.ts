@@ -1,8 +1,6 @@
-import { type ClassValue, clsx } from 'clsx';
+import { clsx, type ClassValue } from 'clsx';
 import { omit as om } from 'lodash';
 import { twMerge } from 'tailwind-merge';
-
-import logger from './logger';
 
 const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
@@ -52,4 +50,4 @@ function convertFormValue<T extends string | number | (string | number)[]>(
 
 const isDev = process.env.NODE_ENV === 'development';
 
-export { cn, omit, formatPrice, paramsToUrl, isDev, parseFormData };
+export { cn, formatPrice, isDev, omit, paramsToUrl, parseFormData };

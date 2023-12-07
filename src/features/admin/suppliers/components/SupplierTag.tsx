@@ -6,7 +6,7 @@ import { Image, Skeleton } from '@/components/ui';
 import EditSuppliersDialog from './EditSuppliersDialog';
 
 interface SupplierTagProps {
-  data: TypeSupplier;
+  data: TypeGetProfileResponse;
   onSubmitEnd?: () => void;
 }
 const supplierServices = [

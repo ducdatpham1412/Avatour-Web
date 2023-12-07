@@ -72,7 +72,7 @@ const editSupplierFields = {
     label: 'Description',
     placeholder: 'Description',
   },
-} as FormFieldDefine<TypeSupplier>;
+} as FormFieldDefine<TypeGetProfileResponse>;
 
 const supplierServices = [
   { id: 2, name: 'Food tour' },

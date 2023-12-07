@@ -9,11 +9,15 @@ const SUPPLILERS_TAG = '/admin/suppliers';
 
 const getSuppliers = async (options: Partial<GetSuppliersFilter>) => {
   try {
-    const { data } = await request.get<{ data: TypeSupplier[] }>(SUPPLIERS_PATH, undefined, {
-      next: {
-        tags: [SUPPLILERS_TAG],
+    const { data } = await request.get<{ data: TypeGetProfileResponse[] }>(
+      SUPPLIERS_PATH,
+      undefined,
+      {
+        next: {
+          tags: [SUPPLILERS_TAG],
+        },
       },
-    });
+    );
     return applyFilterSuppliers(data, options);
   } catch (error) {
     logger.error('error', error);
@@ -21,14 +25,14 @@ const getSuppliers = async (options: Partial<GetSuppliersFilter>) => {
   }
 };
 
-const addSupplier = async (data: Partial<TypeSupplier>) => {
+const addSupplier = async (data: Partial<TypeGetProfileResponse>) => {
   await request.post(SUPPLIERS_PATH, data);
   revalidateTag(SUPPLILERS_TAG);
 };
 
 const updateSupplier = async (
   id: number | undefined,
-  data: Partial<TypeSupplier>,
+  data: Partial<TypeGetProfileResponse>,
 ): Promise<ActionResponse> => {
   if (!id) {
     return {
@@ -54,10 +58,10 @@ const updateSupplier = async (
 };
 
 const applyFilterSuppliers = (
-  suppliers: TypeSupplier[],
+  suppliers: TypeGetProfileResponse[],
   searchQueries: Partial<GetSuppliersFilter>,
 ) => {
-  let listSupplier: (TypeSupplier | undefined)[];
+  let listSupplier: (TypeGetProfileResponse | undefined)[];
   const services = searchQueries.sv;
   const filter = {
     account_type: searchQueries.at,
@@ -94,7 +98,7 @@ const applyFilterSuppliers = (
     listSupplier = suppliers;
   }
 
-  return listSupplier.filter(s => !!s) as TypeSupplier[];
+  return listSupplier.filter(s => !!s) as TypeGetProfileResponse[];
 };
 
 export { getSuppliers, addSupplier, updateSupplier };
