@@ -14,3 +14,11 @@ interface HTTPRequest extends API {
   put: API;
   delete: API;
 }
+
+type APIPagingResponse<T> = {
+  totalPages: number;
+  totalItems: number;
+  take: number;
+  pageIndex: number;
+  data: T;
+};

@@ -21,6 +21,17 @@ export const REQUEST_STATUS = {
   active: 1,
   confirmed: 2,
   rejected: 3,
+} as const;
+
+export const ACCOUNT_TYPE = {
+  superAdmin: -1,
+  user: 0,
+  shop: 1,
+  admin: 2,
+  location: 3,
+  shareTour: 4,
 };
 
+export type REQUEST_STATUS = (typeof REQUEST_STATUS)[keyof typeof REQUEST_STATUS];
+export type TYPE_AUTH_REQUEST = (typeof TYPE_AUTH_REQUEST)[keyof typeof TYPE_AUTH_REQUEST];
 export type STATUS_JOIN_ESTIMATE = (typeof STATUS_JOIN_ESTIMATE)[keyof typeof STATUS_JOIN_ESTIMATE];

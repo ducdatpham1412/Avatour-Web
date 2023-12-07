@@ -29,7 +29,7 @@ const AdminLogin = () => {
           toast({
             variant: 'destructive',
             title: 'Thông báo',
-            description: 'Vui lòng kiểm tra tài khoản và mật khẩu',
+            description: error.message ?? 'Vui lòng kiểm tra tài khoản và mật khẩu',
           });
         }
       })

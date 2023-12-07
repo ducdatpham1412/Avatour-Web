@@ -30,6 +30,11 @@ const AdminTemplate = ({ children }: { children: React.ReactNode }) => {
           active={pathname.includes('/admin/deposits')}
         />
         <NavigateItem href="/admin/mail" name="mail" active={pathname.includes('/admin/mail')} />
+        <NavigateItem
+          href="/admin/requests"
+          name="question"
+          active={pathname.includes('/admin/requests')}
+        />
       </div>
       {children}
     </div>

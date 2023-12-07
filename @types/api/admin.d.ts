@@ -54,6 +54,7 @@ interface TypeJoinEstimate {
   time_will_buy: string;
   note: string;
   hash: string;
+  deposit: number;
   creator: number;
   creator_name: string;
   created: string;
@@ -139,12 +140,7 @@ interface UpdateBank {
   bank_account: string;
 }
 interface UpdatePrice {
-  sale: {
-    id: number | null;
-    name: string;
-    content: string;
-    images: string[];
-  };
+  sale: TypeGroupBuying;
   prices: TypePrice[];
 }
 
@@ -153,33 +149,27 @@ type TypeAuthRequest = typeof import('@/configs/constants').TYPE_AUTH_REQUEST;
 type TypeGetRequestResponse =
   | {
       id: number;
-      type: TypeAuthRequest['update_price'];
       created: string;
       expired: string;
-      data: UpdatePrice;
+      creator: number;
+      creator_name: string;
+      creator_avatar: string;
       status: number;
-    }
-  | {
-      id: number;
-      type: TypeAuthRequest['update_bank'];
-      created: string;
-      expired: string;
-      data: UpdateBank;
-      status: number;
-    }
-  | {
-      id: number;
-      type: TypeAuthRequest['upgrade_to_shop'];
-      created: string;
-      expired: string;
-      data: UpgradeAccount;
-      status: number;
-    }
-  | {
-      id: number;
-      type: TypeAuthRequest['suggest_location'];
-      created: string;
-      expired: string;
-      data: TypeGetProfileResponse;
-      status: number;
-    };
+    } & (
+      | {
+          type: TypeAuthRequest['update_price'];
+          data: UpdatePrice;
+        }
+      | {
+          type: TypeAuthRequest['update_bank'];
+          data: UpdateBank;
+        }
+      | {
+          type: TypeAuthRequest['upgrade_to_shop'];
+          data: UpgradeAccount;
+        }
+      | {
+          type: TypeAuthRequest['suggest_location'];
+          data: TypeGetProfileResponse;
+        }
+    );

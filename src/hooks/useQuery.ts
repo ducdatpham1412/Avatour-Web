@@ -1,5 +1,5 @@
 import isEqual from 'lodash/isEqual';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { Execution } from '@/lib';
 
@@ -11,18 +11,15 @@ type QueryOptions<T> = {
   cache?: boolean;
 };
 
-type QueryReturn<T, K = T> = [
+type QueryReturn<T> = [
   {
-    data: K;
+    data: T;
     loading: boolean;
     calling: boolean;
     error: Error | undefined;
   },
   {
-    mutate: (mutateOptions?: {
-      force?: boolean;
-      keys?: (number | string | undefined)[];
-    }) => Promise<void>;
+    mutate: (mutateOptions?: { force?: boolean }) => Promise<void>;
   },
 ];
 
@@ -30,8 +27,8 @@ export const useQuery = <T, K = T>(
   keys: number | string | undefined | (number | string | undefined)[],
   fn: (skipQuery: VoidFunction) => T | Promise<T>,
   options?: QueryOptions<K>,
-): QueryReturn<T, K> => {
-  const [queryKey, setQueryKey] = useState(JSON.stringify(keys));
+): QueryReturn<T> => {
+  const queryKey = useMemo(() => JSON.stringify(keys), [...(Array.isArray(keys) ? keys : [keys])]);
   const isUseCache = options?.cache ?? true;
   const [data, setData] = useState(getQueryCache<T>(queryKey, isUseCache) ?? options?.initialValue);
   const [loading, setLoading] = useState(isUseCache ? !queryCache.get(queryKey) : true);
@@ -54,6 +51,20 @@ export const useQuery = <T, K = T>(
     };
   }, []);
 
+  useEffect(() => {
+    const cacheData = queryCache.get(queryKey);
+    const newData = cacheData ?? options?.initialValue;
+
+    if (!newData) {
+      setLoading(!newData);
+    }
+    if (isUseCache) {
+      setData(newData);
+    } else {
+      setData(options?.initialValue);
+    }
+  }, [queryKey]);
+
   function initRecall() {
     if (!mount) {
       return;
@@ -71,12 +82,12 @@ export const useQuery = <T, K = T>(
         return;
       }
       let isSkiped = false;
-      const skipQuery = () => (isSkiped = true);
+      const skipQuery = () => {
+        isSkiped = true;
+        throw new Error();
+      };
       try {
         const newData = await fn(skipQuery);
-        if (isSkiped) {
-          return;
-        }
 
         const oldData = data;
         if (isC(c)) {
@@ -86,6 +97,9 @@ export const useQuery = <T, K = T>(
           }
         }
       } catch (err) {
+        if (isSkiped) {
+          return;
+        }
         if (isC(c)) {
           setError(err as Error);
         }
@@ -100,25 +114,9 @@ export const useQuery = <T, K = T>(
     });
   }
 
-  async function mutate(mutateOptions?: {
-    force?: boolean;
-    keys?: (number | string | undefined)[];
-  }) {
-    if (mutateOptions?.keys && Array.isArray(mutateOptions?.keys)) {
-      setQueryKey(JSON.stringify(mutateOptions?.keys));
-      const newData = queryCache.get(queryKey) ?? options?.initialValue;
-
-      if (!newData) {
-        setLoading(!queryCache.get(queryKey));
-      }
-      if (isUseCache) {
-        setData(newData);
-      } else {
-        setData(options?.initialValue);
-      }
-    }
+  async function mutate(mutateOptions?: { force?: boolean }) {
     if (mutateOptions?.force) {
-      setLoading(!queryCache.get(queryKey));
+      setLoading(true);
     }
     await updateData();
     initRecall();
@@ -126,7 +124,7 @@ export const useQuery = <T, K = T>(
 
   return [
     {
-      data: data as K,
+      data: data as any,
       loading,
       calling,
       error,

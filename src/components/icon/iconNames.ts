@@ -7,6 +7,7 @@ import LoadingIcon from './LoadingIcon';
 import LogoIcon from './LogoIcon';
 import MailIcon from './MailIcon';
 import MoneyIcon from './MoneyIcon';
+import QuestionIcon from './QuestionIcon';
 import TransactionActive from './TransactionActive';
 
 export const iconNames = {
@@ -15,6 +16,7 @@ export const iconNames = {
   close: CloseIcon,
   image: ImageIcon,
   mail: MailIcon,
+  question: QuestionIcon,
   loading: LoadingIcon,
   home: HomeIcon,
   money: MoneyIcon,
