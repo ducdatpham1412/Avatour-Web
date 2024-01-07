@@ -7,7 +7,6 @@ type TransactionData = {
 };
 
 interface TransactionsProps {
-  data: TransactionData;
   query: Record<string, any>;
 }
 

@@ -16,8 +16,6 @@ const parseData = <T = any>(res: Response) => {
 };
 
 const parseError = <T>(data: T, res: Response) => {
-  console.log('error', data);
-
   if (typeof data === 'string') {
     return new Error(data);
   } else if (

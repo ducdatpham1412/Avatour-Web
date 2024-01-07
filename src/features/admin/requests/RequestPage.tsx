@@ -36,7 +36,6 @@ const RequestPage = memo(({ query }: RequestPageProps) => {
     if (loading) {
       return Array.from({ length: 10 }).map((_, index) => <TransactionItemSkeleton key={index} />);
     }
-    console.log('requests', requests);
 
     return requests.map(
       item => (<TransactionItem key={item.id} data={item} onSubmitEnd={mutate} />) as JSX.Element,

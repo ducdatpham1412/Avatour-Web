@@ -1,20 +1,51 @@
 'use client';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 
 import { Pagination } from '@/components';
+import { useQuery } from '@/hooks/useQuery';
+import { getDeposits } from '@/api';
+import { makeError } from '@/lib';
+import { useDeferEffect } from '@/hooks';
 
 import TransactionItem from './components/TransactionItem';
 import { TransactionsProps } from './types';
 import FilterBar from './components/FilterBar';
 import { useTransactionFilter } from './hook';
+import TransactionItemSkeleton from './components/TransactionItemSkeleton';
 
-const TransactionsPage: React.FC<TransactionsProps> = ({ data, query }) => {
+const TransactionsPage: React.FC<TransactionsProps> = ({ query }) => {
   const [, updateFilter] = useTransactionFilter(query);
-  const { data: transactions, pageIndex, totalPages } = data;
-  const renderSuppliers = useMemo(
-    () => transactions.map(item => (<TransactionItem key={item.id} data={item} />) as JSX.Element),
-    [transactions],
+  const [{ data, loading, calling }, { mutate }] = useQuery(
+    ['admin-deposits', new URLSearchParams(query).toString()],
+    async () => {
+      const { data: d, error } = await getDeposits(query);
+      if (error) {
+        console.log('error', error);
+
+        throw makeError(error.message);
+      }
+      return d;
+    },
+    {
+      initialValue: {},
+    },
   );
+
+  useDeferEffect(() => {
+    void mutate();
+  }, [query]);
+
+  const { data: transactions = [], pageIndex, totalPages } = data;
+
+  const renderSuppliers = useMemo(() => {
+    if (loading) {
+      return Array.from({ length: 10 }).map((_, index) => <TransactionItemSkeleton key={index} />);
+    }
+
+    return transactions.map(
+      item => (<TransactionItem key={item.id} data={item} onSubmitEnd={mutate} />) as JSX.Element,
+    );
+  }, [transactions, loading]);
 
   const onPageChange = useCallback((page: number) => {
     updateFilter('page', page.toString());

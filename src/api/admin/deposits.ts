@@ -21,10 +21,7 @@ const getDeposits = async (query: Record<string, string | string[] | undefined>)
   const filter = parseDepositFilter(query);
   try {
     const data = await request.get<TransactionData>('/admin/estimates', filter, {
-      next: {
-        tags: [GET_ESTIMATE_PATH, new URLSearchParams(filter).toString()],
-        revalidate: 10,
-      },
+      cache: 'no-store',
     });
     return {
       data,
