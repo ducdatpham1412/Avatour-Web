@@ -1,5 +1,5 @@
 import { usePathname } from 'next/navigation';
-import { experimental_useOptimistic as useOptimistic, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { useRouter } from '@/hooks';
 
@@ -19,11 +19,6 @@ function useRequestsFilter(
       status: (status !== undefined ? (Array.isArray(status) ? status : [status]) : []) as string[],
     };
   }, [query]);
-
-  const [optimisticFilter, setOptimisticFilter] = useOptimistic<typeof filter, typeof filter>(
-    filter,
-    (current, newFilter) => ({ ...current, ...newFilter }),
-  );
   const router = useRouter();
   const pathname = usePathname();
 
@@ -44,11 +39,10 @@ function useRequestsFilter(
     newFilter.status.map(s => newQuery.append('status', s));
     newFilter.type.map(s => newQuery.append('type', s));
 
-    setOptimisticFilter(newFilter);
     router.push(`${pathname}?${newQuery.toString()}`);
   }
 
-  return [optimisticFilter, addQueryUrl] as const;
+  return [filter, addQueryUrl] as const;
 }
 
 export default useRequestsFilter;

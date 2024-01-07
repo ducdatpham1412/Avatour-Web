@@ -1,5 +1,5 @@
 import { usePathname } from 'next/navigation';
-import { experimental_useOptimistic as useOptimistic, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { useRouter } from '@/hooks';
 
@@ -20,10 +20,6 @@ function useTransactionFilter(
     };
   }, [query]);
 
-  const [optimisticFilter, setOptimisticFilter] = useOptimistic<typeof filter, typeof filter>(
-    filter,
-    (current, newFilter) => ({ ...current, ...newFilter }),
-  );
   const router = useRouter();
   const pathname = usePathname();
 
@@ -44,11 +40,10 @@ function useTransactionFilter(
     newQuery.set('hash', newFilter.hash);
     newFilter.status.map(s => newQuery.append('status', s));
 
-    setOptimisticFilter(newFilter);
     router.push(`${pathname}?${newQuery.toString()}`);
   }
 
-  return [optimisticFilter, addQueryUrl] as const;
+  return [filter, addQueryUrl] as const;
 }
 
 export default useTransactionFilter;

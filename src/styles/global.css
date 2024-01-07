@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@import 'colors';
-@import 'radix';
+@import './colors.css';
+@import './radix.css';
 
 html {
   font-size: 14px;
