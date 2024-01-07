@@ -41,7 +41,8 @@ const TransactionDetailModal = memo(
       [],
     );
 
-    const canConfirm = data?.status === STATUS_JOIN_ESTIMATE.active;
+    const canConfirm =
+      data?.status === STATUS_JOIN_ESTIMATE.active || data?.status === STATUS_JOIN_ESTIMATE.expired;
 
     const timeWillBuy = useMemo(
       () => dayjs(data?.time_will_buy).format('DD/MM/YYYY'),

@@ -2,7 +2,7 @@
 import { revalidatePath, revalidateTag } from 'next/cache';
 
 import { logger, makeError, parseFormData } from '@/lib';
-import { request } from '@/api/request';
+import request from '@/api/request';
 
 const SUPPLIERS_PATH = '/admin/suppliers';
 const SUPPLILERS_TAG = '/admin/suppliers';

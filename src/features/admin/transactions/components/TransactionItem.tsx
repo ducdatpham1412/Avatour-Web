@@ -20,8 +20,8 @@ const TransactionItem = memo(({ data, onSubmitEnd }: TransactionItemProps) => {
   const [open, setOpen] = useState(false);
 
   const status = useMemo(() => {
-    const expired = new Date(timeParse(data.expired)).getTime() < Date.now();
-    if (data.status === STATUS_JOIN_ESTIMATE.active && expired) return 7;
+    const expired = dayjs(data.expired).isBefore(dayjs());
+    if (data.status === STATUS_JOIN_ESTIMATE.active && expired) return STATUS_JOIN_ESTIMATE.expired;
     return data.status;
   }, [data.status]);
 
@@ -48,7 +48,7 @@ const TransactionItem = memo(({ data, onSubmitEnd }: TransactionItemProps) => {
         </td>
         <td className="bg-white">
           <div className="flex flex-col justify-center items-start min-h-[40px] p-[0_10px] border-l-[1px]">
-            <h4 className="font-bold whitespace-nowrap overflow-hidden text-ellipsis">
+            <h4 className="font-bold whitespace-nowrap overflow-hidden text-ellipsis min-h-[20px]">
               {data.sale?.creator_name}
             </h4>
             <span className="text-gray_600">
@@ -68,8 +68,8 @@ const TransactionItem = memo(({ data, onSubmitEnd }: TransactionItemProps) => {
         </td>
         <td className="bg-white">
           <div className="flex items-center gap-1 min-h-[40px] p-[0_10px] border-l-[1px]">
-            <span className="hidden">{dayjs(timeParse(data.created)).format('YYYY-MM-DD')}</span>
-            <span>{dayjs(timeParse(data.created)).format('DD/MM/YYYY')}</span>
+            <span className="hidden">{dayjs(data.created).format('YYYY-MM-DD')}</span>
+            <span>{dayjs(data.created).format('HH:mm - DD/MM/YYYY')}</span>
           </div>
         </td>
         <td className="bg-white">
@@ -79,7 +79,11 @@ const TransactionItem = memo(({ data, onSubmitEnd }: TransactionItemProps) => {
         </td>
         <td className="bg-white rounded-[0_20px_20px_0]">
           <div className="flex items-center min-h-[40px] p-[0_10px] ">
-            <Show.Const when={status === 7 || status === STATUS_JOIN_ESTIMATE.active}>
+            <Show.Const
+              when={
+                status === STATUS_JOIN_ESTIMATE.active || status === STATUS_JOIN_ESTIMATE.expired
+              }
+            >
               <button>
                 <Icon name="transaction-active" size={36} />
               </button>
@@ -96,9 +100,5 @@ const TransactionItem = memo(({ data, onSubmitEnd }: TransactionItemProps) => {
     </>
   );
 });
-
-function timeParse(time = '') {
-  return time.split('.')[0];
-}
 
 export default TransactionItem;
