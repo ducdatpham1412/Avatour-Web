@@ -101,4 +101,4 @@ function getErrorMessage(message: string) {
 }
 
 export { useEndpoint };
-export default request;
+export { request };

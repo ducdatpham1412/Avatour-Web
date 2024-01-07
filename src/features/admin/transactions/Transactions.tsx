@@ -74,7 +74,7 @@ const TransactionsPage: React.FC<TransactionsProps> = ({ query }) => {
                 <th className="bg-white">
                   <div className="border-l-[1px] py-3.5">Deposit</div>
                 </th>
-                <th className="bg-white w-[150px]">
+                <th className="bg-white w-[200px]">
                   <div className="border-l-[1px] py-3.5">Time</div>
                 </th>
                 <th className="rounded-[0_70px_70px_0] bg-white w-[150px]">

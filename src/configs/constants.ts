@@ -1,12 +1,15 @@
 export const STATUS_JOIN_ESTIMATE = {
+  expired: -1, // custom
   notActive: 0,
   active: 1,
   adminConfirm: 2,
-  supplierConfirmed: 6,
+  supplierConfirm: 6,
   supplierRejected: 7,
   overtime: 3,
   consumerConfirmed: 4,
+  checkedIn: 8,
   supplierConfirmBought: 5,
+  checkedInAndConfirmedBought: 9,
 } as const;
 
 export const TYPE_AUTH_REQUEST = {

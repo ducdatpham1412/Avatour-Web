@@ -16,7 +16,7 @@ const transactionSatusData = [
   { id: STATUS_JOIN_ESTIMATE.overtime, name: 'Quá hẹn' },
   { id: STATUS_JOIN_ESTIMATE.notActive, name: 'Bị hủy' },
   { id: STATUS_JOIN_ESTIMATE.consumerConfirmed, name: 'Khách hàng xác nhận' },
-  { id: STATUS_JOIN_ESTIMATE.supplierConfirmed, name: 'Cửa hàng xác nhận' },
+  { id: STATUS_JOIN_ESTIMATE.supplierConfirm, name: 'Cửa hàng xác nhận' },
 ];
 
 const FilterBar = ({ query, supplierCount }: FilterBarProps) => {

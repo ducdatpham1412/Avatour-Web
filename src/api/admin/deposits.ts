@@ -2,7 +2,7 @@
 import { revalidateTag } from 'next/cache';
 
 import { STATUS_JOIN_ESTIMATE } from '@/configs/constants';
-import { request } from '@/api/request';
+import request from '@/api/request';
 import { TransactionData } from '@/features/admin/transactions';
 import { logger, makeError } from '@/lib';
 

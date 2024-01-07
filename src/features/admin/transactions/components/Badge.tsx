@@ -9,41 +9,53 @@ type BadgeProps = {
 
 interface BadgeStyle {
   className: string;
-  children: string;
+  content: string;
 }
 
 const styleBase: Record<number, BadgeStyle> = {
   [STATUS_JOIN_ESTIMATE.notActive]: {
     className: 'bg-neutral-300 border-none text-neutral-500',
-    children: 'Bị huỷ',
+    content: 'Bị huỷ',
   },
   [STATUS_JOIN_ESTIMATE.active]: {
     className: 'border border-neutral-400 text-black',
-    children: 'Chưa duyệt',
+    content: 'Chưa duyệt',
+  },
+  [STATUS_JOIN_ESTIMATE.expired]: {
+    className: 'bg-red/20 text-red',
+    content: 'Chưa duyệt',
   },
   [STATUS_JOIN_ESTIMATE.adminConfirm]: {
-    className: 'bg-p_100 border-none text-black',
-    children: 'Đã duyệt',
+    className: 'border border-neutral-400 text-black',
+    content: 'Chờ CH nhận',
+  },
+  [STATUS_JOIN_ESTIMATE.supplierConfirm]: {
+    className: 'bg-p_200 text-black',
+    content: 'CH đã nhận',
+  },
+  [STATUS_JOIN_ESTIMATE.supplierRejected]: {
+    className: 'bg-gray_300 border-[red] border-[1px] text-gray_500',
+    content: 'CH từ chối',
   },
   [STATUS_JOIN_ESTIMATE.overtime]: {
     className: 'bg-gray_100 border-none text-black',
-    children: 'Quá hẹn',
+    content: 'Quá hẹn',
   },
   [STATUS_JOIN_ESTIMATE.consumerConfirmed]: {
     className: 'bg-blue/20 border-none text-blue',
-    children: 'ND đã đến',
+    content: 'ND đã đến',
+  },
+  [STATUS_JOIN_ESTIMATE.checkedIn]: {
+    className: 'bg-blue/20 border-none text-blue',
+    content: 'ND đã đến',
   },
   [STATUS_JOIN_ESTIMATE.supplierConfirmBought]: {
-    className: 'border border-neutral-400 text-black',
-    children: 'Chờ CH nhận',
+    className: 'bg-green/20 border-none text-green',
+    content: 'Thành công',
   },
-  [STATUS_JOIN_ESTIMATE.supplierConfirmed]: {
-    className: 'bg-p_100 border-none text-black',
-    children: 'CH đã nhận',
-  },
-  [STATUS_JOIN_ESTIMATE.supplierRejected]: {
-    className: 'bg-red/20 border-none text-green',
-    children: 'CH từ chối',
+  [STATUS_JOIN_ESTIMATE.checkedInAndConfirmedBought]: {
+    className: 'bg-green/20 border-none text-green',
+    content: 'Thành công',
   },
 };
 
@@ -53,11 +65,11 @@ const Badge = memo(({ type = 0 }: BadgeProps) => {
   return (
     <div
       className={cn(
-        'min-w-[140px] h-[39px] px-[10px] flex items-center justify-center rounded-full whitespace-nowrap',
+        'min-w-[140px] h-[39px] px-[10px] flex items-center justify-center rounded-full whitespace-nowrap font-[600]',
         status.className,
       )}
     >
-      {status.children}
+      {status.content}
     </div>
   );
 });

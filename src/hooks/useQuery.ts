@@ -23,6 +23,7 @@ type QueryReturn<T> = [
   },
 ];
 
+//fsdfsdf
 export const useQuery = <T, K = T>(
   keys: number | string | undefined | (number | string | undefined)[],
   fn: (skipQuery: VoidFunction) => T | Promise<T>,
