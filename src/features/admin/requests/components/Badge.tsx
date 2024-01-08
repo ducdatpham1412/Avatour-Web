@@ -31,11 +31,11 @@ const styleBase: Record<number, BadgeStyle> = {
   },
 };
 
-const Badge = memo(({ type }: BadgeProps) => {
+const Badge = ({ type }: BadgeProps) => {
   const status = styleBase[type ?? 2] ?? styleBase[0];
 
   if (!type) {
-    return;
+    return <></>;
   }
 
   return (
@@ -48,6 +48,6 @@ const Badge = memo(({ type }: BadgeProps) => {
       {status?.children}
     </div>
   );
-});
+};
 
-export default Badge;
+export default memo(Badge);

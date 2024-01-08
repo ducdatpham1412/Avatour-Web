@@ -3,8 +3,8 @@ import { cookies as getCookies } from 'next/headers';
 
 import { logger, makeError } from '@/lib';
 import { ACCOUNT_TYPE } from '@/configs/constants';
+import request from '@/api/request';
 
-import request from '../request/api';
 import { ERROR_MESSAGE } from '../request/constants';
 
 interface LoginResponse {
