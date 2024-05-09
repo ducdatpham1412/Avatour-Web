@@ -5,7 +5,7 @@ import { Image } from '@/components/ui';
 
 import { FormFieldProps } from '../types';
 
-type AvatarPreviewProps = Pick<FormFieldProps<TypeGetProfileResponse>, 'control'> & {
+type AvatarPreviewProps = Pick<FormFieldProps<TypeProfile>, 'control'> & {
   defaultValue?: string;
 };
 

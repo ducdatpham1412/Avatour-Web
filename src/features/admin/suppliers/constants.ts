@@ -72,7 +72,7 @@ const editSupplierFields = {
     label: 'Description',
     placeholder: 'Description',
   },
-} as FormFieldDefine<TypeGetProfileResponse>;
+} as FormFieldDefine<TypeProfile>;
 
 const supplierServices = [
   { id: 2, name: 'Food tour' },
@@ -146,4 +146,4 @@ const filterSuppliersFields = {
   },
 } satisfies FormFieldDefine<Record<string, any>>;
 
-export { editSupplierFields, supplierServices, filterSuppliersFields };
+export { editSupplierFields, filterSuppliersFields, supplierServices };

@@ -12,7 +12,7 @@ interface TourDetail {
   creator: number;
   creator_name: string;
   creator_avatar: string;
-  schedule: Array<Array<TypeGetProfileResponse>>;
+  schedule: Array<Array<TypeProfile>>;
 }
 
 type Tour = Pick<
