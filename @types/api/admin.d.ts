@@ -14,7 +14,7 @@ interface TypeInputSupplierRequest {
   duration: number;
 }
 
-interface TypeGetProfileResponse {
+interface TypeProfile {
   id: number;
   account_type: number | string;
   services: number[];
@@ -81,12 +81,12 @@ interface GetDepositsFilter {
 }
 
 interface SuppliersProps {
-  data: TypeGetProfileResponse[];
+  data: TypeProfile[];
   query: Record<string, any>;
 }
 
 interface SupplierPageProps {
-  data: TypeGetProfileResponse[];
+  data: TypeProfile[];
 }
 
 interface DynamicObject<T = any> {
@@ -170,6 +170,6 @@ type TypeGetRequestResponse =
         }
       | {
           type: TypeAuthRequest['suggest_location'];
-          data: TypeGetProfileResponse;
+          data: TypeProfile;
         }
     );

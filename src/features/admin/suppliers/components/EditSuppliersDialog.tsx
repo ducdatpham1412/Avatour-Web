@@ -1,28 +1,22 @@
-import { ReactElement, useCallback, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { ReactElement, useCallback, useMemo, useState } from 'react';
 
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { Icon } from '@/components/icon';
-import { useToast } from '@/hooks';
 import { updateSupplier } from '@/api';
+import { Icon } from '@/components/icon';
 import { ToastAction } from '@/components/ui';
+import { Dialog, DialogContent, DialogHeader, DialogTrigger } from '@/components/ui/dialog';
+import { useToast } from '@/hooks';
 import { logger } from '@/lib';
 
-import EditSuppliersForm from './SuppliersForm';
-import { SupplierData } from '../types';
 import { editSupplierFields } from '../constants';
+import { SupplierData } from '../types';
+import EditSuppliersForm from './SuppliersForm';
 
 type EditSuppliersDialogProps = {
   open?: boolean;
   onOpenChange?: (status: boolean) => void;
   children?: ReactElement;
-  data?: TypeGetProfileResponse;
+  data?: TypeProfile;
 };
 
 const EditSuppliersDialog: React.FC<EditSuppliersDialogProps> = ({

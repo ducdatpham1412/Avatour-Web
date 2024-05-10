@@ -6,7 +6,7 @@ import { Image, Skeleton } from '@/components/ui';
 import EditSuppliersDialog from './EditSuppliersDialog';
 
 interface SupplierTagProps {
-  data: TypeGetProfileResponse;
+  data: TypeProfile;
   onSubmitEnd?: () => void;
 }
 const supplierServices = [
@@ -108,6 +108,6 @@ export const SupplierSkeleton = () => (
   </tr>
 );
 
-export type { SupplierTagProps };
 export { supplierServices };
+export type { SupplierTagProps };
 export default SupplierTag;

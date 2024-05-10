@@ -26,3 +26,11 @@ interface TypeGroupBuying {
   is_liked: boolean;
   status: number;
 }
+
+interface TypeTour {
+  name: string;
+  duration: number;
+  min_cost: number;
+  max_cost: number;
+  schedule: Array<TypeProfile[]>;
+}

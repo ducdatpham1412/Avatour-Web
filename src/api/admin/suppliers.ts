@@ -1,23 +1,19 @@
 'use server';
-import { revalidatePath, revalidateTag } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 
-import { logger, makeError, parseFormData } from '@/lib';
 import request from '@/api/request';
+import { logger, makeError, parseFormData } from '@/lib';
 
 const SUPPLIERS_PATH = '/admin/suppliers';
 const SUPPLILERS_TAG = '/admin/suppliers';
 
 const getSuppliers = async (options: Partial<GetSuppliersFilter>) => {
   try {
-    const { data } = await request.get<{ data: TypeGetProfileResponse[] }>(
-      SUPPLIERS_PATH,
-      undefined,
-      {
-        next: {
-          tags: [SUPPLILERS_TAG],
-        },
+    const { data } = await request.get<{ data: TypeProfile[] }>(SUPPLIERS_PATH, undefined, {
+      next: {
+        tags: [SUPPLILERS_TAG],
       },
-    );
+    });
     return applyFilterSuppliers(data, options);
   } catch (error) {
     logger.error('error', error);
@@ -25,14 +21,14 @@ const getSuppliers = async (options: Partial<GetSuppliersFilter>) => {
   }
 };
 
-const addSupplier = async (data: Partial<TypeGetProfileResponse>) => {
+const addSupplier = async (data: Partial<TypeProfile>) => {
   await request.post(SUPPLIERS_PATH, data);
   revalidateTag(SUPPLILERS_TAG);
 };
 
 const updateSupplier = async (
   id: number | undefined,
-  data: Partial<TypeGetProfileResponse>,
+  data: Partial<TypeProfile>,
 ): Promise<ActionResponse> => {
   if (!id) {
     return {
@@ -58,10 +54,10 @@ const updateSupplier = async (
 };
 
 const applyFilterSuppliers = (
-  suppliers: TypeGetProfileResponse[],
+  suppliers: TypeProfile[],
   searchQueries: Partial<GetSuppliersFilter>,
 ) => {
-  let listSupplier: (TypeGetProfileResponse | undefined)[];
+  let listSupplier: (TypeProfile | undefined)[];
   const services = searchQueries.sv;
   const filter = {
     account_type: searchQueries.at,
@@ -98,7 +94,7 @@ const applyFilterSuppliers = (
     listSupplier = suppliers;
   }
 
-  return listSupplier.filter(s => !!s) as TypeGetProfileResponse[];
+  return listSupplier.filter(s => !!s) as TypeProfile[];
 };
 
-export { getSuppliers, addSupplier, updateSupplier };
+export { addSupplier, getSuppliers, updateSupplier };
