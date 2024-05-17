@@ -107,6 +107,7 @@ module.exports = {
       },
       screens: {
         xl: { min: '1300px' },
+        max_ssm: { max: '450px' },
         min_lg: { max: '1200px' },
       },
     },
