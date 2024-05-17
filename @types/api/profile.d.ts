@@ -44,7 +44,7 @@ type Service =
 
 interface TypeProfile {
   id: number;
-  account_type: number;
+  account_type: number | string;
   email: string | null;
   phone: string | null;
   name: string;
@@ -64,8 +64,7 @@ interface TypeProfile {
   end_time: number;
   total_ratings: number;
   average_stars: number;
-  services: Array<number>;
-  link: string;
+  link: string[]; // sửa theo json
   rank: number;
   status: number;
 }
