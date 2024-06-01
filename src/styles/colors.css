@@ -1,5 +1,38 @@
 @tailwind base;
 
+/* FIXME: Missing text colors */
+@layer base {
+  :root {
+    --avatour-background: #ffffff;
+    --avatour-white: #ffffff;;
+    --avatour-black: #110B0B;
+    --avatour-p_50: #FFFBF0;
+    --avatour-p_100: #FFF8E1;
+    --avatour-p_200: #FEEBB2;
+    --avatour-p_300: #FDDE81;
+    --avatour-p_400: #FCD24E;
+    --avatour-p_500: #FCC727;
+    --avatour-p_600: #FBBD05;
+    --avatour-p_700: #FBA700;
+    --avatour-p_800: #FB8C00;
+    --avatour-p_900: #FA6C00;
+    --avatour-gray_900: #1E1E1E;
+    --avatour-gray_800: #3F3F3F;
+    --avatour-gray_700: #5E5E5E;
+    --avatour-gray_600: #717171;
+    --avatour-gray_500: #9A9A9A;
+    --avatour-gray_400: #B9B9B9;
+    --avatour-gray_300: #DDDDDD;
+    --avatour-gray_200: #ECECEC;
+    --avatour-gray_100: #F4F4F4;
+    --avatour-gray_50: #F9F9F9;
+    --avatour-green: #349529;
+    --avatour-red: #F14328;
+    --avatour-blue: #54B3E9;
+    --avatour-orange: #FA6C00;
+  }
+}
+
 /* @layer base {
   :root {
     --avatour-background: #f5f6f8;
@@ -34,7 +67,7 @@
   }
 } */
 
-@layer base {
+/* @layer base {
   :root {
     --avatour-background: 220 18% 97%;
     --avatour-white: 0 0% 100%;
@@ -67,4 +100,4 @@
     --avatour-blue_800: 209 67% 74%;
     --avatour-orange: 39 100% 50%;
   }
-}
+} */

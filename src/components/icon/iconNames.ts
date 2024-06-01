@@ -9,6 +9,11 @@ import MailIcon from './MailIcon';
 import MoneyIcon from './MoneyIcon';
 import QuestionIcon from './QuestionIcon';
 import TransactionActive from './TransactionActive';
+import MuseumIcon from './MuseumIcon';
+import StarIcon from './StarIcon';
+import ArrowUpIcon from './ArrowUpIcon';
+import ClockIcon from './ClockIcon';
+import MarkerIcon from './MarkerIcon';
 
 export const iconNames = {
   edit: EditIcon,
@@ -22,6 +27,11 @@ export const iconNames = {
   money: MoneyIcon,
   logo: LogoIcon,
   'transaction-active': TransactionActive,
+  museum: MuseumIcon,
+  star: StarIcon,
+  clock: ClockIcon,
+  'arrow-up': ArrowUpIcon,
+  marker: MarkerIcon,
 } as const;
 
 export type IconNames = keyof typeof iconNames;

@@ -1,17 +1,11 @@
 'use client';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  Image,
-} from '@/components/ui';
-import { cn, formatPrice } from '@/lib';
 import { ReactElement, memo, useMemo } from 'react';
-import { TourQuickDetail } from './SearchResult';
+
+import { Dialog, DialogContent, DialogTrigger, Image } from '@/components/ui';
+import { cn, formatPrice } from '@/lib';
+
 import { serviceDataDetail } from '../constants';
+import { TourQuickDetail } from './SearchResult';
 
 type LocationTagProps = {
   isActive?: boolean;
