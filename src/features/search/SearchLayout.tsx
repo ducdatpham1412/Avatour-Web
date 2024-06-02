@@ -1,16 +1,7 @@
-import { Lexend } from 'next/font/google';
-
 import Navbar from '@/components/Navbar';
 
-import Background from './components/Background';
+import Background from './Background';
 import SearchInputBase from './components/SearchInputBase';
-
-const lexendFont = Lexend({
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-  style: ['normal'],
-  subsets: ['latin'],
-  display: 'swap',
-});
 
 type SearchLayoutProps = {
   children: React.ReactNode;
@@ -21,7 +12,7 @@ const SearchLayout = ({ children, params }: SearchLayoutProps) => {
   console.log('params', params);
 
   return (
-    <div className="relative w-full min-h-[100vh] bg-white" style={lexendFont.style}>
+    <div className="relative w-full min-h-[100vh] bg-white">
       <Background />
       <Navbar />
       {children}
