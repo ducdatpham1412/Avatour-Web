@@ -2,7 +2,6 @@ type Service =
   /**
    * 1. Backpack
    */
-  | 'backpack' // Đi phượt
   // Traditional
   | 'culture' // Văn hoá
   | 'creative' // Sáng tạo
@@ -17,17 +16,21 @@ type Service =
   | 'beach' // Bãi biển
   | 'book' //  Sách
   | 'park' // Công viên
+  // Other
+  | 'other-backpack' // Đi phượt
   /**
    * 2. Cuisine
    */
-  | 'cuisine' // Ẩm thực
-  | 'food' // Nhà hàng/Quán ăn
+  // Food
   | 'breakfast' // Ăn sáng
   | 'lunch' // Ăn trưa
   | 'dinner' // Ăn tối
-  | 'drink' // Đồ uống
-  | 'pub' // Bar, Pub
   | 'other-food' // Ẩm thực khác
+  // Drink
+  | 'coffee' // Cafe
+  | 'tea' // Trà
+  | 'pub' // Bar, Pub
+  | 'other-drink' // Đồ uống khác
   /**
    * 3. Other categories
    */
@@ -37,7 +40,6 @@ type Service =
   /**
    * 4. Travel services
    */
-  | 'travel-service' // Dịch vụ du lịch
   | 'transport-to' // Xe đi
   | 'transport-in' // Thuê xe
   | 'bicycle' // Thuê xe đạp
