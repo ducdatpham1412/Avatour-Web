@@ -28,6 +28,7 @@ interface TypeGroupBuying {
 }
 
 interface TypeTour {
+  id: number | null;
   name: string;
   duration: number;
   min_cost: number;
