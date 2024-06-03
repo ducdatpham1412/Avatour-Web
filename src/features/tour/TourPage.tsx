@@ -1,11 +1,11 @@
 import { DayItem, RelatedPlaces, Schedule, TourHeader } from './components';
-import type { TourDetailsProps } from './types';
+import type { TourProps } from './types';
 
-interface TourDetailsPageProps extends TourDetailsProps {
+interface TourPageProps extends TourProps {
   searchParams: Record<string, any>;
 }
 
-const TourDetailsPage = ({ params }: TourDetailsPageProps) => (
+const TourPage = ({ params }: TourPageProps) => (
     <main className="flex flex-col gap-y-12 md:gap-y-[124px]">
       <article className="flex flex-col gap-y-[56px]">
         <TourHeader
@@ -34,4 +34,4 @@ const TourDetailsPage = ({ params }: TourDetailsPageProps) => (
     </main>
   );
 
-export default TourDetailsPage;
+export default TourPage;

@@ -14,17 +14,16 @@ interface DayItemProps {
 const DayItem = ({ day }: DayItemProps) => (
   <div className="flex flex-col">
     <div className="flex gap-x-3 items-center">
-      <div className="w-3 h-3 md:w-[6px] md:h-[6px] rounded-full bg-p_600" />
-      <div className="text-p_700 text-[18px] font-medium leading-[28px] md:text-[20px] md:leading-none">
+      <div className="w-3 h-3 rounded-full bg-p_600" />
+      <div className="text-p_700 text-[18px] font-medium leading-[28px]">
         Ngày {day}
       </div>
     </div>
 
     <Accordion.Root
       className="flex flex-col w-full"
-      type="single"
-      defaultValue="item-0"
-      collapsible
+      type="multiple"
+      defaultValue={["item-0"]}
     >
       {Array.from({ length: 3 }, (_, i) => (
         <Accordion.Item

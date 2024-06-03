@@ -50,14 +50,19 @@ const TruncatedText = ({
       </p>
 
       {isTruncated && (
-        <TourContentModal title="" content="">
-          <span
-            onClick={fullContentInModal ? undefined : toggleIsShowingMore}
-            className="cursor-pointer font-normal underline"
-          >
-            {isShowingMore ? 'Rút gọn' : 'Xem thêm'}
-          </span>
-        </TourContentModal>
+        <>
+          {fullContentInModal ? (
+            <TourContentModal title="" content="">
+              <span className="cursor-pointer font-normal underline">
+                {isShowingMore ? 'Rút gọn' : 'Xem thêm'}
+              </span>
+            </TourContentModal>
+          ) : (
+            <span onClick={toggleIsShowingMore} className="cursor-pointer font-normal underline">
+              {isShowingMore ? 'Rút gọn' : 'Xem thêm'}
+            </span>
+          )}
+        </>
       )}
     </div>
   );

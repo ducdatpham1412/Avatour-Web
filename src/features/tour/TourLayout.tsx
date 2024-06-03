@@ -1,12 +1,12 @@
 import Navbar from '@/components/Navbar';
 
-import type { TourDetailsProps } from './types';
+import type { TourProps } from './types';
 
-interface TourDetailsLayoutProps extends TourDetailsProps {
+interface TourLayoutProps extends TourProps {
   children: React.ReactNode;
 }
 
-const TourDetailsLayout = ({ children }: TourDetailsLayoutProps) => (
+const TourLayout = ({ children }: TourLayoutProps) => (
   <div className="relative w-full min-h-[100vh] bg-white">
     <Navbar />
 
@@ -16,4 +16,4 @@ const TourDetailsLayout = ({ children }: TourDetailsLayoutProps) => (
   </div>
 );
 
-export default TourDetailsLayout;
+export default TourLayout;
