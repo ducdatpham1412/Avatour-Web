@@ -15,8 +15,8 @@ import { serviceDataDetail } from '../constants';
 
 type LocationTagProps = {
   isActive?: boolean;
-  data: TypeTour & { id: string };
-  onHover?: (e: string) => void;
+  data: TypeTour;
+  onHover?: (e: number | null) => void;
 };
 
 const LocationTag = memo(({ data, onHover, isActive }: LocationTagProps) => {
@@ -127,7 +127,7 @@ const TourService = ({ name, count }: TourServiceProps) => {
 
 type LocationDetailDialogProps = {
   children: ReactElement;
-  data: TypeTour & { id: string };
+  data: TypeTour;
 };
 
 const LocationDetailDialog = ({ children, data }: LocationDetailDialogProps) => (

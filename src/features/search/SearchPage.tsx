@@ -14,13 +14,13 @@ const SearchPageResult = async ({ searchParams, params }: PageProps) => {
   return <SearchResult data={data} />;
 };
 
-async function getData(): Promise<(TypeTour & { id: string })[]> {
+async function getData(): Promise<TypeTour[]> {
   await delay(1000);
   return {
     success: true,
     data: [
       {
-        id: '1',
+        id: 1,
         name: 'Dòng chảy ngàn năm lịch sử Hà Nội',
         duration: 8.5,
         min_cost: 100000,
@@ -152,7 +152,7 @@ async function getData(): Promise<(TypeTour & { id: string })[]> {
         ],
       },
       {
-        id: '2',
+        id: 2,
         name: 'Trải nghiệm nét đẹp phố cổ Hà Nội',
         duration: 17.0,
         min_cost: 100000,
@@ -208,7 +208,7 @@ async function getData(): Promise<(TypeTour & { id: string })[]> {
               min_cost: 20000.0,
               max_cost: 30000.0,
               duration: 4.0,
-              services: ['backpack'] as Service[],
+              services: ['other-backpack'] as Service[],
               start_time: 6.0,
               end_time: 18.0,
               total_ratings: 0,
@@ -437,7 +437,7 @@ async function getData(): Promise<(TypeTour & { id: string })[]> {
         ],
       },
       {
-        id: '3',
+        id: 3,
         name: '',
         duration: 24.5,
         min_cost: 100000,
@@ -493,7 +493,7 @@ async function getData(): Promise<(TypeTour & { id: string })[]> {
               min_cost: 20000.0,
               max_cost: 30000.0,
               duration: 4.0,
-              services: ['backpack'] as Service[],
+              services: ['other-backpack'] as Service[],
               start_time: 6.0,
               end_time: 18.0,
               total_ratings: 0,
@@ -933,7 +933,7 @@ async function getData(): Promise<(TypeTour & { id: string })[]> {
         ],
       },
     ],
-  }.data;
+  }.data as TypeTour[];
 }
 
 function parseSearchData(search: string | string[] | undefined) {

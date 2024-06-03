@@ -7,7 +7,7 @@ import Timeline from './Timeline';
 import { cn, omit } from '@/lib';
 
 type SearchResultProps = {
-  data: (TypeTour & { id: string })[];
+  data: TypeTour[];
 };
 
 const SearchResult = ({ data }: SearchResultProps) => {

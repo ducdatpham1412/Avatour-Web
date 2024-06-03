@@ -5,7 +5,6 @@ type SVGProps = SVGAttributes<SVGElement>;
 const OtherBackpackIcon = (props: SVGProps) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="none" {...props}>
     <g>
-      <path fill="#fff" d="M0 0h24v24H0z" />
       <path
         fill="#D9D9D9"
         d="M5 16.414C5 18.947 7.149 21 9.8 21H17c2.21 0 4-1.728 4-3.86 0-1.583-.987-3.044-2.4-3.64-.15-2.51-2.325-4.5-4.987-4.5A5.057 5.057 0 0 0 9 12c-2.4.375-4 2.314-4 4.414Z"

@@ -1,19 +1,21 @@
-import BeachIcon from '@/components/icon/services/BeachIcon';
-import BookIcon from '@/components/icon/services/BookIcon';
-import CafeIcon from '@/components/icon/services/CafeIcon';
-import CampingIcon from '@/components/icon/services/CampingIcon';
-import CheckInIcon from '@/components/icon/services/CheckInIcon';
-import CreativeIcon from '@/components/icon/services/CreativeIcon';
-import CultureIcon from '@/components/icon/services/CultureIcon';
-import FlowerIcon from '@/components/icon/services/FlowerIcon';
-import HistoryIcon from '@/components/icon/services/HistoryIcon';
-import LunchIcon from '@/components/icon/services/LunchIcon';
-import MuseumIcon from '@/components/icon/services/MuseumIcon';
-import OtherBackpackIcon from '@/components/icon/services/OtherBackpackIcon';
-import PagodaIcon from '@/components/icon/services/PagodaIcon';
-import ParkIcon from '@/components/icon/services/ParkIcon';
-import TeamBuildingIcon from '@/components/icon/services/TeamBuildingIcon';
-import VolunteerIcon from '@/components/icon/services/VolunteerIcon';
+import {
+  CultureIcon,
+  BeachIcon,
+  BookIcon,
+  CafeIcon,
+  CampingIcon,
+  CheckInIcon,
+  CreativeIcon,
+  FlowerIcon,
+  HistoryIcon,
+  LunchIcon,
+  MuseumIcon,
+  OtherBackpackIcon,
+  PagodaIcon,
+  ParkIcon,
+  TeamBuildingIcon,
+  VolunteerIcon,
+} from '@/components/icon';
 import {
   BikeIcon,
   ClapperboardIcon,

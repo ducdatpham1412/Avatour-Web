@@ -1,0 +1,16 @@
+export { default as BeachIcon } from './BeachIcon';
+export { default as BookIcon } from './BookIcon';
+export { default as CafeIcon } from './CafeIcon';
+export { default as CampingIcon } from './CampingIcon';
+export { default as CheckInIcon } from './CheckInIcon';
+export { default as CreativeIcon } from './CreativeIcon';
+export { default as CultureIcon } from './CultureIcon';
+export { default as FlowerIcon } from './FlowerIcon';
+export { default as HistoryIcon } from './HistoryIcon';
+export { default as LunchIcon } from './LunchIcon';
+export { default as MuseumIcon } from './MuseumIcon';
+export { default as OtherBackpackIcon } from './OtherBackpackIcon';
+export { default as PagodaIcon } from './PagodaIcon';
+export { default as ParkIcon } from './ParkIcon';
+export { default as TeamBuildingIcon } from './TeamBuildingIcon';
+export { default as VolunteerIcon } from './VolunteerIcon';
