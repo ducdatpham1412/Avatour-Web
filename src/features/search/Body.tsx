@@ -11,7 +11,7 @@ const Body = ({ searchData }: BodyProps) => {
   return (
     <div className="flex flex-col items-center justify-between pt-[150px] gap-16">
       <div className={cn('flex flex-col items-center', searched ? 'hidden' : '')}>
-        <span className="text-primary text-[20px] sm:text-[32px] font-semibold">
+        <span className="text-p_600 text-[20px] sm:text-[32px] font-semibold">
           Avatour xin chào,
         </span>
         <span className="text-[20px] sm:text-[32px] font-medium text-center">

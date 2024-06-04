@@ -1,13 +1,13 @@
 import '@/styles/global.css';
 import type { Metadata } from 'next';
-import { Open_Sans } from 'next/font/google';
+import { Lexend } from 'next/font/google';
 
-import { Toaster } from '@/components/ui';
 import { ProgressBar } from '@/components';
+import { Toaster } from '@/components/ui';
 
-const openSans = Open_Sans({
-  weight: ['400', '500', '600', '700', '800'],
-  style: ['normal', 'italic'],
+const lexendFont = Lexend({
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  style: ['normal'],
   subsets: ['latin'],
   display: 'swap',
 });
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={openSans.className}>
+    <html lang="en" className={lexendFont.className}>
       <body>
         {children}
         <Toaster />

@@ -1,17 +1,12 @@
 'use client';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  Image,
-} from '@/components/ui';
-import { cn, formatPrice } from '@/lib';
 import { ReactElement, memo, useMemo } from 'react';
-import { TourQuickDetail } from './SearchResult';
+
+import { Dialog, DialogContent, DialogTrigger, Image } from '@/components/ui';
+import { cn, formatPrice } from '@/lib';
+import { useRouter } from '@/hooks';
+
 import { serviceDataDetail } from '../constants';
+import { TourQuickDetail } from './SearchResult';
 
 type LocationTagProps = {
   isActive?: boolean;
@@ -20,6 +15,8 @@ type LocationTagProps = {
 };
 
 const LocationTag = memo(({ data, onHover, isActive }: LocationTagProps) => {
+  const router = useRouter();
+
   const serviceCountMap = useMemo(() => {
     let serviceCount = 0;
     return data.schedule.reduce((c, v) => {
@@ -43,6 +40,10 @@ const LocationTag = memo(({ data, onHover, isActive }: LocationTagProps) => {
         : data.name,
     [data.name],
   );
+
+  const handleClick = () => {
+    router.push(`/tour/${data.id}`);
+  };
 
   return (
     <LocationDetailDialog data={data}>
