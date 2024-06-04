@@ -1,6 +1,5 @@
-import Background from './Background';
-import Body from './Body';
-import Head from './Head';
+import Background from './components/Background';
+import Head from './components/Head';
 import { Lexend } from 'next/font/google';
 import SearchInputBase from './components/SearchInputBase';
 

@@ -18,11 +18,15 @@ const Timeline = memo(({ steps, className }: TimelineColumnProps) => {
   return (
     <div className={cn('flex flex-col gap-4 items-start', className)}>
       {steps.map((step, index) => (
-        <div className="flex items-start gap-4" key={index}>
-          <div className="relative flex items-center justify-center w-[30px] h-[30px] bg-gray_200 rounded-full">
-            {index + 1}
+        <div className="relative flex items-start gap-4" key={index}>
+          <div className="flex flex-col h-full">
+            <div className="relative -top-[4px] -left-[4px] z-10 p-[4px] bg-white rounded-full">
+              <div className="flex items-center justify-center w-[30px] h-[30px] bg-gray_200 rounded-full">
+                {index + 1}
+              </div>
+            </div>
             {index !== steps.length - 1 ? (
-              <div className="absolute w-[2px] h-full top-full left-1/2 -translate-x-1/2 translate-y-[2.5px] bg-black"></div>
+              <div className="absolute w-[2px] h-full top-[15px] left-[14px] bg-black"></div>
             ) : (
               <></>
             )}

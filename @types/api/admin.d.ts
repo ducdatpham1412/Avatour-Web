@@ -14,23 +14,6 @@ interface TypeInputSupplierRequest {
   duration: number;
 }
 
-interface TypeProfile {
-  id: number;
-  account_type: number | string;
-  services: number[];
-  email: string;
-  phone: string | number;
-  name: string;
-  description: string;
-  avatar: string;
-  location: string;
-  lat: number | string;
-  lng: number | string;
-  min_cost: number | string;
-  max_cost: number | string;
-  duration: number | string;
-}
-
 interface TypeJoinPersonal {
   id: number | null;
   sale_id: number;
