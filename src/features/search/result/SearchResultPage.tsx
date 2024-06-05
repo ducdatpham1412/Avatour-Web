@@ -1,27 +1,43 @@
-import Body from './components/Body';
-import LocationTag, { LocationTagProps } from './components/LocationTag';
-import SearchResult from './components/SearchResult';
+import { SearchInputBase } from '../components';
+import { Background, SearchError, SearchResult } from './components';
 
-export default function SearchPage({ searchParams, params }: PageProps) {
-  console.log('params of search', params);
+const SearchPageResult = async ({ params }: PageProps) => {
+  const response = await getData();
 
-  return <Body searchData={parseSearchData(params.search_text)} />;
-}
-
-const SearchPageResult = async ({ searchParams, params }: PageProps) => {
-  const data = await getData();
-
-  return <SearchResult data={data} />;
+  return (
+    <>
+      <Background />
+      <div className="z-20 py-2 sticky top-0 left-0 right-0 bg-background">
+        <SearchInputBase searchData={parseSearchData(params.search_text)} className="w-full" />
+      </div>
+      {/* eslint-disable-next-line no-constant-condition */}
+      {!response.success ? (
+        <SearchError />
+      ) : (
+        <SearchResult data={response.data} />
+      )}
+    </>
+  );
 };
 
-async function getData(): Promise<TypeTour[]> {
+function parseSearchData(search: string | string[] | undefined) {
+  return decodeURIComponent(search ? (Array.isArray(search) ? search[0] : search) : '');
+}
+
+function delay(duration: number) {
+  return new Promise<void>(resolve => {
+    setTimeout(resolve, duration);
+  });
+}
+
+async function getData(): Promise<{ success: boolean; data: TypeTour[] }> {
   await delay(1000);
   return {
     success: true,
     data: [
       {
-        id: 1,
-        name: 'Dòng chảy ngàn năm lịch sử Hà Nội',
+        id: null,
+        name: '',
         duration: 8.5,
         min_cost: 100000,
         max_cost: 500000,
@@ -42,10 +58,12 @@ async function getData(): Promise<TypeTour[]> {
               location: '54 Liễu Giai, Phường Cống Vị, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.03189613649328,
               lng: 105.8120167005005,
+              ward: '00007',
+              gg_map: 'https://maps.app.goo.gl/aDgX9zibSxYWQDz38',
               min_cost: 10000.0,
               max_cost: 20000.0,
               duration: 2.5,
-              services: ['check-in'] as Service[],
+              services: ['check-in'],
               start_time: 7.3,
               end_time: 22.0,
               total_ratings: 0,
@@ -72,10 +90,12 @@ async function getData(): Promise<TypeTour[]> {
               location: '3 Đ. Hoàng Hoa Thám, Phường Liễu Giai, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.037469550931224,
               lng: 105.82039226712548,
+              ward: '00008',
+              gg_map: 'https://maps.app.goo.gl/gieFYGam84YfFFte9',
               min_cost: 5000.0,
               max_cost: 15000.0,
               duration: 3.0,
-              services: ['check-in', 'flower'] as Service[],
+              services: ['check-in', 'flower'],
               start_time: 5.3,
               end_time: 22.0,
               total_ratings: 0,
@@ -102,10 +122,12 @@ async function getData(): Promise<TypeTour[]> {
               location: '157 Đội Cấn, Phường Đội Cấn, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.03511450542713,
               lng: 105.8262102108661,
+              ward: '00022',
+              gg_map: 'https://maps.app.goo.gl/h57UJs8ngZh5igNZ8',
               min_cost: 0.0,
               max_cost: 0.0,
               duration: 2.0,
-              services: ['history'] as Service[],
+              services: ['history'],
               start_time: 8.0,
               end_time: 16.3,
               total_ratings: 0,
@@ -133,10 +155,12 @@ async function getData(): Promise<TypeTour[]> {
               location: '1 Hùng Vương, Phường Điện Biên, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.036947349290465,
               lng: 105.83462378007252,
+              ward: '00019',
+              gg_map: 'https://maps.app.goo.gl/LrLY2BixHz35cucA6',
               min_cost: 0.0,
               max_cost: 0.0,
               duration: 1.0,
-              services: ['history', 'check-in'] as Service[],
+              services: ['history', 'check-in'],
               start_time: 7.0,
               end_time: 11.3,
               total_ratings: 0,
@@ -152,8 +176,8 @@ async function getData(): Promise<TypeTour[]> {
         ],
       },
       {
-        id: 2,
-        name: 'Trải nghiệm nét đẹp phố cổ Hà Nội',
+        id: null,
+        name: '',
         duration: 17.0,
         min_cost: 100000,
         max_cost: 500000,
@@ -174,10 +198,12 @@ async function getData(): Promise<TypeTour[]> {
               location: '54 Liễu Giai, Phường Cống Vị, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.03189613649328,
               lng: 105.8120167005005,
+              ward: '00007',
+              gg_map: 'https://maps.app.goo.gl/aDgX9zibSxYWQDz38',
               min_cost: 10000.0,
               max_cost: 20000.0,
               duration: 2.5,
-              services: ['check-in'] as Service[],
+              services: ['check-in'],
               start_time: 7.3,
               end_time: 22.0,
               total_ratings: 0,
@@ -205,10 +231,12 @@ async function getData(): Promise<TypeTour[]> {
               location: 'Công viên Thủ Lệ, Phường Ngọc Khánh, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.030596434221977,
               lng: 105.80548704503816,
+              ward: '00025',
+              gg_map: 'https://maps.app.goo.gl/J3HpV3y91aD4UJYw9',
               min_cost: 20000.0,
               max_cost: 30000.0,
               duration: 4.0,
-              services: ['other-backpack'] as Service[],
+              services: ['other-backpack'],
               start_time: 6.0,
               end_time: 18.0,
               total_ratings: 0,
@@ -235,10 +263,12 @@ async function getData(): Promise<TypeTour[]> {
               location: '3 Đ. Hoàng Hoa Thám, Phường Liễu Giai, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.037469550931224,
               lng: 105.82039226712548,
+              ward: '00008',
+              gg_map: 'https://maps.app.goo.gl/gieFYGam84YfFFte9',
               min_cost: 5000.0,
               max_cost: 15000.0,
               duration: 3.0,
-              services: ['check-in', 'flower'] as Service[],
+              services: ['check-in', 'flower'],
               start_time: 5.3,
               end_time: 22.0,
               total_ratings: 0,
@@ -267,10 +297,12 @@ async function getData(): Promise<TypeTour[]> {
               location: '157 Đội Cấn, Phường Đội Cấn, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.03511450542713,
               lng: 105.8262102108661,
+              ward: '00022',
+              gg_map: 'https://maps.app.goo.gl/h57UJs8ngZh5igNZ8',
               min_cost: 0.0,
               max_cost: 0.0,
               duration: 2.0,
-              services: ['history'] as Service[],
+              services: ['history'],
               start_time: 8.0,
               end_time: 16.3,
               total_ratings: 0,
@@ -297,10 +329,12 @@ async function getData(): Promise<TypeTour[]> {
               location: '19 P. Ngọc Hà, Phường Đội Cấn, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.035858455465224,
               lng: 105.83242535227406,
+              ward: '00022',
+              gg_map: 'https://maps.app.goo.gl/DTNke8w5gMcM5yzS8',
               min_cost: 0.0,
               max_cost: 40000.0,
               duration: 2.0,
-              services: ['culture', 'history'] as Service[],
+              services: ['culture', 'history'],
               start_time: 8.0,
               end_time: 16.3,
               total_ratings: 0,
@@ -328,10 +362,12 @@ async function getData(): Promise<TypeTour[]> {
               location: '1 Hùng Vương, Phường Điện Biên, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.036947349290465,
               lng: 105.83462378007252,
+              ward: '00019',
+              gg_map: 'https://maps.app.goo.gl/LrLY2BixHz35cucA6',
               min_cost: 0.0,
               max_cost: 0.0,
               duration: 1.0,
-              services: ['history', 'check-in'] as Service[],
+              services: ['history', 'check-in'],
               start_time: 7.0,
               end_time: 11.3,
               total_ratings: 0,
@@ -359,10 +395,12 @@ async function getData(): Promise<TypeTour[]> {
               location: 'Hùng Vương, Phường Điện Biên, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.03675409491815,
               lng: 105.83541248654502,
+              ward: '00019',
+              gg_map: 'https://maps.app.goo.gl/8XikUGduoNx5rc7r7',
               min_cost: 0.0,
               max_cost: 0.0,
               duration: 1.0,
-              services: ['check-in', 'history'] as Service[],
+              services: ['check-in', 'history'],
               start_time: 5.0,
               end_time: 22.0,
               total_ratings: 0,
@@ -389,10 +427,12 @@ async function getData(): Promise<TypeTour[]> {
               location: '46 P. Phan Đình Phùng, Phường Quán Thánh, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.040645352280368,
               lng: 105.8410082428898,
+              ward: '00013',
+              gg_map: 'https://maps.app.goo.gl/kShSUkbxXWLXw7Sn9',
               min_cost: 0.0,
               max_cost: 0.0,
               duration: 0.5,
-              services: ['history', 'check-in'] as Service[],
+              services: ['history', 'check-in'],
               start_time: 0.0,
               end_time: 0.0,
               total_ratings: 0,
@@ -418,10 +458,12 @@ async function getData(): Promise<TypeTour[]> {
               location: 'Đường Thanh Niên, Phường Trúc Bạch, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.047420939510527,
               lng: 105.83725022314266,
+              ward: '00004',
+              gg_map: 'https://maps.app.goo.gl/T3q9uDeuGDuuEzMN8',
               min_cost: 0.0,
               max_cost: 0.0,
               duration: 1.0,
-              services: ['check-in'] as Service[],
+              services: ['check-in'],
               start_time: 0.0,
               end_time: 0.0,
               total_ratings: 0,
@@ -437,7 +479,7 @@ async function getData(): Promise<TypeTour[]> {
         ],
       },
       {
-        id: 3,
+        id: null,
         name: '',
         duration: 24.5,
         min_cost: 100000,
@@ -459,10 +501,12 @@ async function getData(): Promise<TypeTour[]> {
               location: '54 Liễu Giai, Phường Cống Vị, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.03189613649328,
               lng: 105.8120167005005,
+              ward: '00007',
+              gg_map: 'https://maps.app.goo.gl/aDgX9zibSxYWQDz38',
               min_cost: 10000.0,
               max_cost: 20000.0,
               duration: 2.5,
-              services: ['check-in'] as Service[],
+              services: ['check-in'],
               start_time: 7.3,
               end_time: 22.0,
               total_ratings: 0,
@@ -490,10 +534,12 @@ async function getData(): Promise<TypeTour[]> {
               location: 'Công viên Thủ Lệ, Phường Ngọc Khánh, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.030596434221977,
               lng: 105.80548704503816,
+              ward: '00025',
+              gg_map: 'https://maps.app.goo.gl/J3HpV3y91aD4UJYw9',
               min_cost: 20000.0,
               max_cost: 30000.0,
               duration: 4.0,
-              services: ['other-backpack'] as Service[],
+              services: ['other-backpack'],
               start_time: 6.0,
               end_time: 18.0,
               total_ratings: 0,
@@ -520,10 +566,12 @@ async function getData(): Promise<TypeTour[]> {
               location: 'P. Kim Mã, Phường Ngọc Khánh, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.029212480906565,
               lng: 105.80467613795544,
+              ward: '00025',
+              gg_map: 'https://maps.app.goo.gl/W9BdykQCkWbVYGZz8',
               min_cost: 0.0,
               max_cost: 0.0,
               duration: 1.0,
-              services: ['pagoda'] as Service[],
+              services: ['pagoda'],
               start_time: 8.0,
               end_time: 17.0,
               total_ratings: 0,
@@ -550,10 +598,12 @@ async function getData(): Promise<TypeTour[]> {
               location: '3 Đ. Hoàng Hoa Thám, Phường Liễu Giai, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.037469550931224,
               lng: 105.82039226712548,
+              ward: '00008',
+              gg_map: 'https://maps.app.goo.gl/gieFYGam84YfFFte9',
               min_cost: 5000.0,
               max_cost: 15000.0,
               duration: 3.0,
-              services: ['check-in', 'flower'] as Service[],
+              services: ['check-in', 'flower'],
               start_time: 5.3,
               end_time: 22.0,
               total_ratings: 0,
@@ -582,10 +632,12 @@ async function getData(): Promise<TypeTour[]> {
               location: '157 Đội Cấn, Phường Đội Cấn, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.03511450542713,
               lng: 105.8262102108661,
+              ward: '00022',
+              gg_map: 'https://maps.app.goo.gl/h57UJs8ngZh5igNZ8',
               min_cost: 0.0,
               max_cost: 0.0,
               duration: 2.0,
-              services: ['history'] as Service[],
+              services: ['history'],
               start_time: 8.0,
               end_time: 16.3,
               total_ratings: 0,
@@ -612,10 +664,12 @@ async function getData(): Promise<TypeTour[]> {
               location: '19 P. Ngọc Hà, Phường Đội Cấn, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.035858455465224,
               lng: 105.83242535227406,
+              ward: '00022',
+              gg_map: 'https://maps.app.goo.gl/DTNke8w5gMcM5yzS8',
               min_cost: 0.0,
               max_cost: 40000.0,
               duration: 2.0,
-              services: ['culture', 'history'] as Service[],
+              services: ['culture', 'history'],
               start_time: 8.0,
               end_time: 16.3,
               total_ratings: 0,
@@ -643,10 +697,12 @@ async function getData(): Promise<TypeTour[]> {
               location: '1 Hùng Vương, Phường Điện Biên, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.036947349290465,
               lng: 105.83462378007252,
+              ward: '00019',
+              gg_map: 'https://maps.app.goo.gl/LrLY2BixHz35cucA6',
               min_cost: 0.0,
               max_cost: 0.0,
               duration: 1.0,
-              services: ['history', 'check-in'] as Service[],
+              services: ['history', 'check-in'],
               start_time: 7.0,
               end_time: 11.3,
               total_ratings: 0,
@@ -674,10 +730,12 @@ async function getData(): Promise<TypeTour[]> {
               location: 'Hùng Vương, Phường Điện Biên, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.03675409491815,
               lng: 105.83541248654502,
+              ward: '00019',
+              gg_map: 'https://maps.app.goo.gl/8XikUGduoNx5rc7r7',
               min_cost: 0.0,
               max_cost: 0.0,
               duration: 1.0,
-              services: ['check-in', 'history'] as Service[],
+              services: ['check-in', 'history'],
               start_time: 5.0,
               end_time: 22.0,
               total_ratings: 0,
@@ -704,10 +762,12 @@ async function getData(): Promise<TypeTour[]> {
               location: '1 P. Ngọc Hà, Phường Đội Cấn, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.038144903066016,
               lng: 105.83317347332596,
+              ward: '00022',
+              gg_map: 'https://maps.app.goo.gl/cfe8tTK1pH8Pt8TC7',
               min_cost: 0.0,
               max_cost: 25000.0,
               duration: 0.5,
-              services: ['culture', 'history'] as Service[],
+              services: ['culture', 'history'],
               start_time: 8.0,
               end_time: 16.0,
               total_ratings: 0,
@@ -736,10 +796,12 @@ async function getData(): Promise<TypeTour[]> {
               location: '46 P. Phan Đình Phùng, Phường Quán Thánh, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.040645352280368,
               lng: 105.8410082428898,
+              ward: '00013',
+              gg_map: 'https://maps.app.goo.gl/kShSUkbxXWLXw7Sn9',
               min_cost: 0.0,
               max_cost: 0.0,
               duration: 0.5,
-              services: ['history', 'check-in'] as Service[],
+              services: ['history', 'check-in'],
               start_time: 0.0,
               end_time: 0.0,
               total_ratings: 0,
@@ -765,10 +827,12 @@ async function getData(): Promise<TypeTour[]> {
               location: 'Phường Quán Thánh, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.040807214834206,
               lng: 105.841024695995,
+              ward: '00013',
+              gg_map: 'https://maps.app.goo.gl/HrdFtJ3UoWXDEnrT8',
               min_cost: 0.0,
               max_cost: 0.0,
               duration: 2.0,
-              services: ['check-in', 'flower'] as Service[],
+              services: ['check-in', 'flower'],
               start_time: 0.0,
               end_time: 0.0,
               total_ratings: 0,
@@ -793,10 +857,12 @@ async function getData(): Promise<TypeTour[]> {
               location: 'P. Phan Đình Phùng, Phường Quán Thánh, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.04012957992084,
               lng: 105.84629701565544,
+              ward: '00013',
+              gg_map: 'https://maps.app.goo.gl/2oHN9ZNigMeLaCoK8',
               min_cost: 0.0,
               max_cost: 0.0,
               duration: 1.0,
-              services: ['check-in', 'flower'] as Service[],
+              services: ['check-in', 'flower'],
               start_time: 0.0,
               end_time: 0.0,
               total_ratings: 0,
@@ -823,10 +889,12 @@ async function getData(): Promise<TypeTour[]> {
               location: '44 P. Ngũ Xã, Phường Trúc Bạch, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.0460843870366,
               lng: 105.84077271403076,
+              ward: '00004',
+              gg_map: 'https://maps.app.goo.gl/db5okemGMTfVW7Vv6',
               min_cost: 0.0,
               max_cost: 0.0,
               duration: 1.0,
-              services: ['pagoda'] as Service[],
+              services: ['pagoda'],
               start_time: 9.0,
               end_time: 17.0,
               total_ratings: 0,
@@ -854,10 +922,12 @@ async function getData(): Promise<TypeTour[]> {
               location: 'Hồ Trúc Bạch, Phường Trúc Bạch, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.048709312765723,
               lng: 105.83891916639064,
+              ward: '00004',
+              gg_map: 'https://maps.app.goo.gl/6y2WSQ1tx2tPovGK7',
               min_cost: 0.0,
               max_cost: 0.0,
               duration: 1.0,
-              services: ['pagoda'] as Service[],
+              services: ['pagoda'],
               start_time: 9.0,
               end_time: 17.0,
               total_ratings: 0,
@@ -884,10 +954,12 @@ async function getData(): Promise<TypeTour[]> {
               location: 'Đường Thanh Niên, Phường Trúc Bạch, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.047420939510527,
               lng: 105.83725022314266,
+              ward: '00004',
+              gg_map: 'https://maps.app.goo.gl/T3q9uDeuGDuuEzMN8',
               min_cost: 0.0,
               max_cost: 0.0,
               duration: 1.0,
-              services: ['check-in'] as Service[],
+              services: ['check-in'],
               start_time: 0.0,
               end_time: 0.0,
               total_ratings: 0,
@@ -914,10 +986,12 @@ async function getData(): Promise<TypeTour[]> {
               location: '28A Điện Biên Phủ, Phường Điện Biên, Quận Ba Đình, Thành phố Hà Nội',
               lat: 21.03256011244562,
               lng: 105.8398007249388,
+              ward: '00019',
+              gg_map: 'https://maps.app.goo.gl/9XYeWTeQ1jXcgVtz5',
               min_cost: 10000.0,
               max_cost: 20000.0,
               duration: 1.0,
-              services: ['history', 'check-in'] as Service[],
+              services: ['history', 'check-in'],
               start_time: 9.0,
               end_time: 17.0,
               total_ratings: 0,
@@ -933,17 +1007,7 @@ async function getData(): Promise<TypeTour[]> {
         ],
       },
     ],
-  }.data as TypeTour[];
+  };
 }
 
-function parseSearchData(search: string | string[] | undefined) {
-  return search ? (Array.isArray(search) ? search[0] : search) : '';
-}
-
-function delay(duration: number) {
-  return new Promise<void>((resolve, reject) => {
-    setTimeout(resolve, duration);
-  });
-}
-
-export { SearchPageResult };
+export default SearchPageResult;

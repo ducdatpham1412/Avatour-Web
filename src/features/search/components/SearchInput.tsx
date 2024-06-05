@@ -1,20 +1,14 @@
 'use client';
+import { useCallback, useEffect, useRef, useState } from 'react';
+
 import { useRouter } from '@/hooks';
 import { cn } from '@/lib';
-import {
-  useCallback,
-  useEffect,
-  experimental_useOptimistic as useOptimistic,
-  useRef,
-  useState,
-} from 'react';
 
 interface SearchInputProps {
-  searchData: string;
-  className?: string;
+  searchData?: string;
 }
 
-const SearchInput = ({ searchData, className }: SearchInputProps) => {
+const SearchInput = ({ searchData = '' }: SearchInputProps) => {
   const [value, setValue] = useState(searchData);
   const router = useRouter();
   const searched = !!searchData;
@@ -25,21 +19,21 @@ const SearchInput = ({ searchData, className }: SearchInputProps) => {
     clearTimeout(timeout.current);
   }, [value]);
 
-  useEffect(() => {
-    if (value) {
-      timeout.current = setTimeout(() => {
-        router.push(`/search/${value}`);
-      }, 2000);
+  // useEffect(() => {
+  //   if (value) {
+  //     timeout.current = setTimeout(() => {
+  //       router.push(`/search/${value}`);
+  //     }, 2000);
 
-      return () => {
-        clearTimeout(timeout.current);
-      };
-    }
-  }, [value]);
+  //     return () => {
+  //       clearTimeout(timeout.current);
+  //     };
+  //   }
+  // }, [value]);
 
   return (
     <input
-      placeholder="Tìm địa điểm ở đây"
+      placeholder="Cho tôi một lịch trình khám phá nét đẹp văn hoá Hà Nội"
       value={value}
       onKeyPress={e => {
         if (e.which === 13) {
@@ -47,10 +41,10 @@ const SearchInput = ({ searchData, className }: SearchInputProps) => {
         }
       }}
       className={cn(
-        'w-full focus:outline-none outline-none border-b-[2px] duration-200 border-transparent h-[40px] bg-transparent',
+        'w-full font-normal focus:outline-none outline-none duration-200 bg-transparent text-ellipsis',
         searched
-          ? 'text-[14px] sm:text-[16px]'
-          : 'text-[16px] sm:text-[20px] focus:border-[#000000] [&:not(:placeholder-shown)]:border-[#000000]',
+          ? 'text-[15px] sm:text-[16px] leading-[24px] font-normal'
+          : 'text-[16px] sm:text-[18px] sm:leading-[28px] font-normal',
       )}
       onChange={e => setValue(e.target.value)}
     />

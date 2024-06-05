@@ -1,22 +1,21 @@
-import { useRouter } from '@/hooks';
 import { cn } from '@/lib';
-import { useEffect, experimental_useOptimistic as useOptimistic, useState } from 'react';
+
 import SearchInput from './SearchInput';
 
 interface SearchInputProps {
-  searchData: string;
+  searchData?: string;
   className?: string;
 }
 
-const SearchInputBase = ({ searchData, className }: SearchInputProps) => {
+const SearchInputBase = ({ searchData = '', className }: SearchInputProps) => {
   const searched = !!searchData;
 
   return (
     <div
       className={cn(
-        'flex flex-col items-center gap-4 bg-[#F9F9F9] w-[min(813px,_90%)] rounded-[20px] sm:rounded-[36px]',
+        'flex flex-col items-center gap-4 bg-gray_50 w-[min(813px,_90%)] rounded-full',
         className,
-        searched ? 'p-[10px_16px] sm:p-[16px_24px]' : 'p-[20px_20px] sm:p-[36px_36px]',
+        searched ? 'p-[12px_16px] sm:p-[16px_24px]' : 'p-[16px_16px] sm:p-[16px_24px]',
       )}
     >
       <div className="flex items-center w-full gap-4">

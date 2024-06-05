@@ -8,7 +8,7 @@ const CampingIcon = (props: SVGProps) => (
       stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
-      strokeWidth={1.5}
+      // strokeWidth={1.5}
       d="M15 3 3 19v2h18v-2L9 3m3 12 4 6H8l4-6Z"
     />
   </svg>

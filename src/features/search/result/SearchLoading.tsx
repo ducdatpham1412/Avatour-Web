@@ -1,19 +1,18 @@
 'use client';
-import { omit } from '@/lib';
-import { animationFrames } from './constants';
 import { useEffect, useState } from 'react';
-type SearchLoadingProps = {};
 
-const SearchLoading = ({}: SearchLoadingProps) => {
-  return (
-    <div className="flex items-center justify-center h-[400px]">
-      <div className="w-[300px] h-[300px] flex flex-col items-center">
-        <LoadingIcon />
-        <span className="text-[20px] text-gray-500">Đang tìm kiếm</span>
-      </div>
+import { omit } from '@/lib';
+
+import { animationFrames } from '../constants';
+
+const SearchLoading = () => (
+  <div className="flex items-center justify-center h-[400px]">
+    <div className="w-[300px] h-[300px] flex flex-col items-center">
+      <LoadingIcon />
+      <span className="text-[20px] text-gray-500">Đang tìm kiếm</span>
     </div>
-  );
-};
+  </div>
+);
 
 const LoadingIcon = () => {
   const [currentFrame, setCurrentFrame] = useState(0);
@@ -52,14 +51,15 @@ function svgToElement(element: SVGElement | undefined, data: any) {
     currentElement = document.createElementNS('http://www.w3.org/2000/svg', data.tagName);
     element.appendChild(currentElement);
   }
-  for (let attr of Object.keys(omit(data, 'tagName', 'child'))) {
+  for (const attr of Object.keys(omit(data, 'tagName', 'child'))) {
     if (attr.includes(':')) {
+      // ...
     } else {
       currentElement.setAttribute(attr, data[attr]);
     }
   }
   if (data.child) {
-    for (let child of data.child) {
+    for (const child of data.child) {
       svgToElement(currentElement, child);
     }
   }

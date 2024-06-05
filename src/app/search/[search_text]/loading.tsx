@@ -1,4 +1,3 @@
-'use client';
-import { SearchLoading } from '@/features/search';
+import SearchLoading from '@/features/search/result/SearchLoading';
 
 export default SearchLoading;

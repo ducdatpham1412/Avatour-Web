@@ -1,5 +1,5 @@
-import { SearchPageResult } from '@/features/search';
+import SearchResultPageComponent from '@/features/search/result/SearchResultPage';
 
-export default function SearchPage(props: PageProps) {
-  return Promise.resolve(<SearchPageResult {...props} />);
+export default function SearchResultPage(props: PageProps) {
+  return Promise.resolve(<SearchResultPageComponent {...props} />);
 }
