@@ -17,14 +17,14 @@ const TourPage = ({ searchParams }: TourPageProps) => {
 
   const [data] = useState(
     () =>
-      (searchParams.timestamp
-        ? JSON.parse(localStorage.getItem(searchParams.timestamp) ?? '{}')
+      (searchParams.t
+        ? JSON.parse(localStorage.getItem(searchParams.t) ?? '{}')
         : {}) as TypeTour,
   );
 
   const tourName = useMemo(
     () =>
-      data.name === ''
+      !data.name
         ? `${data.schedule[0]?.[0].name} -> ${data.schedule.at(-1)?.at(-1)?.name}`
         : data.name,
     [data.name],
@@ -41,7 +41,7 @@ const TourPage = ({ searchParams }: TourPageProps) => {
         <TourHeader
           tags={['Văn hoá', 'Lịch sử']}
           title={tourName}
-          description={data.descrition}
+          description={data.description}
           cost={data.min_cost}
           duration={data.schedule.length}
         />

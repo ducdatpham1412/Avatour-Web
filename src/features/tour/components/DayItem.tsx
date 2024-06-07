@@ -45,7 +45,7 @@ const DayItem = ({ day, profiles, onItemClick }: DayItemProps) => (
           const endTime = convertDecimalToTime(profile.end_time);
           const duration = convertDecimalToTime(profile.duration);
           const availableTime = startTime === endTime ? 'cả ngày' : `${startTime} - ${endTime}`;
-          return `Mở cửa ${availableTime} • Trải nghiệm ${duration}`;
+          return `Mở cửa ${availableTime} • Trải nghiệm ${duration}p`;
         })();
 
         return (

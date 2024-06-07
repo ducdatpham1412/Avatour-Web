@@ -35,7 +35,7 @@ const LocationTag = memo(({ data, onHover, isActive }: LocationTagProps) => {
 
   const tourName = useMemo(
     () =>
-      data.name === ''
+      !data.name
         ? `${data.schedule[0]?.[0].name} -> ${data.schedule.at(-1)?.at(-1)?.name}`
         : data.name,
     [data.name],
@@ -47,11 +47,10 @@ const LocationTag = memo(({ data, onHover, isActive }: LocationTagProps) => {
       return;
     }
 
-    // FIXME: use cached data instead
     const timestamp = +new Date();
     localStorage.clear();
     localStorage.setItem(timestamp.toString(), JSON.stringify(data));
-    router.push(`/tour/0?timestamp=${timestamp}`);
+    router.push(`/tour/0?t=${timestamp}`);
   };
 
   return (

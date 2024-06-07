@@ -36,9 +36,9 @@ const SearchResult = ({ data }: SearchResultProps) => {
         </div>
       </div>
 
-      <button className="self-center text-[16px] leading-[24px] font-medium text-black p-[12px_24px] rounded-full bg-p_600 mt-12 w-[160px] md:w-[180px]">
+      {/* <button className="self-center text-[16px] leading-[24px] font-medium text-black p-[12px_24px] rounded-full bg-p_600 mt-12 w-[160px] md:w-[180px]">
         Xem thêm
-      </button>
+      </button> */}
     </div>
   );
 };

@@ -3,6 +3,8 @@ import { memo } from 'react';
 import { Image } from '@/components/ui';
 import { cn } from '@/lib';
 
+import { convertDuration } from '../utils';
+
 interface TimelineColumnProps {
   steps: {
     title: string;
@@ -15,7 +17,7 @@ interface TimelineColumnProps {
 }
 
 const Timeline = memo(({ steps, className }: TimelineColumnProps) => (
-  <div className={cn('flex flex-col gap-4 items-start', className)}>
+  <div className={cn('flex flex-col gap-y-7 items-start', className)}>
     {steps.map((step, index) => (
       <div className="relative flex items-start gap-4 w-full" title={step.title} key={index}>
         <div className="flex-col h-full hidden md:flex">
@@ -31,15 +33,17 @@ const Timeline = memo(({ steps, className }: TimelineColumnProps) => (
           )}
         </div>
 
-        <div className='flex gap-x-4 flex-1'>
+        <div className="flex gap-x-4 flex-1">
           <Image
             src={step.image}
             className="w-[48px] h-[48px] [&_>_img]:!object-cover rounded-[8px]"
           />
-          <div className="flex flex-col gap-2 items-start flex-1">
+          <div className="flex flex-col items-start flex-1">
             <h4 className="text-[16px] leading-[24px] font-normal line-clamp-1">{step.title}</h4>
             <div className="flex flex-wrap items-center gap-2 text-[14px] text-black/[0.4]">
-              <span className="whitespace-nowrap text-[14px] leading-[24px] font-normal text-gray_500">{step.description}</span>
+              <span className="whitespace-nowrap text-[14px] leading-[24px] font-normal text-gray_500">
+                {step.description}
+              </span>
               <svg width="4" height="4" viewBox="0 0 4 4" fill="none">
                 <circle cx="2" cy="2" r="4" fill="#CECECE" />
               </svg>
@@ -53,14 +57,5 @@ const Timeline = memo(({ steps, className }: TimelineColumnProps) => (
     ))}
   </div>
 ));
-
-function convertDuration(duration: number) {
-  duration /= 1000;
-  if (duration < 3600) {
-    return `${Math.floor(duration / 60)}p`;
-  }
-
-  return `${Math.floor(duration / 3600)}h${Math.floor(duration / 60)}p`;
-}
 
 export default Timeline;

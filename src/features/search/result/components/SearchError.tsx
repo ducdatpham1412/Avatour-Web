@@ -1,6 +1,12 @@
-import { SuggestSearchItem } from "../../components";
+import { SuggestSearchItem } from '../../components';
 
-export default function SearchError() {
+export default function SearchError({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
   return (
     <div className="mt-5 flex justify-between items-center gap-x-[70px]">
       <div className="flex flex-col gap-y-10">
