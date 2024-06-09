@@ -1,3 +1,3 @@
-import SearchResultLayout from '@/features/search/result/SearchResultLayout';
+import { SearchResultLayout } from '@/features/search';
 
 export default SearchResultLayout;

@@ -1,13 +1,14 @@
-import { Background, Body } from "./components";
+import { getResource } from '@/api';
 
+import { Background, Body } from './components';
 
-export default function SearchPage({ params }: PageProps) {
-  console.log('params of search', params);
+export default async function SearchPage({ params }: PageProps) {
+  const response = await getResource();
 
   return (
     <>
       <Background />
-      <Body />
+      <Body suggestSearch={'data' in response ? response.data.top_searches : []} />
     </>
   );
 }

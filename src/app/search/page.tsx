@@ -1,5 +1,5 @@
-import SearchPageComponent from '@/features/search/main/SearchPage';
+import { SearchPage as SearchPageComponent } from '@/features/search';
 
 export default function SearchPage(props: PageProps) {
-  return <SearchPageComponent {...props} />;
+  return Promise.resolve(<SearchPageComponent {...props} />);
 }

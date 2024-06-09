@@ -33,7 +33,7 @@ const SearchInput = ({ searchData = '' }: SearchInputProps) => {
 
   return (
     <input
-      placeholder="Cho tôi một lịch trình khám phá nét đẹp văn hoá Hà Nội"
+      placeholder="Khám phá nét đẹp Hà Nội 2 ngày"
       value={value}
       onKeyPress={e => {
         if (e.which === 13) {

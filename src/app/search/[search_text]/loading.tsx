@@ -1,3 +1,3 @@
-import SearchLoading from '@/features/search/result/SearchLoading';
+import { SearchLoading } from '@/features/search';
 
 export default SearchLoading;

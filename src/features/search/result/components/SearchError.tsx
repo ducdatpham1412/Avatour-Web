@@ -1,35 +1,47 @@
 import { SuggestSearchItem } from '../../components';
 
-export default function SearchError({
-  error,
-  reset,
-}: {
-  error: Error & { digest?: string };
-  reset: () => void;
-}) {
+interface SearchErrorProps {
+  error: { message: string };
+  searchText: string;
+  suggestSearch: string[];
+}
+
+export default function SearchError({ error, searchText, suggestSearch }: SearchErrorProps) {
+  let title: string;
+
+  switch (error.message) {
+    case 'not_understand_text':
+      title = `Không có kết quả phù hợp với tìm kiếm “${searchText}” của bạn.`;
+      break;
+    case 'not_find_location_in_text':
+      title = `Có vẻ như bạn chưa nhập địa điểm bạn muốn tới. Bạn hãy thử tìm kiếm:`;
+      break;
+    case 'not_have_locations':
+      title = `Oops, chúng tôi hiện chưa có dữ liệu về địa điểm này. Chúng tôi đang trong quá trình cập nhật thêm thông tin.`;
+      break;
+    default:
+      title = 'Error';
+      break;
+  }
+
   return (
     <div className="mt-5 flex justify-between items-center gap-x-[70px]">
       <div className="flex flex-col gap-y-10">
-        <h2 className="text-[20px] leading-[28px] font-medium text-black">
-          Không có kết quả phù hợp với tìm kiếm “ABCXYZ MLNSKW” của bạn.
-        </h2>
+        <h2 className="text-[20px] leading-[28px] font-medium text-black">{title}</h2>
 
-        <div className="flex flex-col gap-y-4">
-          <div className="text-[16px] leading-[24px] font-normal text-black">
-            Bạn có thể thử tìm kiếm:
-          </div>
+        {!!suggestSearch.length && (
+          <div className="flex flex-col gap-y-4">
+            <div className="text-[16px] leading-[24px] font-normal text-black">
+              Bạn có thể thử tìm kiếm:
+            </div>
 
-          <div className="flex flex-wrap gap-3">
-            {[
-              'Du lịch Tà Xùa',
-              'Food tour ở Hải Phòng',
-              'Cắm trại ở Lâm Đồng',
-              'Thời tiết ở Sapa',
-            ].map((e, i) => (
-              <SuggestSearchItem key={i}>{e}</SuggestSearchItem>
-            ))}
+            <div className="flex flex-wrap gap-3">
+              {suggestSearch.map((e, i) => (
+                <SuggestSearchItem key={i}>{e}</SuggestSearchItem>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       <div className="hidden md:block">
