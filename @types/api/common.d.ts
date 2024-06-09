@@ -35,3 +35,13 @@ interface TypeTour {
   max_cost: number;
   schedule: Array<TypeProfile[]>;
 }
+
+interface Resource {
+  top_searches: string[];
+  favorite_tours: TypeTour[];
+  version: {
+    ios: string;
+    android: string;
+    download_link: string;
+  };
+}
