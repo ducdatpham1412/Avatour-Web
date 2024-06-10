@@ -52,35 +52,15 @@ interface TypeJoinEstimate {
   list_personals: TypeJoinPersonal[];
 }
 
-interface GetSuppliersFilter {
-  sv: string[] | string;
-  at: string;
-}
-
-interface GetDepositsFilter {
-  status: number[];
-  page_index: number;
-  limit: number;
-}
-
-interface SuppliersProps {
-  data: TypeProfile[];
-  query: Record<string, any>;
-}
-
-interface SupplierPageProps {
-  data: TypeProfile[];
-}
-
 interface DynamicObject<T = any> {
   [key: string]: T;
 }
 
-interface AdminProfile {
+interface Passport {
   profile: {
     id: number;
     avatar: string;
-    account_type: number;
+    account_type: 'holder' | 'admin' | 'user' | 'shop' | 'location' | 'tour-guide';
     services: number[];
     information: {
       facebook: string;

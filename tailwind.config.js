@@ -15,6 +15,18 @@ module.exports = {
         '2xl': '1400px',
       },
     },
+    // FIXME: Only applies to Lexend font. If you change to another font, you need to remove the `fontWeight` config below.
+    fontWeight: {
+      thin: '100',
+      extralight: '100',
+      light: '200',
+      normal: '300',
+      medium: '400',
+      semibold: '500',
+      bold: '600',
+      extrabold: '700',
+      black: '800',
+    },
     extend: {
       colors: {
         background: 'var(--avatour-background)',

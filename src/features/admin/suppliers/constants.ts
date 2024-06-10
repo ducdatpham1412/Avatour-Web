@@ -1,3 +1,6 @@
+import { ACCOUNT_TYPE } from '@/configs/constants';
+import { serviceDataDetail } from '@/features/search/constants';
+
 import { FormFieldDefine } from './types';
 
 const editSupplierFields = {
@@ -26,6 +29,16 @@ const editSupplierFields = {
     label: 'Lng',
     placeholder: 'Lng',
   },
+  gg_map: {
+    name: 'gg_map',
+    label: 'Gg map',
+    placeholder: 'Gg map',
+  },
+  ward: {
+    name: 'ward',
+    label: 'Ward',
+    placeholder: 'Ward',
+  },
   duration: {
     name: 'duration',
     label: 'Duration (hours)',
@@ -34,12 +47,22 @@ const editSupplierFields = {
   min_cost: {
     name: 'min_cost',
     label: 'Min cost',
-    placeholder: 'Cost',
+    placeholder: 'Min cost',
   },
   max_cost: {
     name: 'max_cost',
     label: 'Max cost',
-    placeholder: 'Cost',
+    placeholder: 'Max cost',
+  },
+  start_time: {
+    name: 'start_time',
+    label: 'Start time',
+    placeholder: 'Start time',
+  },
+  end_time: {
+    name: 'end_time',
+    label: 'End time',
+    placeholder: 'End time',
   },
   email: {
     name: 'email',
@@ -53,18 +76,20 @@ const editSupplierFields = {
   },
   services: {
     name: 'services',
-    options: [
-      { id: 2, name: 'Food tour' },
-      { id: 3, name: 'Cắm trại' },
-      { id: 4, name: 'Đi phượt' },
-      { id: 5, name: 'Team building' },
-    ],
+    label: 'Loại hình',
+    options: Object.keys(serviceDataDetail).map(key => {
+      return {
+        id: key,
+        name: serviceDataDetail[key as Service].name,
+      };
+    }),
   },
   account_type: {
     name: 'account_type',
+    label: 'Loại tài khoản',
     options: [
-      { id: 1, name: 'Shop' },
-      { id: 3, name: 'Location' },
+      { id: ACCOUNT_TYPE.shop, name: 'Shop' },
+      { id: ACCOUNT_TYPE.location, name: 'Location' },
     ],
   },
   description: {
@@ -72,14 +97,11 @@ const editSupplierFields = {
     label: 'Description',
     placeholder: 'Description',
   },
+  link: {
+    name: 'link',
+    label: 'Link',
+  },
 } as FormFieldDefine<TypeProfile>;
-
-const supplierServices = [
-  { id: 2, name: 'Food tour' },
-  { id: 3, name: 'Cắm trại' },
-  { id: 4, name: 'Đi phượt' },
-  { id: 5, name: 'Team building' },
-];
 
 const filterSuppliersFields = {
   account_type: {
@@ -87,15 +109,15 @@ const filterSuppliersFields = {
     label: 'Loại tài khoản',
     options: [
       {
-        id: 0,
+        id: 'all',
         name: 'All',
       },
       {
-        id: 1,
+        id: ACCOUNT_TYPE.shop,
         name: 'Shop',
       },
       {
-        id: 3,
+        id: ACCOUNT_TYPE.location,
         name: 'Location',
       },
     ],
@@ -105,19 +127,19 @@ const filterSuppliersFields = {
     label: 'Loại hình',
     options: [
       {
-        id: 2,
-        name: 'Food tour',
-      },
-      {
-        id: 3,
-        name: 'Cám trại',
-      },
-      {
-        id: 4,
+        id: 'backpack',
         name: 'Đi phượt',
       },
       {
-        id: 5,
+        id: 'cuisine',
+        name: 'Ẩm thực',
+      },
+      {
+        id: 'camping',
+        name: 'Cám trại',
+      },
+      {
+        id: 'team-building',
         name: 'Team building',
       },
     ],
@@ -146,4 +168,4 @@ const filterSuppliersFields = {
   },
 } satisfies FormFieldDefine<Record<string, any>>;
 
-export { editSupplierFields, filterSuppliersFields, supplierServices };
+export { editSupplierFields, filterSuppliersFields };

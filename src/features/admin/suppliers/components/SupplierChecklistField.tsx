@@ -1,8 +1,8 @@
 import { memo, useCallback, useMemo } from 'react';
 import { ControllerRenderProps } from 'react-hook-form';
 
-import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Checkbox } from '@/components/ui';
+import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { cn } from '@/lib';
 
 import { FormFieldProps } from '../types';
@@ -12,8 +12,20 @@ type SupplierChecklistFieldProps = FormFieldProps<Record<string, any>> & {
   checkbox?: boolean;
 };
 
-const SupplierChecklistField: React.FC<SupplierChecklistFieldProps> = memo(
-  ({ control, name, rules, className, options, multiple, checkbox }) => {
+/**
+ * TODO: Change name to CheckListField and move it to app's components
+ */
+const SupplierChecklistField = memo(
+  ({
+    control,
+    name,
+    label,
+    rules,
+    className,
+    options,
+    multiple,
+    checkbox,
+  }: SupplierChecklistFieldProps) => {
     const isChecked = useCallback(
       (
         values: string | number | (string | number)[] | undefined,
@@ -40,7 +52,7 @@ const SupplierChecklistField: React.FC<SupplierChecklistFieldProps> = memo(
           if (Array.isArray(values)) {
             checked
               ? field.onChange([...values, id])
-              : field.onChange(values?.filter(value => value !== id));
+              : field.onChange(values.filter(value => value !== id));
           } else {
             checked ? field.onChange([id]) : field.onChange([]);
           }
@@ -69,7 +81,7 @@ const SupplierChecklistField: React.FC<SupplierChecklistFieldProps> = memo(
                       ? checked => (
                           <div
                             className={cn(
-                              'p-[10px_12px] rounded-[50px] border-[1px] border-gray_500 whitespace-nowrap',
+                              'p-[4px_8px] rounded-[50px] border-[1px] border-gray_500 whitespace-nowrap text-[11px]',
                               checked ? 'bg-p_600' : '',
                             )}
                           >
@@ -87,16 +99,21 @@ const SupplierChecklistField: React.FC<SupplierChecklistFieldProps> = memo(
     );
 
     return (
-      <FormField
-        control={control}
-        name={name}
-        rules={rules}
-        render={() => (
-          <FormItem className={cn('flex items-center space-y-0 gap-1 mt-[8px]', className)}>
-            {renderOptions}
-          </FormItem>
-        )}
-      />
+      <div>
+        <FormLabel>{label ?? name}</FormLabel>
+        <FormField
+          control={control}
+          name={name}
+          rules={rules}
+          render={() => (
+            <FormItem
+              className={cn('flex flex-wrap items-center space-y-0 gap-1 mt-[8px]', className)}
+            >
+              {renderOptions}
+            </FormItem>
+          )}
+        />
+      </div>
     );
   },
 );

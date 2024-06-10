@@ -2,18 +2,13 @@ import { Control, RegisterOptions } from 'react-hook-form';
 
 type SupplierData = Partial<TypeProfile>;
 
-interface EditSuppliersFormProps {
-  defaultValues?: SupplierData;
-  onSubmit: (data: SupplierData, type: 'update' | 'create') => Promise<void>;
-}
-
 type FormFieldProps<T extends Record<string, any>> = {
   control: Control<Partial<T> | T, any>;
   className?: string;
   name: keyof T;
   label?: string;
   options?: {
-    id: number;
+    id: number | string;
     name: string;
   }[];
   placeholder?: string;
@@ -30,4 +25,4 @@ type FormFieldDefine<T extends Record<string, any>> = Record<
   Omit<FormFieldProps<T>, 'control'>
 >;
 
-export type { EditSuppliersFormProps, FormFieldDefine, FormFieldProps, SupplierData };
+export type { FormFieldDefine, FormFieldProps, SupplierData };

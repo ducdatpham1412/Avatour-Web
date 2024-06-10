@@ -17,21 +17,21 @@ function SuppliersLayout({ children }: SuppliersLayoutProps) {
           <table className="w-full" style={{ borderCollapse: 'separate', borderSpacing: '0 1rem' }}>
             <thead className="[&>tr]:mb-[30px]">
               <tr className="h-[70px]">
-                <th className="w-[130px]"></th>
+                <th className="w-[90px]"></th>
                 <th className="rounded-[70px_0_0_70px] bg-white w-[200px]">
-                  <div>Name</div>
+                  <div>Tên</div>
+                </th>
+                <th className="bg-white w-[100px]">
+                  <div className="border-l-[1px]">Loại tk</div>
                 </th>
                 <th className="bg-white w-[150px]">
-                  <div className="border-l-[1px]">Account type</div>
-                </th>
-                <th className="bg-white w-[150px]">
-                  <div className="border-l-[1px]">Services</div>
+                  <div className="border-l-[1px] ">Dịch vụ</div>
                 </th>
                 <th className="bg-white">
-                  <div className="border-l-[1px]">Location</div>
+                  <div className="border-l-[1px]">Địa chỉ</div>
                 </th>
-                <th className="rounded-[0_70px_70px_0] bg-white w-[150px]">
-                  <div className="border-l-[1px]">Price</div>
+                <th className="rounded-[0_70px_70px_0] bg-white w-[100px]">
+                  <div className="border-l-[1px]">Giá</div>
                 </th>
                 <th className="w-[50px]"></th>
               </tr>

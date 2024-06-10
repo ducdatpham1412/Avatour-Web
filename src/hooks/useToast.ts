@@ -135,7 +135,7 @@ function dispatch(action: Action) {
 
 type Toast = Omit<ToasterToast, 'id'>;
 
-function toast({ ...props }: Toast) {
+function toast({ title = 'Thông báo', ...rest }: Toast) {
   const id = genId();
 
   const update = (updateProps: ToasterToast) =>
@@ -148,7 +148,8 @@ function toast({ ...props }: Toast) {
   dispatch({
     type: 'ADD_TOAST',
     toast: {
-      ...props,
+      ...rest,
+      title,
       id,
       open: true,
       onOpenChange: open => {
@@ -184,4 +185,4 @@ function useToast() {
   };
 }
 
-export { useToast, toast };
+export { toast, useToast };

@@ -1,11 +1,20 @@
 import {
-  CultureIcon,
+  BikeIcon,
+  ClapperboardIcon,
+  FishIcon,
+  HomeIcon,
+  HotelIcon,
+  ShoppingCartIcon,
+} from 'lucide-react';
+
+import {
   BeachIcon,
   BookIcon,
   CafeIcon,
   CampingIcon,
   CheckInIcon,
   CreativeIcon,
+  CultureIcon,
   FlowerIcon,
   HistoryIcon,
   LunchIcon,
@@ -16,21 +25,13 @@ import {
   TeamBuildingIcon,
   VolunteerIcon,
 } from '@/components/icon';
-import {
-  BikeIcon,
-  ClapperboardIcon,
-  FishIcon,
-  HomeIcon,
-  HotelIcon,
-  ShoppingCartIcon,
-} from 'lucide-react';
 
 export type AnimationFrame = {
   tagName: string;
   child: AnimationFrame[];
 } & Record<string, string | AnimationFrame[]>;
 
-export const serviceDataDetail = {
+export const serviceDataDetail: Record<Service, { name: string; icon: any }> = {
   culture: {
     name: 'Văn hoá',
     icon: CultureIcon,
@@ -79,8 +80,20 @@ export const serviceDataDetail = {
     name: 'Công viên',
     icon: ParkIcon,
   },
+  mountain: {
+    name: 'Núi',
+    icon: ParkIcon,
+  },
+  cave: {
+    name: 'Hang động',
+    icon: ParkIcon,
+  },
+  water: {
+    name: 'Suối, Thác',
+    icon: ParkIcon,
+  },
   'other-backpack': {
-    name: 'Đi phượt',
+    name: 'Khám phá khác',
     icon: OtherBackpackIcon,
   },
   breakfast: {

@@ -16,6 +16,9 @@ type Service =
   | 'beach' // Bãi biển
   | 'book' //  Sách
   | 'park' // Công viên
+  | 'mountain'
+  | 'cave'
+  | 'water'
   // Other
   | 'other-backpack' // Đi phượt
   /**
@@ -64,6 +67,8 @@ interface TypeProfile {
   location: string;
   lat: number;
   lng: number;
+  gg_map: string;
+  ward: string;
   min_cost: number;
   max_cost: number;
   duration: number;

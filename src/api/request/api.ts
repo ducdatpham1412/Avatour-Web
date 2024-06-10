@@ -1,11 +1,17 @@
 'use server';
-import nodeFetch from 'node-fetch';
 import { cookies as getCookies } from 'next/headers';
+import nodeFetch from 'node-fetch';
 
 import { API_ENDPOINT } from '@/configs';
 import { logger, paramsToUrl } from '@/lib';
 
-import { ERROR_MESSAGE, StatusCode, statusText } from './constants';
+import { ERROR_MESSAGE } from './constants';
+
+type DataError = {
+  errorMessage: string;
+  errorKey: string;
+  status: number;
+};
 
 const parseData = <T = any>(res: Response) => {
   const contentType = res.headers.get('Content-Type');
@@ -15,22 +21,18 @@ const parseData = <T = any>(res: Response) => {
   return res.json() as Promise<T>;
 };
 
-const parseError = <T>(data: T, res: Response) => {
+const parseError = (data: DataError | string) => {
   if (typeof data === 'string') {
     return new Error(data);
   } else if (
     typeof data === 'object' &&
-    data &&
     'errorMessage' in data &&
     typeof data.errorMessage === 'string'
   ) {
-    return new Error(getErrorMessage(data.errorMessage) ?? data.errorMessage);
-  } else if (res.statusText) {
-    return new Error(res.statusText);
+    return new Error(data.errorMessage);
   }
 
-  const status = res.status as StatusCode;
-  return new Error(statusText[status]);
+  return new Error(ERROR_MESSAGE.init_err);
 };
 
 const api: API = async <T>(
@@ -72,7 +74,8 @@ const api: API = async <T>(
   const response = await fetcher(url, { ...options, method, body, headers });
   const data = parseData<T>(response);
   if (!response.ok) {
-    throw parseError(await data, response);
+    const temp = await data;
+    throw parseError(temp as DataError);
   }
 
   return data;
@@ -89,16 +92,6 @@ const request = Object.assign(api, {
     api(path, params, { ...options, method: 'DELETE' }),
 } as HTTPRequest);
 
-const useEndpoint = (path: string) => API_ENDPOINT + path;
+export const useEndpoint = (path: string) => API_ENDPOINT + path;
 
-function getErrorMessage(message: string) {
-  for (const key of Object.keys(ERROR_MESSAGE)) {
-    const messageKey = ERROR_MESSAGE[key as keyof typeof ERROR_MESSAGE];
-    if (message === messageKey) {
-      return message[0].toUpperCase() + message.slice(1).replaceAll('_', ' ');
-    }
-  }
-}
-
-export { useEndpoint };
 export { request };

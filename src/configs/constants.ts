@@ -29,12 +29,12 @@ export const REQUEST_STATUS = {
 } as const;
 
 export const ACCOUNT_TYPE = {
-  superAdmin: -1,
-  user: 0,
-  shop: 1,
-  admin: 2,
-  location: 3,
-  shareTour: 4,
+  superAdmin: 'holder',
+  user: 'user',
+  shop: 'shop',
+  admin: 'admin',
+  location: 'location',
+  shareTour: 'tour-guide',
 };
 
 export type REQUEST_STATUS = (typeof REQUEST_STATUS)[keyof typeof REQUEST_STATUS];

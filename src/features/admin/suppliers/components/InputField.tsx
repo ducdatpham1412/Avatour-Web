@@ -1,18 +1,21 @@
 import { memo } from 'react';
 
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input, Textarea } from '@/components/ui';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 
 import { FormFieldProps } from '../types';
 
-type SupplierFieldProps = FormFieldProps<Record<string, any>> & { type?: 'input' | 'textarea' };
+type Props = FormFieldProps<Record<string, any>> & { type?: 'input' | 'textarea' };
 
-const SupplierField: React.FC<SupplierFieldProps> = memo(
-  ({ control, name, rules, label, className, placeholder, type }) => (
+/**
+ * TODO: Move this to app's components
+ */
+const InputField = memo(({ control, name, rules, label, className, placeholder, type }: Props) => {
+  return (
     <FormField
       control={control}
-      name={name as any}
-      rules={rules as any}
+      name={name}
+      rules={rules}
       render={({ field }) => (
         <FormItem className={className}>
           <FormLabel>{label ?? name}</FormLabel>
@@ -22,13 +25,13 @@ const SupplierField: React.FC<SupplierFieldProps> = memo(
                 placeholder={placeholder}
                 {...field}
                 className="bg-white w-full rounded-[10px]"
-                value={field.value ?? ''}
+                value={field.value || ''}
               />
             ) : (
               <Input
                 placeholder={placeholder}
                 {...field}
-                className="bg-white w-full h-[46px] rounded-[10px]"
+                className="bg-white w-full h-[40px] rounded-[10px]"
                 value={field.value ?? ''}
                 useForm
               />
@@ -38,8 +41,7 @@ const SupplierField: React.FC<SupplierFieldProps> = memo(
         </FormItem>
       )}
     />
-  ),
-);
+  );
+});
 
-export type { SupplierFieldProps };
-export default SupplierField;
+export default InputField;

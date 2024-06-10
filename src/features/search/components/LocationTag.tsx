@@ -2,8 +2,8 @@
 import { ReactElement, memo, useMemo } from 'react';
 
 import { Dialog, DialogContent, DialogTrigger, Image } from '@/components/ui';
-import { cn, formatPrice } from '@/lib';
 import { useRouter } from '@/hooks';
+import { cn, formatPrice } from '@/lib';
 
 import { serviceDataDetail } from '../constants';
 import { TourQuickDetail } from './SearchResult';
@@ -18,7 +18,7 @@ const LocationTag = memo(({ data, onHover, isActive }: LocationTagProps) => {
   const router = useRouter();
 
   const serviceCountMap = useMemo(() => {
-    let serviceCount = 0;
+    const serviceCount = 0;
     return data.schedule.reduce((c, v) => {
       v.forEach(profile => {
         profile.services.forEach(service => {
@@ -30,7 +30,7 @@ const LocationTag = memo(({ data, onHover, isActive }: LocationTagProps) => {
         });
       });
       return c;
-    }, {} as Record<string, number>);
+    }, {} as Record<Service, number>);
   }, [data.schedule]);
 
   const tourName = useMemo(
@@ -86,7 +86,11 @@ const LocationTag = memo(({ data, onHover, isActive }: LocationTagProps) => {
           <div className="flex flex-col" style={{ rowGap: '16px' }}>
             <div className="grid grid-cols-2 max_ssm:gap-2 gap-4 text-black/[0.40]">
               {Object.keys(serviceCountMap).map((tag, index) => (
-                <TourService key={`${tag}-${index}`} name={tag} count={serviceCountMap[tag]} />
+                <TourService
+                  key={`${tag}-${index}`}
+                  name={tag as Service}
+                  count={serviceCountMap[tag as Service]}
+                />
               ))}
             </div>
             <div className="flex items-center gap-2">
@@ -108,12 +112,12 @@ const LocationTag = memo(({ data, onHover, isActive }: LocationTagProps) => {
 });
 
 type TourServiceProps = {
-  name: string;
+  name: Service;
   count: number;
 };
 
 const TourService = ({ name, count }: TourServiceProps) => {
-  let serviceData = serviceDataDetail[name as keyof typeof serviceDataDetail];
+  let serviceData = serviceDataDetail[name];
   if (!serviceData) {
     serviceData = serviceDataDetail['other-service'];
   }

@@ -1,90 +1,60 @@
 'use server';
 import { cookies as getCookies } from 'next/headers';
 
-import { logger, makeError } from '@/lib';
-import { ACCOUNT_TYPE } from '@/configs/constants';
 import request from '@/api/request';
-
-import { ERROR_MESSAGE } from '../request/constants';
+import { ACCOUNT_TYPE } from '@/configs/constants';
+import { logger } from '@/lib';
 
 interface LoginResponse {
-  success: boolean;
-  data: {
-    token: string;
-    refreshToken: string;
-  };
+  token: string;
+  refreshToken: string;
 }
 
 interface ProfileResponse {
   success: boolean;
-  data: AdminProfile;
+  data: Passport;
 }
 
-const LOGIN_URL = '/admin/login';
-const GET_PROFILE_URL = '/common/passport';
-
-const adminLogin = async (email: string, password: string): Promise<ActionResponse> => {
+const adminLogin = async (email: string, password: string) => {
   const cookies = getCookies();
-  try {
-    const { data, success } = await request.post<LoginResponse>(
-      LOGIN_URL,
-      {
-        username: email,
-        password,
-      },
-      { authorize: false },
-    );
 
-    if (!success) {
-      return {
-        error: {
-          message: ERROR_MESSAGE['login_fail'] ?? 'login_fail',
-          code: 400,
-        },
-      };
-    }
+  const { data } = await request.post<TypeApi<LoginResponse>>(
+    '/admin/login',
+    {
+      username: email,
+      password,
+    },
+    { authorize: false },
+  );
 
-    await getProfile(data);
-
-    const { token, refreshToken } = data;
-
-    cookies.set('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
-    cookies.set('refresh_token', refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-    });
-
-    return {};
-  } catch (error) {
-    const err = makeError(error);
-    return {
-      error: {
-        message: err!.message,
-      },
-    };
-  }
+  cookies.set('token', data.token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+  });
+  cookies.set('refresh_token', data.refreshToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+  });
 };
 
 const getProfile = async (options?: {
   token: string;
 }): Promise<ActionResponse<ProfileResponse['data']>> => {
   try {
-    let response: ProfileResponse;
-    if (options?.token) {
-      response = await request.get(GET_PROFILE_URL, undefined, {
-        cache: 'no-store',
-        headers: { Authorization: `Bearer ${options.token}` },
-      });
-    } else {
-      response = await request.get(GET_PROFILE_URL, undefined, { cache: 'no-store' });
-    }
+    const res: ProfileResponse = await request.get(
+      '/common/passport',
+      undefined,
+      options?.token
+        ? {
+            cache: 'no-store',
+            headers: { Authorization: `Bearer ${options.token}` },
+          }
+        : { cache: 'no-store' },
+    );
 
-    if (!response.success) {
-      throw new Error('');
-    }
     if (
-      response.data?.profile.account_type !== ACCOUNT_TYPE.admin &&
-      response.data?.profile.account_type !== ACCOUNT_TYPE.superAdmin
+      res.data.profile.account_type !== ACCOUNT_TYPE.admin &&
+      res.data.profile.account_type !== ACCOUNT_TYPE.superAdmin
     ) {
       return {
         error: {
@@ -95,7 +65,7 @@ const getProfile = async (options?: {
     }
 
     return {
-      data: response.data,
+      data: res.data,
     };
   } catch (error) {
     logger.error(error);
