@@ -2,16 +2,48 @@
 import { revalidateTag } from 'next/cache';
 
 import request from '@/api/request';
-import { logger, makeError, parseFormData } from '@/lib';
+import { logger, parseFormData } from '@/lib';
 
 const SUPPLIERS_PATH = '/admin/suppliers';
-const SUPPLILERS_TAG = '/admin/suppliers';
+const SUPPLIERS_TAG = '/admin/suppliers';
 
-const getSuppliers = async (options: Partial<GetSuppliersFilter>) => {
+interface GetSuppliersFilter {
+  sv: Service[] | Service;
+  at: 'all' | 'shop' | 'location';
+}
+
+const applyFilterSuppliers = (data: TypeProfile[], searchQueries: Partial<GetSuppliersFilter>) => {
+  const services = searchQueries.sv;
+  const filter = {
+    account_type: searchQueries.at,
+    services: services !== undefined ? (Array.isArray(services) ? services : [services]) : [],
+  };
+
+  if (filter.account_type && filter.account_type !== 'all' && filter.services.length) {
+    data = data.filter(item => {
+      const isHasService = filter.services.every(s => item.services.includes(s));
+      const isTrueAccountType = item.account_type === filter.account_type;
+
+      return isHasService && isTrueAccountType;
+    });
+  } else if (filter.account_type && filter.account_type !== 'all') {
+    data = data.filter(item => {
+      return item.account_type === filter.account_type;
+    });
+  } else if (filter.services.length) {
+    data = data.filter(item => {
+      return filter.services.every(s => item.services.includes(s));
+    });
+  }
+
+  return data;
+};
+
+export const getSuppliers = async (options: Partial<GetSuppliersFilter>) => {
   try {
-    const { data } = await request.get<{ data: TypeProfile[] }>(SUPPLIERS_PATH, undefined, {
+    const { data } = await request.get<TypeApi<TypeProfile[]>>(SUPPLIERS_PATH, undefined, {
       next: {
-        tags: [SUPPLILERS_TAG],
+        tags: [SUPPLIERS_TAG],
       },
     });
     return applyFilterSuppliers(data, options);
@@ -21,80 +53,13 @@ const getSuppliers = async (options: Partial<GetSuppliersFilter>) => {
   }
 };
 
-const addSupplier = async (data: Partial<TypeProfile>) => {
-  await request.post(SUPPLIERS_PATH, data);
-  revalidateTag(SUPPLILERS_TAG);
+export const addSupplier = async (data: Partial<TypeProfile>) => {
+  await request.post(SUPPLIERS_PATH, parseFormData(data));
+  revalidateTag(SUPPLIERS_TAG);
 };
 
-const updateSupplier = async (
-  id: number | undefined,
-  data: Partial<TypeProfile>,
-): Promise<ActionResponse> => {
-  if (!id) {
-    return {
-      error: {
-        message: 'invalid supplier id',
-        code: 400,
-      },
-    };
-  }
-  try {
-    await request.put(`${SUPPLIERS_PATH}/${id}`, parseFormData(data));
-    revalidateTag(SUPPLILERS_TAG);
-    return {};
-  } catch (e) {
-    const error = makeError(e);
-    return {
-      error: {
-        message: error?.message ?? 'Error',
-        code: error?.code,
-      },
-    };
-  }
+export const updateSupplier = async (id: number, data: Partial<TypeProfile>) => {
+  const formData = parseFormData(data);
+  await request.put(`${SUPPLIERS_PATH}/${id}`, formData);
+  revalidateTag(SUPPLIERS_TAG);
 };
-
-const applyFilterSuppliers = (
-  suppliers: TypeProfile[],
-  searchQueries: Partial<GetSuppliersFilter>,
-) => {
-  let listSupplier: (TypeProfile | undefined)[];
-  const services = searchQueries.sv;
-  const filter = {
-    account_type: searchQueries.at,
-    services: services !== undefined ? (Array.isArray(services) ? services : [services]) : [],
-  };
-
-  if (filter.account_type && filter.account_type !== '0' && filter.services) {
-    listSupplier = suppliers.map(item => {
-      const isHasService = filter.services.every(service =>
-        item.services?.includes(parseInt(service)),
-      );
-      const isTrueAccountType = item.account_type?.toString() === filter.account_type;
-      if (isTrueAccountType && isHasService) {
-        return item;
-      }
-    });
-  } else if (filter.account_type && filter.account_type !== '0') {
-    listSupplier = suppliers.map(item => {
-      const isTrueAccountType = item.account_type?.toString() === filter.account_type;
-      if (isTrueAccountType) {
-        return item;
-      }
-    });
-  } else if (filter.services) {
-    listSupplier = suppliers.map(item => {
-      const isHasService = filter.services.every(service =>
-        item.services.includes(parseInt(service)),
-      );
-      if (isHasService) {
-        return item;
-      }
-    });
-  } else {
-    listSupplier = suppliers;
-  }
-
-  return listSupplier.filter(s => !!s) as TypeProfile[];
-};
-
-export { addSupplier, getSuppliers, updateSupplier };

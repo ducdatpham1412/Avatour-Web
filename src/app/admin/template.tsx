@@ -1,13 +1,14 @@
 'use client';
 
-import { Fragment } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { Fragment } from 'react';
 
 import { Icon, IconNames } from '@/components/icon';
+import { ADMIN_ROUTES } from '@/configs/routes';
 import { cn } from '@/lib';
 
-const excludePath = ['/admin/login'];
+const excludePath = [ADMIN_ROUTES.login];
 
 const AdminTemplate = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();

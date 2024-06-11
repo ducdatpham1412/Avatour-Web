@@ -1,12 +1,12 @@
-import { memo, useMemo } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
+import { memo, useMemo } from 'react';
 
 import { CheckBoxGroup, RadioGroup } from '@/components/ui';
 import { useRouter } from '@/hooks';
 
+import { useSuppliers } from '../SuppliersContext';
 import { filterSuppliersFields } from '../constants';
 import EditSuppliersDialog from './EditSuppliersDialog';
-import { useSuppliers } from '../SuppliersContext';
 
 const FilterBar = memo(
   () => {
@@ -99,9 +99,9 @@ const FilterBar = memo(
           </div>
         </div>
         <div className="pt-[50px]">
-          <EditSuppliersDialog>
+          <EditSuppliersDialog type="create">
             <button className="!h-[42px] !w-full !rounded-[42px] !font-bold bg-white border-[1px] border-[#9A9A9A]">
-              <span className="text-[14px]">Thêm Supplier mới</span>
+              <span className="text-[14px]">Thêm địa điểm mới</span>
             </button>
           </EditSuppliersDialog>
         </div>

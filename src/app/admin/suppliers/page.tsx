@@ -1,13 +1,14 @@
 import { redirect } from 'next/navigation';
 
 import { getProfile, getSuppliers } from '@/api';
+import { ADMIN_ROUTES } from '@/configs/routes';
 import { SuppliersScreen } from '@/features/admin/suppliers';
 
 const Page = async ({ searchParams }: PageProps) => {
   const { error } = await getProfile();
 
   if (error) {
-    redirect('/admin/login');
+    redirect(ADMIN_ROUTES.login);
   }
 
   const suppliers = await getSuppliers(searchParams);

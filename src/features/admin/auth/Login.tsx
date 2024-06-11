@@ -1,12 +1,13 @@
 'use client';
-import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { FormEvent, useState } from 'react';
 
+import { adminLogin } from '@/api/admin';
 import { Icon } from '@/components/icon';
 import { Button, Input } from '@/components/ui';
-import { adminLogin } from '@/api/admin/login';
+import { ADMIN_ROUTES } from '@/configs/routes';
 import { useToast } from '@/hooks';
-import { logger } from '@/lib';
+import { parseErrorMessage } from '@/lib';
 
 const AdminLogin = () => {
   const router = useRouter();
@@ -17,32 +18,24 @@ const AdminLogin = () => {
     password: '',
   });
 
-  function onSubmit(e: FormEvent) {
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setLoading(true);
 
-    adminLogin(formState.email, formState.password)
-      .then(({ error }) => {
-        if (!error) {
-          router.replace('/admin/suppliers');
-        } else {
-          toast({
-            variant: 'destructive',
-            title: 'Thông báo',
-            description: error.message ?? 'Vui lòng kiểm tra tài khoản và mật khẩu',
-          });
-        }
-      })
-      .catch(err => {
-        logger.error('err', err.message);
-        toast({
-          variant: 'destructive',
-          title: 'Thông báo',
-          description: 'Đăng nhập thất bại',
-        });
-      })
-      .finally(() => setLoading(false));
-  }
+    try {
+      setLoading(true);
+      await adminLogin(formState.email, formState.password);
+      router.replace(ADMIN_ROUTES.suppliers);
+    } catch (err) {
+      toast({
+        variant: 'destructive',
+        title: 'Thông báo',
+        description: parseErrorMessage(err),
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="h-screen w-screen flex items-center justify-center">
       <form

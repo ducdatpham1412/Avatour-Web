@@ -2,6 +2,8 @@ import { clsx, type ClassValue } from 'clsx';
 import { omit as om } from 'lodash';
 import { twMerge } from 'tailwind-merge';
 
+import { PARSE_ERROR_MESSAGE } from '@/api/request/constants';
+
 const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
 const omit = <T extends Record<string | number, any>, K extends keyof T = keyof T>(
@@ -25,14 +27,14 @@ export function dirtyValues<T extends Record<string, any>>(dirtyFields: any, all
 }
 
 function formatPrice(value: number) {
-  return value.toLocaleString('vi-VN');
+  return value.toLocaleString('en-EN');
 }
 
-const parseFormData = (data: Record<string | number, string | number | (string | number)[]>) =>
-  Object.keys(data).reduce(
-    (c, key) => (void convertFormValue(c, key, data[key]), c),
-    new FormData(),
-  );
+const parseFormData = (data: Record<string | number, any>) =>
+  Object.keys(data).reduce((pre, key) => {
+    convertFormValue(pre, key, data[key]);
+    return pre;
+  }, new FormData());
 
 function convertFormValue<T extends string | number | (string | number)[]>(
   form: FormData,
@@ -49,5 +51,9 @@ function convertFormValue<T extends string | number | (string | number)[]>(
 }
 
 const isDev = process.env.NODE_ENV === 'development';
+
+export const parseErrorMessage = (err: any) => {
+  return PARSE_ERROR_MESSAGE[(err as Error).message] || (err as Error).message;
+};
 
 export { cn, formatPrice, isDev, omit, paramsToUrl, parseFormData };

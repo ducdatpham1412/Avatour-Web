@@ -4,6 +4,11 @@ import { useEffect, useMemo } from 'react';
 import SupplierTag from './components/SupplierTag';
 import { useSuppliers } from './SuppliersContext';
 
+interface SuppliersProps {
+  data: TypeProfile[];
+  query: Record<string, any>;
+}
+
 function SupplierPage({ data }: SuppliersProps) {
   const [, { updateCount }] = useSuppliers();
   const renderSuppliers = useMemo(

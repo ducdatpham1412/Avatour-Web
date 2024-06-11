@@ -52,6 +52,7 @@ export const ERROR_MESSAGE = {
   otp_invalid: 'otp_invalid',
   password_invalid: 'password_invalid',
   old_password_not_true: 'old_password_not_true',
+  input_invalid: 'input_invalid',
 
   // authentication
   register_fail: 'register_fail',
@@ -89,7 +90,14 @@ export const ERROR_MESSAGE = {
   conversation_not_existed: 'conversation_not_existed',
 };
 
+export const PARSE_ERROR_MESSAGE = {
+  default: 'Có một vài lỗi xảy ra',
+  [ERROR_MESSAGE.login_fail]: 'Đăng nhập thất bại',
+  [ERROR_MESSAGE.email_existed]: 'Email đã tồn tại',
+  [ERROR_MESSAGE.input_invalid]: 'Dữ liệu nhập sai',
+};
+
 type StatusCode = keyof typeof statusText;
 
-export type { StatusCode };
 export { statusText };
+export type { StatusCode };
