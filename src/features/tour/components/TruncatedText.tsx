@@ -14,12 +14,14 @@ import TourContentModal from './TourContentModal';
 
 interface TruncatedTextProps extends HTMLAttributes<HTMLParagraphElement> {
   fullContentInModal?: boolean;
+  headerTitle?: string;
 }
 
 const TruncatedText = ({
   children,
   className,
   fullContentInModal = false,
+  headerTitle,
   ...props
 }: PropsWithChildren<TruncatedTextProps>) => {
   const ref = useRef<HTMLParagraphElement | null>(null);
@@ -52,7 +54,10 @@ const TruncatedText = ({
       {isTruncated && (
         <>
           {fullContentInModal ? (
-            <TourContentModal title="" content="">
+            <TourContentModal
+              title={headerTitle || ''}
+              content={typeof children === 'string' ? children : ''}
+            >
               <span className="cursor-pointer font-normal underline">
                 {isShowingMore ? 'Rút gọn' : 'Xem thêm'}
               </span>

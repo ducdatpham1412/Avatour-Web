@@ -61,6 +61,8 @@ interface TypeProfile {
   name: string;
   avatar: string;
   description: string;
+  ward: string;
+  gg_map: string;
   followers: number;
   followings: number;
   gender: number;

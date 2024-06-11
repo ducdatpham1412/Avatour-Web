@@ -1,10 +1,12 @@
 'use client';
 
-import { useRouter } from '@/hooks';
+import { useMemo, useState } from 'react';
+
+import { cn } from '@/lib';
+
 import LocationTag, { LocationTagProps } from './LocationTag';
-import { useState } from 'react';
 import Timeline from './Timeline';
-import { cn, omit } from '@/lib';
+import { serviceDataDetail } from '../../constants';
 
 type SearchResultProps = {
   data: TypeTour[];
@@ -14,9 +16,11 @@ const SearchResult = ({ data }: SearchResultProps) => {
   const [activeData, setActiveData] = useState<number>(-1);
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="relative flex items-start gap-4">
-        <div className="flex-grow flex flex-col gap-4">
+    <div className="flex flex-col gap-y-2">
+      <span className="text-[14px] sm:text-[16px] leading-[24px] text-black">{data.length} kết quả</span>
+
+      <div className="relative flex items-start gap-x-8">
+        <div className="flex-grow flex flex-col gap-y-6 md:gap-y-2">
           {data.map((location, index) => (
             <LocationTag
               key={location.id}
@@ -30,6 +34,10 @@ const SearchResult = ({ data }: SearchResultProps) => {
           <TourQuickDetail key={activeData} data={data[activeData]} />
         </div>
       </div>
+
+      {/* <button className="self-center text-[16px] leading-[24px] font-medium text-black p-[12px_24px] rounded-full bg-p_600 mt-12 w-[160px] md:w-[180px]">
+        Xem thêm
+      </button> */}
     </div>
   );
 };
@@ -41,52 +49,57 @@ type TourQuickDetailProps = {
 export const TourQuickDetail = ({ data }: TourQuickDetailProps) => {
   const [activeDay, setActiveDay] = useState(0);
 
+  const tourName = useMemo(
+    () =>
+      data?.name === ''
+        ? `${data.schedule[0]?.[0].name} -> ${data.schedule.at(-1)?.at(-1)?.name}`
+        : data?.name,
+    [data?.name],
+  );
+
   return (
-    <div className="max_ssm:w-[95vw] max_ssm:min-w-[95vw] w-[420px] min-w-[420px] sticky top-4 right-0 p-[24px_28px] flex flex-col gap-4 rounded-[12px] border-[1px] border-gray-300 bg-white">
-      <h4 className="text-[18px]">Lịch trình du lịch</h4>
-      <div className="flex items-center gap-4">
+    <div className="w-[95vw] min-w-[95vw] md:w-[420px] md:min-w-[420px] sticky top-24 right-0 p-[28px_20px] md:p-[24px_28px] flex flex-col gap-y-3 rounded-[20px] border-[1px] border-gray_300 bg-white">
+      <h4 className="text-[16px] leading-[24px] font-medium">
+        {data ? tourName : 'Lịch trình du lịch'}
+      </h4>
+
+      <div className="gap-y-5 flex flex-col">
+        <div className="flex flex-wrap items-center gap-4">
+          {data?.schedule?.map((_, i) => (
+            <div
+              key={i}
+              role="button"
+              onClick={() => setActiveDay(i)}
+              className={cn(
+                'p-[3px_12px] bg-gray_200 rounded-full whitespace-nowrap text-[14px] leading-[24px] font-normal',
+                (data.schedule.length <= activeDay && i === 0) || activeDay === i ? 'bg-p_600' : '',
+              )}
+            >
+              Ngày {i + 1}
+            </div>
+          ))}
+        </div>
+
         {!data ? (
-          <>
-            <div className="p-[6px_12px] bg-gray_200 rounded-full">Ngày 1</div>
-            <div className="p-[6px_12px] bg-gray_200 rounded-full">Ngày 2</div>
-          </>
+          <div className="flex flex-col gap-4 items-center justify-center h-52">
+            <span className="text-gray_500 text-[14px] leading-[24px] font-normal">
+              Di chuột vào kết quả để xem lịch trình
+            </span>
+            <SearchResulIcon />
+          </div>
         ) : (
           <>
-            {data?.schedule.map((_, i) => (
-              <div
-                key={i}
-                role="button"
-                onClick={() => setActiveDay(i)}
-                className={cn(
-                  'p-[6px_12px] bg-gray_200 rounded-full',
-                  (data.schedule.length <= activeDay && i === 0) || activeDay === i
-                    ? 'bg-primary'
-                    : '',
-                )}
-              >
-                Ngày {i + 1}
-              </div>
-            ))}
+            <Timeline
+              steps={data.schedule[activeDay < data.schedule?.length ? activeDay : 0].map(t => ({
+                description: serviceDataDetail[t.services[0]]?.name || t.services[0],
+                duration: t.duration * 1000000,
+                image: t.avatar,
+                title: t.name,
+              }))}
+            />{' '}
           </>
         )}
       </div>
-      {!data ? (
-        <div className="flex flex-col gap-4 items-center justify-center h-52">
-          <span className="text-gray-500">Di chuột vào kết quả để xem lịch trình</span>
-          <SearchResulIcon />
-        </div>
-      ) : (
-        <>
-          <Timeline
-            steps={data.schedule[activeDay < data.schedule?.length ? activeDay : 0].map(t => ({
-              description: t.services[0],
-              duration: t.duration * 1000000,
-              image: t.avatar,
-              title: t.name,
-            }))}
-          />{' '}
-        </>
-      )}
     </div>
   );
 };

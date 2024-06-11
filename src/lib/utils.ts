@@ -36,6 +36,15 @@ const parseFormData = (data: Record<string | number, any>) =>
     return pre;
   }, new FormData());
 
+function calcTravelDuration(duration: number, shorthand = true) {
+  const d = Math.round(duration);
+  return shorthand
+    ? d <= 1
+      ? 'Trong ngày'
+      : `${d}N${d - 1}D`
+    : `${d} ngày${d - 1 < 1 ? ' ' : ` ${d - 1} đêm`}`;
+}
+
 function convertFormValue<T extends string | number | (string | number)[]>(
   form: FormData,
   key: string,
@@ -53,7 +62,8 @@ function convertFormValue<T extends string | number | (string | number)[]>(
 const isDev = process.env.NODE_ENV === 'development';
 
 export const parseErrorMessage = (err: any) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return PARSE_ERROR_MESSAGE[(err as Error).message] || (err as Error).message;
 };
 
-export { cn, formatPrice, isDev, omit, paramsToUrl, parseFormData };
+export { cn, formatPrice, isDev, omit, paramsToUrl, parseFormData, calcTravelDuration };
