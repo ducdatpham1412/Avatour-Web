@@ -1,4 +1,4 @@
-import { getTourList, getResource } from '@/api';
+import { getResource, getTourList } from '@/api';
 
 import { SearchError, SearchResult } from './components';
 
@@ -8,8 +8,7 @@ const SearchPageResult = async ({ params }: PageProps) => {
 
   if ('message' in response) {
     const resourceResponse = await getResource();
-    const suggestSearch =
-      'data' in resourceResponse ? resourceResponse.data.top_searches : [];
+    const suggestSearch = 'data' in resourceResponse ? resourceResponse.data.top_searches : [];
 
     return <SearchError error={response} searchText={searchText} suggestSearch={suggestSearch} />;
   }

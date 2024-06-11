@@ -1,12 +1,4 @@
-import {
-  Dispatch,
-  FC,
-  ReactNode,
-  SetStateAction,
-  createContext,
-  useContext,
-  useState,
-} from 'react';
+import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useState } from 'react';
 
 type SuppliersContextValue = [
   {
@@ -25,7 +17,7 @@ interface SuppliersProviderProps {
 
 const SuppliersContext = createContext<SuppliersContextValue>({} as SuppliersContextValue);
 
-const SuppliersProvider: FC<SuppliersProviderProps> = ({ children }) => {
+const SuppliersProvider = ({ children }: SuppliersProviderProps) => {
   const [supplierCount, setSupplierCount] = useState(0);
   const [loading, setLoading] = useState(false);
 

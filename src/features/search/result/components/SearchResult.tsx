@@ -4,9 +4,9 @@ import { useMemo, useState } from 'react';
 
 import { cn } from '@/lib';
 
+import { serviceDataDetail } from '../../constants';
 import LocationTag, { LocationTagProps } from './LocationTag';
 import Timeline from './Timeline';
-import { serviceDataDetail } from '../../constants';
 
 type SearchResultProps = {
   data: TypeTour[];
@@ -17,7 +17,9 @@ const SearchResult = ({ data }: SearchResultProps) => {
 
   return (
     <div className="flex flex-col gap-y-2">
-      <span className="text-[14px] sm:text-[16px] leading-[24px] text-black">{data.length} kết quả</span>
+      <span className="text-[14px] sm:text-[16px] leading-[24px] text-black">
+        {data.length} kết quả
+      </span>
 
       <div className="relative flex items-start gap-x-8">
         <div className="flex-grow flex flex-col gap-y-6 md:gap-y-2">
@@ -65,7 +67,7 @@ export const TourQuickDetail = ({ data }: TourQuickDetailProps) => {
 
       <div className="gap-y-5 flex flex-col">
         <div className="flex flex-wrap items-center gap-4">
-          {data?.schedule?.map((_, i) => (
+          {data?.schedule.map((_, i) => (
             <div
               key={i}
               role="button"
@@ -90,8 +92,8 @@ export const TourQuickDetail = ({ data }: TourQuickDetailProps) => {
         ) : (
           <>
             <Timeline
-              steps={data.schedule[activeDay < data.schedule?.length ? activeDay : 0].map(t => ({
-                description: serviceDataDetail[t.services[0]]?.name || t.services[0],
+              steps={data.schedule[activeDay < data.schedule.length ? activeDay : 0].map(t => ({
+                description: serviceDataDetail[t.services[0]].name || t.services[0],
                 duration: t.duration * 1000000,
                 image: t.avatar,
                 title: t.name,

@@ -100,6 +100,7 @@ const editSupplierFields = {
   link: {
     name: 'link',
     label: 'Link',
+    placeholder: 'Paste link',
   },
 } as FormFieldDefine<TypeProfile>;
 
@@ -119,6 +120,10 @@ const filterSuppliersFields = {
       {
         id: ACCOUNT_TYPE.location,
         name: 'Location',
+      },
+      {
+        id: 'del',
+        name: 'Đã xoá',
       },
     ],
   },

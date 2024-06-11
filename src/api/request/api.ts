@@ -3,7 +3,7 @@ import { cookies as getCookies } from 'next/headers';
 import nodeFetch from 'node-fetch';
 
 import { API_ENDPOINT } from '@/configs';
-import { logger, paramsToUrl } from '@/lib';
+import { logger, omitEmpty, paramsToUrl } from '@/lib';
 
 import { ERROR_MESSAGE } from './constants';
 
@@ -52,11 +52,11 @@ const api: API = async <T>(
     if (params instanceof FormData) {
       body = params;
     } else {
-      body = JSON.stringify(params);
+      body = JSON.stringify(omitEmpty(params ?? {}));
       headers.set('Content-Type', 'application/json');
     }
   } else if (params) {
-    url += `?${paramsToUrl(params)}`;
+    url += `?${paramsToUrl(omitEmpty(params))}`;
   }
 
   if (authorize) {

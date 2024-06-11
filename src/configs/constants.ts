@@ -28,6 +28,11 @@ export const REQUEST_STATUS = {
   rejected: 3,
 } as const;
 
+export const USER_STATUS = {
+  notActive: 0,
+  active: 1,
+};
+
 export const ACCOUNT_TYPE = {
   superAdmin: 'holder',
   user: 'user',

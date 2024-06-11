@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 
 import { Button } from '@/components/ui';
 import { Form } from '@/components/ui/form';
+import { Switch } from '@/components/ui/switch';
+import { USER_STATUS } from '@/configs/constants';
 
 import { editSupplierFields } from '../constants';
 import { SupplierData } from '../types';
@@ -16,15 +18,26 @@ export type OnSubmitSupplierForm = 'create-success' | 'error' | 'update-success'
 interface EditSuppliersFormProps {
   defaultValues?: SupplierData;
   onSubmit: (data: SupplierData) => Promise<OnSubmitSupplierForm>;
+  onDeleteOrActive?: () => void;
   titleButton: string;
 }
 
-const EditSuppliersForm = ({ defaultValues, onSubmit, titleButton }: EditSuppliersFormProps) => {
+const EditSuppliersForm = ({
+  defaultValues,
+  onSubmit,
+  onDeleteOrActive,
+  titleButton,
+}: EditSuppliersFormProps) => {
   const [submitting, setSubmitting] = useState(false);
 
   const controller = useForm<SupplierData>({
     defaultValues,
     mode: 'onSubmit',
+  });
+
+  const status = useWatch({
+    control: controller.control,
+    name: 'status',
   });
 
   const handleSubmit = async (data: SupplierData) => {
@@ -53,7 +66,7 @@ const EditSuppliersForm = ({ defaultValues, onSubmit, titleButton }: EditSupplie
           <AvatarPreview defaultValue={defaultValues?.avatar} control={controller.control} />
         </div>
         <div className="flex flex-col flex-grow gap-1">
-          <div className="flex gap-5 flex-grow pr-8">
+          <div className="flex gap-5 flex-grow pr-8 items-center">
             <InputField
               {...editSupplierFields.avatar}
               className="flex-grow"
@@ -64,6 +77,15 @@ const EditSuppliersForm = ({ defaultValues, onSubmit, titleButton }: EditSupplie
               className="flex-grow"
               control={controller.control}
             />
+            {status !== undefined && (
+              <Switch
+                checked={status === USER_STATUS.active}
+                onCheckedChange={v => {
+                  controller.setValue('status', v ? USER_STATUS.active : USER_STATUS.notActive);
+                  onDeleteOrActive?.();
+                }}
+              />
+            )}
           </div>
           <div className="flex gap-5 flex-grow pr-8">
             <InputField

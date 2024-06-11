@@ -1,5 +1,6 @@
 'use client';
 
+import * as DialogPrimitive from '@radix-ui/react-dialog';
 import {
   ComponentPropsWithoutRef,
   ElementRef,
@@ -8,10 +9,9 @@ import {
   ReactElement,
   forwardRef,
 } from 'react';
-import * as DialogPrimitive from '@radix-ui/react-dialog';
 
-import { cn } from '@/lib/utils';
 import { Icon } from '@/components/icon';
+import { cn } from '@/lib/utils';
 
 import { Show } from './show';
 
@@ -117,10 +117,10 @@ DialogFooter.displayName = 'DialogFooter';
 
 export {
   Dialog,
-  DialogTrigger,
   DialogContent,
-  DialogHeader,
-  DialogFooter,
-  DialogTitle,
   DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 };
