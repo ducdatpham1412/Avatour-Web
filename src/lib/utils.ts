@@ -66,4 +66,13 @@ export const parseErrorMessage = (err: any) => {
   return PARSE_ERROR_MESSAGE[(err as Error).message] || (err as Error).message;
 };
 
-export { cn, formatPrice, isDev, omit, paramsToUrl, parseFormData, calcTravelDuration };
+export const omitEmpty = (value: Record<any, any>) => {
+  return Object.keys(value).reduce((pre, key) => {
+    if (value[key] !== undefined && value[key] !== null) {
+      pre[key] = value[key];
+    }
+    return pre;
+  }, {} as typeof value);
+};
+
+export { calcTravelDuration, cn, formatPrice, isDev, omit, paramsToUrl, parseFormData };

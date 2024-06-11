@@ -11,16 +11,17 @@ type Props = FormFieldProps<Record<string, any>>;
 /**
  * TODO: Move this to app's components
  */
-const ListField = ({ control, name, rules, className, label }: Props) => {
+const ListField = ({ control, name, rules, className, label, placeholder }: Props) => {
   const renderList = (field: ControllerRenderProps<Record<string, string[]>, string>) => {
     return (
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-4">
         {field.value.map((v, i) => {
           return (
             <div className="flex items-center">
               <Input
                 className="bg-white w-[300px] h-[40px] rounded-[10px]"
                 defaultValue={v}
+                placeholder={placeholder}
                 useForm
                 type="text"
                 onChange={e => {
@@ -29,7 +30,7 @@ const ListField = ({ control, name, rules, className, label }: Props) => {
                 }}
               />
               <div
-                className="ml-1 cursor-pointer"
+                className="ml-2 cursor-pointer"
                 onClick={() => {
                   field.onChange(field.value.filter((_, index) => index !== i));
                 }}

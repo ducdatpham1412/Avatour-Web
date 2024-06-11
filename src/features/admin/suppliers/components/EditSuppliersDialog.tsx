@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation';
-import { ReactElement, useCallback, useState } from 'react';
+import { ReactElement, useRef, useState } from 'react';
 
-import { addSupplier, updateSupplier } from '@/api/admin';
+import { addSupplier, deleteOrActiveSupplier, updateSupplier } from '@/api/admin';
 import { Icon } from '@/components/icon';
 import { ToastAction } from '@/components/ui';
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from '@/components/ui/dialog';
@@ -35,12 +35,35 @@ const EditSuppliersDialog = ({
 }: EditSuppliersDialogProps) => {
   const router = useRouter();
   const { toast } = useToast();
+  const hasChangedStatus = useRef(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const toggleDialog = useCallback((status: boolean) => {
+  const toggleDialog = (status: boolean) => {
     setDialogOpen(status);
     onOpenChange?.(status);
-  }, []);
+
+    if (status) {
+      hasChangedStatus.current = false;
+    } else {
+      if (hasChangedStatus.current) {
+        router.refresh();
+      }
+    }
+  };
+
+  const onDeleteOrActive = async () => {
+    if (data) {
+      try {
+        await deleteOrActiveSupplier(data.id);
+        hasChangedStatus.current = true;
+      } catch (err) {
+        toast({
+          description: parseErrorMessage(err),
+          variant: 'destructive',
+        });
+      }
+    }
+  };
 
   const onSubmit = async (formData: SupplierData): Promise<OnSubmitSupplierForm> => {
     if (Object.keys(formData).length === 0) {
@@ -88,6 +111,8 @@ const EditSuppliersDialog = ({
           ),
         });
       }
+
+      return 'error';
     }
 
     /**
@@ -131,6 +156,7 @@ const EditSuppliersDialog = ({
             }
           }
           onSubmit={onSubmit}
+          onDeleteOrActive={onDeleteOrActive}
           titleButton={type === 'create' ? 'Thêm mới' : 'Cập nhật'}
         />
       </DialogContent>

@@ -11,7 +11,7 @@ export const getTourList = async (options: TourListParams) => {
     const data = await request.get<TypeApi<TypeTour[]>>(
       '/common/search',
       { type_search: 'ds', text: options.text },
-      { authorize: false },
+      { authorize: false, cache: 'no-store' },
     );
     return data;
   } catch (e) {

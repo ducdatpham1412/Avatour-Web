@@ -13,12 +13,12 @@ const AvatarPreview: React.FC<AvatarPreviewProps> = memo(({ control, defaultValu
   const [url, setUrl] = useState(defaultValue ?? '');
   const fistcall = useRef(true);
 
-  const avatar = useWatch({ control, name: 'avatar', defaultValue }) as string;
+  const avatar = useWatch({ control, name: 'avatar', defaultValue });
 
   useEffect(() => {
     if (!fistcall.current) {
       const timeout = setTimeout(() => {
-        setUrl(avatar);
+        setUrl(avatar ?? '');
       }, 200);
       return () => clearTimeout(timeout);
     } else {

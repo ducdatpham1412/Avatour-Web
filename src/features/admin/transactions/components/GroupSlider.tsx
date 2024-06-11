@@ -1,4 +1,4 @@
-import { ReactNode, memo } from 'react';
+import { memo } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import GroupCard from './GroupCard';

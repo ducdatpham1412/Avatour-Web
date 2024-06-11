@@ -4,6 +4,10 @@ const nextConfig = {
     return [
       {
         source: '/',
+        destination: '/search',
+      },
+      {
+        source: '/about-us',
         destination: '/landing/index.html',
       },
     ];
