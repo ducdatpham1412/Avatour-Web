@@ -7,6 +7,7 @@ import { calcTravelDuration, cn, formatPrice } from '@/lib';
 
 import { serviceDataDetail } from '../../constants';
 import { TourQuickDetail } from './SearchResult';
+import { getCategoriesByServices } from '../../utils';
 
 type LocationTagProps = {
   isActive?: boolean;
@@ -30,7 +31,7 @@ const LocationTag = memo(({ data, onHover, isActive }: LocationTagProps) => {
         });
       });
       return c;
-    }, {} as Record<string, number>);
+    }, {} as Record<Service, number>);
   }, [data.schedule]);
 
   const tourName = useMemo(
@@ -53,6 +54,12 @@ const LocationTag = memo(({ data, onHover, isActive }: LocationTagProps) => {
     router.push(`/tour/0?t=${timestamp}`);
   };
 
+  const categories = useMemo(() => {
+    const services = data.schedule.flatMap(profile => profile.flatMap(p => p.services));
+    return getCategoriesByServices(services);
+  }, []);
+
+
   return (
     <div
       className={cn(
@@ -72,13 +79,7 @@ const LocationTag = memo(({ data, onHover, isActive }: LocationTagProps) => {
       <div className="flex flex-col justify-between py-[6px] gap-y-1">
         <div className="flex flex-col">
           <div className="flex items-center gap-2 text-black/[0.36] text-[14px] leading-[24px] font-normal text-gray_500">
-            {/* {data.tags.flatMap((tag, index) => {
-              if (index % 2 == 1) {
-                return [<span>|</span>, <span>{tag}</span>];
-              }
-              return <span>{tag}</span>;
-            })} */}
-            Văn hoá | Lịch sử
+            {categories.join(' | ')}
           </div>
           <div className="text-[18px] leading-[28px] font-medium line-clamp-2" title={tourName}>
             {tourName}
@@ -89,7 +90,11 @@ const LocationTag = memo(({ data, onHover, isActive }: LocationTagProps) => {
           <div className="flex flex-col" style={{ rowGap: '12px' }}>
             <div className="grid grid-cols-2 gap-x-9 gap-y-2">
               {Object.keys(serviceCountMap).map((tag, index) => (
-                <TourService key={`${tag}-${index}`} name={tag} count={serviceCountMap[tag]} />
+                <TourService
+                  key={`${tag}-${index}`}
+                  name={tag as Service}
+                  count={serviceCountMap[tag as Service]}
+                />
               ))}
             </div>
             <div className="flex items-center gap-2">
@@ -119,12 +124,12 @@ const LocationTag = memo(({ data, onHover, isActive }: LocationTagProps) => {
 });
 
 type TourServiceProps = {
-  name: string;
+  name: Service;
   count: number;
 };
 
 const TourService = ({ name, count }: TourServiceProps) => {
-  let serviceData = serviceDataDetail[name as keyof typeof serviceDataDetail];
+  let serviceData = serviceDataDetail[name];
   if (!serviceData) {
     serviceData = serviceDataDetail['other-service'];
   }
@@ -132,7 +137,7 @@ const TourService = ({ name, count }: TourServiceProps) => {
 
   return (
     <div className="flex items-center gap-2 text-gray_500 text-[14px] font-normal">
-      <ServiceIcon width="20px" height="20px" className="min-w-[24px]" strokeWidth={1.2} /> {count}{' '}
+      <ServiceIcon width="20px" height="20px" className="min-w-[24px] min-h-[24px]" strokeWidth={1.2} /> {count}{' '}
       {serviceData.name}
     </div>
   );

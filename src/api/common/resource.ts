@@ -6,6 +6,7 @@ export const getResource = async () => {
   try {
     const data = await request.get<TypeApi<Resource>>(
       '/common/resource',
+      undefined,
       { authorize: false },
     );
     return data;

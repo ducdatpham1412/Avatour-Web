@@ -60,7 +60,7 @@ const DayItem = ({ day, profiles, onItemClick }: DayItemProps) => (
                 <div className="flex items-start md:items-center justify-between w-full">
                   <div className="flex flex-col md:flex-row items-start md:items-center gap-x-2 gap-y-[6px]">
                     <div className="flex items-center gap-x-2">
-                      <Icon name="museum" size={24} />
+                      <ServiceIcon width="24px" height="24px" className="min-w-[24px] min-h-[24px]" strokeWidth={1.5} />
                       <h2 className="text-[16px] text-black leading-[24px] md:text-[18px] md:leading-[28px] font-medium">
                         {profile?.name}
                       </h2>
@@ -98,7 +98,7 @@ const DayItem = ({ day, profiles, onItemClick }: DayItemProps) => (
 
                 <div className="flex flex-col md:flex-row items-start md:items-center gap-y-1 gap-x-9">
                   <div className="gap-x-[6px] flex items-center">
-                    <ServiceIcon />
+                    <ServiceIcon width="20px" height="20px" className="min-w-[24px] min-h-[24px]" strokeWidth={1.2} />
 
                     <div className="text-gray_500 text-[14px] leading-[24px] font-light">
                       {services}

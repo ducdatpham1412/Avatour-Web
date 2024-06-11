@@ -6,6 +6,7 @@ import { useRouter } from '@/hooks';
 
 import { DayItem, RelatedPlaces, Schedule, TourHeader } from './components';
 import type { TourProps } from './types';
+import { getCategoriesByServices } from '../search/utils';
 
 interface TourPageProps extends TourProps {
   searchParams: Record<string, any>;
@@ -17,9 +18,7 @@ const TourPage = ({ searchParams }: TourPageProps) => {
 
   const [data] = useState(
     () =>
-      (searchParams.t
-        ? JSON.parse(localStorage.getItem(searchParams.t) ?? '{}')
-        : {}) as TypeTour,
+      (searchParams.t ? JSON.parse(localStorage.getItem(searchParams.t) ?? '{}') : {}) as TypeTour,
   );
 
   const tourName = useMemo(
@@ -30,6 +29,11 @@ const TourPage = ({ searchParams }: TourPageProps) => {
     [data.name],
   );
 
+  const categories = useMemo(() => {
+    const services = data.schedule.flatMap(profile => profile.flatMap(p => p.services));
+    return getCategoriesByServices(services);
+  }, []);
+
   if (!Object.keys(data).length) {
     router.replace('/search');
     return null;
@@ -39,7 +43,7 @@ const TourPage = ({ searchParams }: TourPageProps) => {
     <main className="flex flex-col gap-y-12 md:gap-y-[124px]">
       <article className="flex flex-col gap-y-[56px]">
         <TourHeader
-          tags={['Văn hoá', 'Lịch sử']}
+          tags={categories}
           title={tourName}
           description={data.description}
           cost={data.min_cost}

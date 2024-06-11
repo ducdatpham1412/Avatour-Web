@@ -4,7 +4,7 @@ import TruncatedText from './TruncatedText';
 import { formatCurrency } from '../utils';
 
 interface TourHeaderProps {
-  tags: string[];
+  tags: (string | undefined)[];
   title: string;
   description: string;
   cost: number;

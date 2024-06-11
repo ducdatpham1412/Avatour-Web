@@ -3,7 +3,6 @@
 import { useMemo, useState } from 'react';
 
 import { cn } from '@/lib';
-import { useQuery } from '@/hooks/useQuery';
 
 import LocationTag, { LocationTagProps } from './LocationTag';
 import Timeline from './Timeline';

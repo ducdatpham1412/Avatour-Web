@@ -73,7 +73,7 @@ export const serviceDataDetail: Record<Service, { name: string; icon: any }> = {
     icon: BeachIcon,
   },
   book: {
-    name: ' Sách',
+    name: 'Sách',
     icon: BookIcon,
   },
   park: {
