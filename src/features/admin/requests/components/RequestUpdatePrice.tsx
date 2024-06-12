@@ -1,5 +1,6 @@
-import { ReactElement, ReactNode, cloneElement, useState } from 'react';
+import { cloneElement } from 'react';
 
+import { Icon } from '@/components/icon';
 import {
   Button,
   Dialog,
@@ -8,16 +9,11 @@ import {
   DialogHeader,
   Divider,
   Image,
-  ToastAction,
 } from '@/components/ui';
-import { Icon } from '@/components/icon';
-import { REQUEST_STATUS } from '@/configs/constants';
-import { confirmRequest } from '@/api/admin/requests';
-import { useToast } from '@/hooks';
-import { formatPrice } from '@/lib';
+import { formatPrice } from '@/lib/format';
 
-import Badge from './Badge';
 import withRequest from '../hoc/withRequest';
+import Badge from './Badge';
 
 const RequestUpdatePriceModal = withRequest<'update_price'>(
   ({ data, children, active, onConfirm, open, openOpenChange, submiting }) => (

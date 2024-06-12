@@ -1,7 +1,7 @@
+import { Image } from '@/components/ui';
+import { formatPrice } from '@/lib/format';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { Image } from '@/components/ui';
-import { formatPrice } from '@/lib';
 
 type GroupCardProps = {
   data: TypeJoinPersonal;
@@ -43,4 +43,4 @@ function GroupCard({ data }: GroupCardProps) {
   );
 }
 
-export { type GroupCardProps, GroupCard as default };
+export { GroupCard as default, type GroupCardProps };

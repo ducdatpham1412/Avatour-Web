@@ -1,7 +1,7 @@
 import { Icon } from '@/components/icon';
 import { Image, Skeleton } from '@/components/ui';
 import { serviceDataDetail } from '@/features/search/constants';
-import { formatPrice } from '@/lib';
+import { formatPrice } from '@/lib/format';
 
 import EditSuppliersDialog from './EditSuppliersDialog';
 

@@ -13,7 +13,7 @@ import {
   Show,
 } from '@/components/ui';
 import { STATUS_JOIN_ESTIMATE } from '@/configs/constants';
-import { formatPrice } from '@/lib';
+import { formatPrice } from '@/lib/format';
 
 import { getTransactionPrice } from '../lib/transaction';
 import { TransactionData } from '../types';

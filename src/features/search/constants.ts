@@ -31,7 +31,10 @@ export type AnimationFrame = {
   child: AnimationFrame[];
 } & Record<string, string | AnimationFrame[]>;
 
-export const serviceDataDetail: Record<Service, { name: string; icon: any }> = {
+export const serviceDataDetail: Record<
+  Service,
+  { name: string; icon: typeof CultureIcon | typeof BikeIcon }
+> = {
   culture: {
     name: 'Văn hoá',
     icon: CultureIcon,

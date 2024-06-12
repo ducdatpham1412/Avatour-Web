@@ -1,15 +1,15 @@
-import { memo, useMemo, useState } from 'react';
 import dayjs from 'dayjs';
+import { memo, useMemo, useState } from 'react';
 
 import { Icon } from '@/components/icon';
 import { Image, Show } from '@/components/ui';
-import { formatPrice } from '@/lib';
 import { STATUS_JOIN_ESTIMATE } from '@/configs/constants';
+import { formatPrice } from '@/lib/format';
 
-import Badge from './Badge';
-import { TransactionData } from '../types';
-import TransactionDetailModal from './TransactionDetailModal';
 import { getTransactionPrice } from '../lib/transaction';
+import { TransactionData } from '../types';
+import Badge from './Badge';
+import TransactionDetailModal from './TransactionDetailModal';
 
 export interface TransactionItemProps {
   data: TransactionData['data'][number];
@@ -25,7 +25,7 @@ const TransactionItem = memo(({ data, onSubmitEnd }: TransactionItemProps) => {
     return data.status;
   }, [data.status]);
 
-  const price = useMemo(() => getTransactionPrice(data), [data?.list_personals]);
+  const price = useMemo(() => getTransactionPrice(data), [data.list_personals]);
 
   const deposit = data.deposit ?? 0;
 
@@ -52,7 +52,7 @@ const TransactionItem = memo(({ data, onSubmitEnd }: TransactionItemProps) => {
               {data.sale?.creator_name}
             </h4>
             <span className="text-gray_600">
-              x{data?.amount ?? 0} <span className="ml-2">{data.sale?.name}</span>
+              x{data.amount ?? 0} <span className="ml-2">{data.sale?.name}</span>
             </span>
           </div>
         </td>
@@ -63,7 +63,7 @@ const TransactionItem = memo(({ data, onSubmitEnd }: TransactionItemProps) => {
         </td>
         <td className="bg-white">
           <div className="flex items-center min-h-[40px] p-[0_10px] border-l-[1px]">
-            {formatPrice(deposit ?? 0)}đ
+            {formatPrice(deposit)}đ
           </div>
         </td>
         <td className="bg-white">

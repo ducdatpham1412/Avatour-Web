@@ -1,5 +1,6 @@
 import { ReactElement, useCallback, useMemo, useState } from 'react';
 
+import { confirmDeposit } from '@/api';
 import {
   Button,
   Dialog,
@@ -8,13 +9,11 @@ import {
   DialogTrigger,
   ToastAction,
 } from '@/components/ui';
-import { formatPrice } from '@/lib';
-import { confirmDeposit } from '@/api';
 import { useToast } from '@/hooks';
+import { formatPrice } from '@/lib/format';
 
 import { TransactionData } from '../types';
 import ModalHeadIcon from './ModalHeadIcon';
-import { getTransactionPrice } from '../lib/transaction';
 
 interface TransactionConfirmModalProps {
   data?: TransactionData['data'][number];
