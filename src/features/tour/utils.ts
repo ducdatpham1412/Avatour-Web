@@ -10,6 +10,3 @@ export function convertDecimalToTime(decimalHours: number) {
   // Format the time as "H[h]mm"
   return time.format('H[h]mm');
 }
-
-export const formatCurrency = (number: number) =>
-  new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number);

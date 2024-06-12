@@ -1,9 +1,10 @@
 import { getResource, getTourList } from '@/api';
 
-import { SearchError, SearchResult } from './components';
+import { SearchError, SearchResult } from './screens';
 
 const SearchPageResult = async ({ params }: PageProps) => {
   const searchText = decodeURIComponent(params.search_text as string) || '';
+
   const response = await getTourList({ text: searchText });
 
   if ('message' in response) {

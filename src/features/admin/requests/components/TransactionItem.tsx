@@ -1,16 +1,14 @@
-import { Fragment, ReactElement, ReactNode, memo, useCallback, useMemo, useState } from 'react';
 import dayjs from 'dayjs';
+import { Fragment, ReactElement, memo, useCallback, useMemo } from 'react';
 
-import { Icon } from '@/components/icon';
-import { Image, Show } from '@/components/ui';
-import { formatPrice } from '@/lib';
-import { REQUEST_STATUS, STATUS_JOIN_ESTIMATE, TYPE_AUTH_REQUEST } from '@/configs/constants';
+import { Image } from '@/components/ui';
+import { REQUEST_STATUS, TYPE_AUTH_REQUEST } from '@/configs/constants';
 
 import Badge from './Badge';
 import RequestChangeAccountModal from './RequestChangeAccountModal';
-import RequestUpdatePriceModal from './RequestUpdatePrice';
 import RequestSuggestLocationModal from './RequestSuggestLocationModal';
 import RequestUpdateBankModal from './RequestUpdateBankModal';
+import RequestUpdatePriceModal from './RequestUpdatePrice';
 
 export interface TransactionItemProps {
   data: TypeGetRequestResponse;
@@ -70,7 +68,7 @@ const TransactionItem = memo(({ data, onSubmitEnd }: TransactionItemProps) => {
             </RequestChangeAccountModal>
           );
         case TYPE_AUTH_REQUEST.update_price:
-          return data.data?.sale?.id ? (
+          return data.data.sale.id ? (
             <RequestUpdatePriceModal data={data} onUpdate={onSubmitEnd}>
               {children}
             </RequestUpdatePriceModal>

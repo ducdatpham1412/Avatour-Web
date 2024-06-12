@@ -1,4 +1,7 @@
 import ArrowLeftIcon from './ArrowLeftIcon';
+import ArrowUpIcon from './ArrowUpIcon';
+import CalendarIcon from './CalendarIcon';
+import ClockIcon from './ClockIcon';
 import CloseIcon from './CloseIcon';
 import EditIcon from './EditIcon';
 import HomeIcon from './HomeIcon';
@@ -6,14 +9,13 @@ import ImageIcon from './ImageIcon';
 import LoadingIcon from './LoadingIcon';
 import LogoIcon from './LogoIcon';
 import MailIcon from './MailIcon';
-import MoneyIcon from './MoneyIcon';
-import QuestionIcon from './QuestionIcon';
-import TransactionActive from './TransactionActive';
-import MuseumIcon from './MuseumIcon';
-import StarIcon from './StarIcon';
-import ArrowUpIcon from './ArrowUpIcon';
-import ClockIcon from './ClockIcon';
 import MarkerIcon from './MarkerIcon';
+import MoneyIcon from './MoneyIcon';
+import MuseumIcon from './MuseumIcon';
+import QuestionIcon from './QuestionIcon';
+import SearchResultIcon from './SearchResultIcon';
+import StarIcon from './StarIcon';
+import TransactionActive from './TransactionActive';
 
 export const iconNames = {
   edit: EditIcon,
@@ -32,6 +34,8 @@ export const iconNames = {
   clock: ClockIcon,
   'arrow-up': ArrowUpIcon,
   marker: MarkerIcon,
+  calendar: CalendarIcon,
+  searchResult: SearchResultIcon,
 } as const;
 
 export type IconNames = keyof typeof iconNames;

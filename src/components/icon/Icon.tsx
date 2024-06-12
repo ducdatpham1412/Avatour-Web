@@ -7,7 +7,7 @@ export interface IconProps {
   className?: string;
 }
 
-export const Icon: React.FC<IconProps> = ({ name, size, color, className }) => {
+export const Icon = ({ name, size, color, className }: IconProps) => {
   const IconBase = iconNames[name];
   return (
     <span className="contents" style={{ fontSize: size, color }}>
