@@ -66,7 +66,7 @@ const DayItem = ({ day, profiles, onItemClick }: DayItemProps) => {
                             className="min-w-[24px] min-h-[24px]"
                             strokeWidth={1.5}
                           />
-                          <h2 className="text-[16px] text-black leading-[24px] md:text-[18px] md:leading-[28px] font-medium">
+                          <h2 className="text-[16px] text-black leading-[24px] md:text-[18px] md:leading-[28px] font-medium text-left">
                             {profile.name}
                           </h2>
                         </div>

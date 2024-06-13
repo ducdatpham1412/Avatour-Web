@@ -1,5 +1,6 @@
 import { cloneElement } from 'react';
 
+import { Icon } from '@/components/icon';
 import {
   Button,
   Dialog,
@@ -9,17 +10,16 @@ import {
   Divider,
   Image,
 } from '@/components/ui';
-import { Icon } from '@/components/icon';
 
-import Badge from './Badge';
 import withRequest from '../hoc/withRequest';
+import Badge from './Badge';
 
-const serviceMap: Record<number, string> = {
-  2: 'Food tour',
-  3: 'Cắm trại',
-  4: 'Đi phượt',
-  5: 'Team building',
-};
+// const serviceMap: Record<number, string> = {
+//   2: 'Food tour',
+//   3: 'Cắm trại',
+//   4: 'Đi phượt',
+//   5: 'Team building',
+// };
 
 const RequestSuggestLocationModal = withRequest<'suggest_location'>(
   ({ data, children, open, openOpenChange, submiting, onConfirm, active }) => (
@@ -73,9 +73,9 @@ const RequestSuggestLocationModal = withRequest<'suggest_location'>(
                 <li>
                   <span className="font-bold">Loại hình trải nghiệm:</span>{' '}
                   <span>
-                    {data.data.services.map((s, index) =>
+                    {/* {data.data.services.map((s, index) =>
                       index < data.data.services.length - 1 ? `${serviceMap[s]}, ` : serviceMap[s],
-                    )}
+                    )} */}
                   </span>
                 </li>
                 <li>
