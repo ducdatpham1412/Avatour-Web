@@ -4,11 +4,9 @@ import request from '../request';
 
 export const getResource = async () => {
   try {
-    const data = await request.get<TypeApi<Resource>>(
-      '/common/resource',
-      undefined,
-      { authorize: false },
-    );
+    const data = await request.get<TypeApi<Resource>>('/common/resource', undefined, {
+      authorize: false,
+    });
     return data;
   } catch (e) {
     const error = makeError(e);
