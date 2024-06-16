@@ -92,6 +92,4 @@ const request = Object.assign(api, {
     api(path, params, { ...options, method: 'DELETE' }),
 } as HTTPRequest);
 
-export const useEndpoint = (path: string) => API_ENDPOINT + path;
-
 export { request };

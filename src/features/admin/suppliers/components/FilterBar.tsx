@@ -105,7 +105,7 @@ const FilterBar = memo(
               </div> */}
 
               <div className="flex flex-col gap-2">
-                <h4 className="font-bold">Lọc theo quận, huyện</h4>
+                <h4 className="font-bold">Lọc theo mã địa phương</h4>
                 <Input
                   placeholder="Mã quận, huyện"
                   onChange={e => {
