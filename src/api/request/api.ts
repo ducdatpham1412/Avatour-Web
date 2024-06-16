@@ -59,7 +59,7 @@ const api: API = async <T>(
     url += `?${paramsToUrl(omitEmpty(params))}`;
   }
 
-  if (authorize) {
+  if (authorize && !headers.get('Authorization')) {
     const cookies = getCookies();
     const token = cookies.get('token');
     if (!token) {
