@@ -15,7 +15,7 @@ interface ProfileResponse {
   data: Passport;
 }
 
-const adminLogin = async (email: string, password: string) => {
+export const adminLogin = async (email: string, password: string) => {
   const cookies = getCookies();
 
   const { data } = await request.post<TypeApi<LoginResponse>>(
@@ -29,28 +29,21 @@ const adminLogin = async (email: string, password: string) => {
 
   cookies.set('token', data.token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    // secure: process.env.NODE_ENV === 'production', // Uncomment this when having https
   });
   cookies.set('refresh_token', data.refreshToken, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    // secure: process.env.NODE_ENV === 'production', // Uncomment this when having https
   });
 };
 
-const getProfile = async (options?: {
-  token: string;
-}): Promise<ActionResponse<ProfileResponse['data']>> => {
+export const getProfile = async (): Promise<ActionResponse<ProfileResponse['data']>> => {
   try {
-    const res: ProfileResponse = await request.get(
-      '/common/passport',
-      undefined,
-      options?.token
-        ? {
-            cache: 'no-store',
-            headers: { Authorization: `Bearer ${options.token}` },
-          }
-        : { cache: 'no-store' },
-    );
+    const res: ProfileResponse = await request.get('/common/passport', undefined, {
+      next: {
+        revalidate: 10,
+      },
+    });
 
     if (
       res.data.profile.account_type !== ACCOUNT_TYPE.admin &&
@@ -77,5 +70,3 @@ const getProfile = async (options?: {
     };
   }
 };
-
-export { adminLogin, getProfile };
