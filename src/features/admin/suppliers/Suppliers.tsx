@@ -2,7 +2,7 @@
 import { useEffect, useMemo } from 'react';
 
 import SupplierTag from './components/SupplierTag';
-import { useSuppliers } from './SuppliersContext';
+import { useSuppliers } from './SuppliersProvider';
 
 interface SuppliersProps {
   data: TypeProfile[];

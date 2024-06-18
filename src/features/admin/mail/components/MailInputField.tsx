@@ -1,7 +1,7 @@
 import { InputHTMLAttributes, memo } from 'react';
 
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input, Textarea } from '@/components/ui';
+import { Input } from '@/components/ui';
+import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 
 import { MailForm, MailFormFields } from '../types';
 

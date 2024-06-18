@@ -13,7 +13,7 @@ const SearchInputBase = ({ searchData = '', className }: SearchInputProps) => {
   return (
     <div
       className={cn(
-        'flex flex-col items-center gap-4 bg-gray_50 w-[min(813px,_90%)] rounded-full',
+        'flex flex-col items-center gap-4 bg-gray_100 w-[min(813px,_90%)] rounded-full',
         className,
         searched ? 'p-[12px_16px] sm:p-[16px_24px]' : 'p-[16px_16px] sm:p-[16px_24px]',
       )}

@@ -18,22 +18,23 @@ const InputField = memo(({ control, name, rules, label, className, placeholder, 
       rules={rules}
       render={({ field }) => (
         <FormItem className={className}>
-          <FormLabel>{label ?? name}</FormLabel>
+          {!!label && <FormLabel>{label}</FormLabel>}
           <FormControl>
             {type === 'textarea' ? (
               <Textarea
                 placeholder={placeholder}
                 {...field}
                 className="bg-white w-full rounded-[10px]"
-                value={field.value || ''}
+                value={(field.value as string) || ''}
               />
             ) : (
               <Input
                 placeholder={placeholder}
                 {...field}
                 className="bg-white w-full h-[40px] rounded-[10px]"
-                value={field.value ?? ''}
+                value={(field.value as string) || ''}
                 useForm
+                type=""
               />
             )}
           </FormControl>

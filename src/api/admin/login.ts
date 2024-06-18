@@ -1,9 +1,10 @@
 'use server';
-import { cookies as getCookies } from 'next/headers';
 
 import request from '@/api/request';
 import { ACCOUNT_TYPE } from '@/configs/constants';
 import { logger } from '@/lib';
+
+import { setTokenCookies } from '../auth';
 
 interface LoginResponse {
   token: string;
@@ -16,8 +17,6 @@ interface ProfileResponse {
 }
 
 export const adminLogin = async (email: string, password: string) => {
-  const cookies = getCookies();
-
   const { data } = await request.post<TypeApi<LoginResponse>>(
     '/admin/login',
     {
@@ -27,14 +26,7 @@ export const adminLogin = async (email: string, password: string) => {
     { authorize: false },
   );
 
-  cookies.set('token', data.token, {
-    httpOnly: true,
-    // secure: process.env.NODE_ENV === 'production', // Uncomment this when having https
-  });
-  cookies.set('refresh_token', data.refreshToken, {
-    httpOnly: true,
-    // secure: process.env.NODE_ENV === 'production', // Uncomment this when having https
-  });
+  setTokenCookies(data);
 };
 
 export const getProfile = async (): Promise<ActionResponse<ProfileResponse['data']>> => {

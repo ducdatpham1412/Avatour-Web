@@ -1,9 +1,16 @@
 import '@/styles/global.css';
 import type { Metadata } from 'next';
 import { Lexend } from 'next/font/google';
+import { ReactNode } from 'react';
 
 import { ProgressBar } from '@/components';
 import { Toaster } from '@/components/ui';
+
+import Provider from './provider';
+
+interface Props {
+  children: ReactNode;
+}
 
 const lexendFont = Lexend({
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
@@ -16,14 +23,18 @@ export const metadata: Metadata = {
   title: 'Avatour',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+const RootLayout = ({ children }: Props) => {
   return (
-    <html lang="en" className={lexendFont.className}>
-      <body>
-        {children}
-        <Toaster />
-        <ProgressBar />
-      </body>
-    </html>
+    <Provider>
+      <html lang="en" className={lexendFont.className}>
+        <body>
+          {children}
+          <Toaster />
+          <ProgressBar />
+        </body>
+      </html>
+    </Provider>
   );
-}
+};
+
+export default RootLayout;

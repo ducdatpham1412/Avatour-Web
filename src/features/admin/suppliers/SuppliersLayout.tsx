@@ -1,6 +1,6 @@
 'use client';
 import FilterBar from './components/FilterBar';
-import { SuppliersProvider } from './SuppliersContext';
+import SuppliersProvider from './SuppliersProvider';
 
 type SuppliersLayoutProps = {
   children: React.ReactNode;

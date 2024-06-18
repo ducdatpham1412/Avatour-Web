@@ -95,6 +95,8 @@ export const PARSE_ERROR_MESSAGE = {
   [ERROR_MESSAGE.login_fail]: 'Đăng nhập thất bại',
   [ERROR_MESSAGE.email_existed]: 'Email đã tồn tại',
   [ERROR_MESSAGE.input_invalid]: 'Dữ liệu nhập sai',
+  [ERROR_MESSAGE.username_existed]: 'Tài khoản đã tồn tại',
+  [ERROR_MESSAGE.otp_invalid]: 'Mã OTP không hợp lệ',
 };
 
 type StatusCode = keyof typeof statusText;

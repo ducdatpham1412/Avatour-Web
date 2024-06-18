@@ -12,3 +12,7 @@ export const TOUR_ROUTES = {
     return `/tour/0${time}`;
   },
 };
+
+export const PROFILE_ROUTES = {
+  myProfile: '/profile',
+};

@@ -1,3 +1,4 @@
+'use server';
 import { makeError } from '@/lib';
 
 import request from '../request';

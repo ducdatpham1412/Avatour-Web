@@ -2,7 +2,7 @@ import { useRouter } from 'next/navigation';
 import { ReactElement, useRef, useState } from 'react';
 
 import { addSupplier, deleteOrActiveSupplier, updateSupplier } from '@/api/admin';
-import { Icon } from '@/components/icon';
+import { ButtonClose } from '@/components/buttons';
 import { ToastAction } from '@/components/ui';
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks';
@@ -10,7 +10,7 @@ import { logger, parseErrorMessage } from '@/lib';
 
 import { editSupplierFields } from '../constants';
 import { SupplierData } from '../types';
-import EditSuppliersForm, { OnSubmitSupplierForm } from './SuppliersForm';
+import SuppliersForm, { OnSubmitSupplierForm } from './SuppliersForm';
 
 type EditSuppliersDialogProps = {
   open?: boolean;
@@ -19,12 +19,6 @@ type EditSuppliersDialogProps = {
   data?: TypeProfile;
   type: 'update' | 'create';
 };
-
-const CloseButton = (
-  <div className="p-[10px] bg-white rounded-full border-[1px]">
-    <Icon name="close" size={22.6} />
-  </div>
-);
 
 const EditSuppliersDialog = ({
   children,
@@ -145,11 +139,11 @@ const EditSuppliersDialog = ({
     <Dialog open={open ?? dialogOpen} onOpenChange={toggleDialog}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
-        closeButton={CloseButton}
+        closeButton={<ButtonClose />}
         className="xl:w-[1305px] xl:h-min xl:max-h-[calc(100vh_-_40px)] xl:!rounded-[20px] !rounded-none xl w-full h-full max-w-full max-h-full bg-background overflow-hidden p-0"
       >
         <DialogHeader className="h-0" />
-        <EditSuppliersForm
+        <SuppliersForm
           defaultValues={
             data ?? {
               link: [],
