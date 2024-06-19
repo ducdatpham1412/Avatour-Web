@@ -57,37 +57,7 @@ interface DynamicObject<T = any> {
 }
 
 interface Passport {
-  profile: {
-    id: number;
-    avatar: string;
-    account_type: 'holder' | 'admin' | 'user' | 'shop' | 'location' | 'tour-guide';
-    services: number[];
-    information: {
-      facebook: string;
-      email: string;
-      phone: string;
-      bank_account: string;
-      bank_code: string;
-    };
-    name: string;
-    description: string;
-    followers: number;
-    followings: number;
-    gender: number;
-    birthday: string;
-    theme: number;
-    language: number;
-    location: number;
-    lat: number;
-    lng: number;
-    min_cost: number;
-    max_cost: number;
-    duration: number;
-    start_time: number;
-    end_time: number;
-    total_ratings: number;
-    average_stars: number;
-  };
+  profile: TypeProfile;
   new_notifications: number;
 }
 

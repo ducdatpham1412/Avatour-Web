@@ -1,0 +1,18 @@
+export const validateIsEmail = (email: string) => {
+  return !!email.match(
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+  );
+};
+
+export const validatePassword = (pw: string) => {
+  return (
+    /[A-Z]/.test(pw) &&
+    /[a-z]/.test(pw) &&
+    /[0-9]/.test(pw) &&
+    /[^A-Za-z0-9]/.test(pw) &&
+    !/\s/.test(pw) &&
+    pw.length > 8
+  );
+};
+
+export const validateName = (v: string) => v.length <= 100;

@@ -15,19 +15,14 @@ import SupplierChecklistField from './SupplierChecklistField';
 
 export type OnSubmitSupplierForm = 'create-success' | 'error' | 'update-success';
 
-interface EditSuppliersFormProps {
+interface Props {
   defaultValues?: SupplierData;
   onSubmit: (data: SupplierData) => Promise<OnSubmitSupplierForm>;
   onDeleteOrActive?: () => void;
   titleButton: string;
 }
 
-const EditSuppliersForm = ({
-  defaultValues,
-  onSubmit,
-  onDeleteOrActive,
-  titleButton,
-}: EditSuppliersFormProps) => {
+const SuppliersForm = ({ defaultValues, onSubmit, onDeleteOrActive, titleButton }: Props) => {
   const [submitting, setSubmitting] = useState(false);
 
   const controller = useForm<SupplierData>({
@@ -58,7 +53,7 @@ const EditSuppliersForm = ({
     <Form
       {...controller}
       onSubmit={handleSubmit}
-      className="p-6 overflow-y-auto beautìul-scrollbar"
+      className="p-6 overflow-y-auto beautiful-scrollbar"
       onlyDirty
     >
       <div className="flex items-stretch gap-10">
@@ -198,4 +193,4 @@ const EditSuppliersForm = ({
   );
 };
 
-export default EditSuppliersForm;
+export default SuppliersForm;

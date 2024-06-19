@@ -16,6 +16,7 @@ interface TourPageProps extends TourProps {
 
 const TourPage = ({ searchParams }: TourPageProps) => {
   const router = useRouter();
+
   const [focusing, setFocusing] = useState<TourQuickDetailFocusing>({
     day: 0,
     index: 0,

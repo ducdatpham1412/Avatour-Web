@@ -1,6 +1,5 @@
 export * from './EditSuppliersDialog';
 export { default as FilterBar } from './FilterBar';
-export { default as InputField } from './InputField';
 export { default as ListField } from './ListField';
 export * from './SupplierChecklistField';
 export * from './SupplierTag';

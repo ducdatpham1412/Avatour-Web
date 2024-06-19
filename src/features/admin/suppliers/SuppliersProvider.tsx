@@ -36,7 +36,6 @@ const SuppliersProvider = ({ children }: SuppliersProviderProps) => {
   );
 };
 
-const useSuppliers = () => useContext(SuppliersContext);
+export const useSuppliers = () => useContext(SuppliersContext);
 
-export { SuppliersProvider, useSuppliers };
-export default SuppliersContext;
+export default SuppliersProvider;

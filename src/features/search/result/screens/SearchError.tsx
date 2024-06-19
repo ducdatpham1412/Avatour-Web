@@ -1,12 +1,16 @@
+'use client';
+import { useAppContext } from '@/app/provider';
+
 import { SuggestSearchItem } from '../../components';
 
 interface SearchErrorProps {
   error: { message: string };
   searchText: string;
-  suggestSearch: string[];
 }
 
-export default function SearchError({ error, searchText, suggestSearch }: SearchErrorProps) {
+export default function SearchError({ error, searchText }: SearchErrorProps) {
+  const [{ resource }] = useAppContext();
+
   let title: string;
 
   switch (error.message) {
@@ -29,14 +33,14 @@ export default function SearchError({ error, searchText, suggestSearch }: Search
       <div className="flex flex-col gap-y-10">
         <h2 className="text-[20px] leading-[28px] font-medium text-black">{title}</h2>
 
-        {!!suggestSearch.length && (
+        {!!resource?.top_searches.length && (
           <div className="flex flex-col gap-y-4">
             <div className="text-[16px] leading-[24px] font-normal text-black">
               Bạn có thể thử tìm kiếm:
             </div>
 
             <div className="flex flex-wrap gap-3">
-              {suggestSearch.map((e, i) => (
+              {resource.top_searches.map((e, i) => (
                 <SuggestSearchItem key={i}>{e}</SuggestSearchItem>
               ))}
             </div>

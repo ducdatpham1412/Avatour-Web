@@ -1,9 +1,11 @@
 import ArrowLeftIcon from './ArrowLeftIcon';
 import ArrowUpIcon from './ArrowUpIcon';
+import BagIcon from './BagIcon';
 import CalendarIcon from './CalendarIcon';
 import ClockIcon from './ClockIcon';
 import CloseIcon from './CloseIcon';
 import EditIcon from './EditIcon';
+import GoogleIcon from './GoogleIcon';
 import HomeIcon from './HomeIcon';
 import ImageIcon from './ImageIcon';
 import LoadingIcon from './LoadingIcon';
@@ -36,6 +38,8 @@ export const iconNames = {
   marker: MarkerIcon,
   calendar: CalendarIcon,
   searchResult: SearchResultIcon,
+  google: GoogleIcon,
+  bag: BagIcon,
 } as const;
 
 export type IconNames = keyof typeof iconNames;

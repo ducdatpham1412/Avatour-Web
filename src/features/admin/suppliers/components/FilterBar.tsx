@@ -4,7 +4,7 @@ import { memo, useMemo, useRef } from 'react';
 import { Input, RadioGroup } from '@/components/ui';
 import { useRouter } from '@/hooks';
 
-import { useSuppliers } from '../SuppliersContext';
+import { useSuppliers } from '../SuppliersProvider';
 import { filterSuppliersFields } from '../constants';
 import EditSuppliersDialog from './EditSuppliersDialog';
 
