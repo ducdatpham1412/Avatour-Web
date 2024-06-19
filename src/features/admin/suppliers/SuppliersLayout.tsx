@@ -19,19 +19,19 @@ function SuppliersLayout({ children }: SuppliersLayoutProps) {
               <tr className="h-[70px]">
                 <th className="w-[90px]"></th>
                 <th className="rounded-[70px_0_0_70px] bg-white w-[200px]">
-                  <div>Tên</div>
+                  <div font-medium>Tên</div>
                 </th>
                 <th className="bg-white w-[100px]">
-                  <div className="border-l-[1px]">Loại tk</div>
+                  <div className="border-l-[1px] font-medium">Loại tk</div>
                 </th>
                 <th className="bg-white w-[150px]">
-                  <div className="border-l-[1px] ">Dịch vụ</div>
+                  <div className="border-l-[1px] font-medium">Dịch vụ</div>
                 </th>
                 <th className="bg-white">
-                  <div className="border-l-[1px]">Địa chỉ</div>
+                  <div className="border-l-[1px] font-medium">Địa chỉ</div>
                 </th>
                 <th className="rounded-[0_70px_70px_0] bg-white w-[100px]">
-                  <div className="border-l-[1px]">Giá</div>
+                  <div className="border-l-[1px] font-medium">Giá</div>
                 </th>
                 <th className="w-[50px]"></th>
               </tr>

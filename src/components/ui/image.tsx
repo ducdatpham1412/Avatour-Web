@@ -12,13 +12,15 @@ import {
 
 import { cn } from '@/lib';
 
-import { Skeleton } from './skeleton';
 import { Icon } from '../icon';
 import { Show } from './show';
+import { Skeleton } from './skeleton';
 
 export type ImageProps = {
   src: string;
+  defaultSrc?: string;
   className?: string;
+  imgClassName?: string;
   onClick?: (e: React.MouseEvent) => void;
   style?: React.CSSProperties;
   width?: number;
@@ -29,7 +31,16 @@ export type ImageProps = {
 
 const Image = memo(
   forwardRef((props: ImageProps, imageRef: ForwardedRef<HTMLDivElement>) => {
-    const { src, className, onClick, style, children, fit = 'contain' } = props;
+    const {
+      src,
+      defaultSrc,
+      className,
+      imgClassName,
+      onClick,
+      style,
+      children,
+      fit = 'cover',
+    } = props;
     const ref = useRef<HTMLImageElement | null>(null);
     const [isLoading, setLoading] = useState(true);
     const [error, setError] = useState(false);
@@ -65,14 +76,22 @@ const Image = memo(
       >
         <img
           ref={ref}
-          className={`w-full h-full`}
+          className={cn(`w-full h-full`, imgClassName)}
           style={{ opacity: error ? 0 : 1, objectFit: fit }}
           alt="load failed"
         />
         <Show.Const when={error}>
-          <div className="absolute left-0 top-0 w-full h-full flex items-center justify-center p-[20%] text-gray_500">
-            <Icon name="image" className="w-full h-full" />
-          </div>
+          {defaultSrc ? (
+            <Image
+              src={defaultSrc}
+              className="absolute top-0 left-0 w-full h-full"
+              imgClassName="w-full h-full"
+            />
+          ) : (
+            <div className="absolute left-0 top-0 w-full h-full flex items-center justify-center p-[20%] text-gray_500">
+              <Icon name="image" className="w-full h-full" />
+            </div>
+          )}
         </Show.Const>
         <Show.Const when={isLoading}>
           <Skeleton className="absolute left-0 top-0 w-full h-full rounded-none" />

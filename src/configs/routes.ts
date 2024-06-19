@@ -11,6 +11,7 @@ export const TOUR_ROUTES = {
     const time = timestamp ? `?t=${timestamp}` : '';
     return `/tour/0${time}`;
   },
+  createTour: '/tour',
 };
 
 export const PROFILE_ROUTES = {
