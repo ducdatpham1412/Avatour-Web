@@ -1,5 +1,3 @@
-const page = () => {
-  return <div>Profile</div>;
-};
+import { Profile } from '@/features/profile';
 
-export default page;
+export default Profile;

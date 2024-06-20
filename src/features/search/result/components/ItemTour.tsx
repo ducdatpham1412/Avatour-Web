@@ -75,7 +75,7 @@ const LocationDetailDialog = ({ children, data }: LocationDetailDialogProps) => 
   );
 };
 
-const ItemTour = ({ item: item, onHover, isActive }: Props) => {
+const ItemTour = ({ item, onHover, isActive }: Props) => {
   const router = useRouter();
 
   const serviceCountMap = useMemo(() => {

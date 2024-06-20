@@ -5,7 +5,11 @@ interface RequestOptions extends RequestInit {
 }
 
 interface API {
-  <T = any>(path: string, params?: Record<string, any>, options?: RequestOptions): Promise<T>;
+  <T = TypeApi<None>>(
+    path: string,
+    params?: Record<string, any>,
+    options?: RequestOptions,
+  ): Promise<T>;
 }
 
 interface HTTPRequest extends API {

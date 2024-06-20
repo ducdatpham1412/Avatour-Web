@@ -13,3 +13,12 @@ export const apiGetResource = async () => {
   });
   return res.data;
 };
+
+export const apiGetSWR = async <T>(
+  path: string,
+  params?: Record<string, any>,
+  options?: RequestOptions,
+) => {
+  const res = await request.get<TypeApi<T>>(path, params, options);
+  return res;
+};

@@ -120,6 +120,9 @@ module.exports = {
         max_ssm: { max: '450px' },
         min_lg: { max: '1200px' },
       },
+      boxShadow: {
+        all: '0 2px 6px -1px rgba(0, 0, 0, 0.10), 0 6px 24px 0px rgba(0, 0, 0, 0.10);',
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],

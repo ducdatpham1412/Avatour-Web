@@ -1,3 +1,4 @@
+export { default as useApi } from './useApi';
 export { default as useCountdown } from './useCountdown';
 export { default as useDeferEffect } from './useDeferEffect';
 export { default as useLoading } from './useLoading';

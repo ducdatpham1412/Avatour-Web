@@ -25,12 +25,13 @@ const Navbar = () => {
                 mode: 'sign-up',
               });
             }}
+            className="font-medium hidden md:block"
           >
             Đăng ký
           </div>
           <div
             role="button"
-            className="bg-p_600 px-[24px] py-[8px] rounded-full"
+            className="bg-p_600 px-[24px] py-[8px] rounded-full font-medium hidden md:block"
             onClick={() => {
               dialogModal.current?.open({
                 mode: 'sign-in',
@@ -45,10 +46,14 @@ const Navbar = () => {
 
     return (
       <Link
-        className="px-[10px] py-[6px] border-[1.5px] border-gray_300 rounded-full flex gap-[10px] items-center"
+        className="px-[10px] py-[6px] border-[1px] border-gray_300 rounded-full flex gap-[10px] items-center"
         href={PROFILE_ROUTES.myProfile}
       >
-        <Image src={profile.avatar} className="w-[36px] h-[36px] rounded-full" />
+        <Image
+          src={profile.avatar}
+          defaultSrc="https://vietflag.vn/ckfinder/userfiles/images/tin-tuc/quoc-ky-viet-nam-1.jpg"
+          className="w-[36px] h-[36px] rounded-full"
+        />
         <Icon name="bag" />
       </Link>
     );
@@ -61,7 +66,9 @@ const Navbar = () => {
       </Link>
       {!initLoading && (
         <div className="flex items-center gap-7">
-          <Link href="/about-us">Về chúng tôi</Link>
+          <Link href="/about-us" className="font-medium hidden md:block">
+            Về chúng tôi
+          </Link>
           {renderAuth()}
           <DialogAuth ref={dialogModal} />
         </div>

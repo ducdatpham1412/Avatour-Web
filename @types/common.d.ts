@@ -18,6 +18,7 @@ declare type NextAction = <T>(...params: any[]) => ActionResponse<T> | Promise<A
 declare type BaseIconProps = {
   color?: string;
   className?: string;
+  size?: number;
 };
 
 interface DialogRefs<TO, TC = any> {
