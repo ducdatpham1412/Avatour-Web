@@ -25,8 +25,6 @@ const MyTours = ({ userId }: Props) => {
       );
     }
 
-    // TODO: Handle error UI
-
     return (
       <>
         {data.map(tour => {
@@ -37,7 +35,7 @@ const MyTours = ({ userId }: Props) => {
   };
 
   return (
-    <div className="w-full flex flex-col flex-wrap md:flex-row justify-between gap-[24px] mt-0 pb-[100px]">
+    <>
       <div className="w-full inline-flex items-center justify-between mt-[20px]">
         <p>Tour của tôi</p>
         <Link
@@ -47,8 +45,11 @@ const MyTours = ({ userId }: Props) => {
           <PlusIcon size={20} />
         </Link>
       </div>
-      {content()}
-    </div>
+
+      <div className="w-full flex flex-col flex-wrap md:flex-row justify-between gap-[24px] pb-[100px] mt-[16px]">
+        {content()}
+      </div>
+    </>
   );
 };
 

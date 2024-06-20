@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogTrigger, Image } from '@/components/ui';
 import { TOUR_ROUTES } from '@/configs/routes';
 import { useRouter } from '@/hooks';
 import { cn, getCategoriesByServices } from '@/lib';
-import { formatDuration, formatTourDuration, formatTourPrice } from '@/lib/format';
+import { formatDuration, formatTourDuration, formatTourName, formatTourPrice } from '@/lib/format';
 
 import { TourQuickDetail, TourQuickDetailFocusing } from '../../components';
 import { serviceDataDetail } from '../../constants';
@@ -113,13 +113,7 @@ const ItemTour = ({ item, onHover, isActive }: Props) => {
     return list;
   }, [item.schedule]);
 
-  const tourName = useMemo(
-    () =>
-      !item.name
-        ? `${item.schedule[0]?.[0].name} -> ${item.schedule.at(-1)?.at(-1)?.name}`
-        : item.name,
-    [item.name],
-  );
+  const tourName = formatTourName(item);
 
   const categories = useMemo(() => {
     const services = item.schedule.flatMap(profile => profile.flatMap(p => p.services));

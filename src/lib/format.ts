@@ -40,3 +40,7 @@ export const formatDuration = (hours: number) => {
   const m = minutes ? `${minutes}m` : '';
   return `${floor}h${m}`;
 };
+
+export const formatTourName = (tour: TypeTour) => {
+  return tour.name || `${tour.schedule[0]?.[0].name} -> ${tour.schedule.at(-1)?.at(-1)?.name}`;
+};
