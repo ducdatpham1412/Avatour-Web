@@ -4,7 +4,8 @@ import { ElementRef, useRef } from 'react';
 
 import { useAppContext } from '@/app/provider';
 import LogoIcon from '@/components/icon/LogoIcon';
-import { PROFILE_ROUTES } from '@/configs/routes';
+import { ACCOUNT_TYPE } from '@/configs/constants';
+import { ADMIN_ROUTES, PROFILE_ROUTES } from '@/configs/routes';
 
 import { DialogAuth } from './dialogs';
 import { Icon } from './icon';
@@ -60,7 +61,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="relative flex top-0 left-0 w-full items-center justify-between h-[68px] px-[20px] sm:px-[50px] z-20">
+    <nav className="relative inline-flex top-0 left-0 w-full items-center justify-between h-[68px] px-[20px] sm:px-[50px] z-20">
       <Link href="/">
         <LogoIcon className="w-[142px] h-[36px]" />
       </Link>
@@ -69,6 +70,12 @@ const Navbar = () => {
           <Link href="/about-us" className="font-medium hidden md:block">
             Về chúng tôi
           </Link>
+          {(profile?.account_type === ACCOUNT_TYPE.admin ||
+            profile?.account_type === ACCOUNT_TYPE.superAdmin) && (
+            <Link href={ADMIN_ROUTES.suppliers} className="font-medium hidden md:block">
+              CMS
+            </Link>
+          )}
           {renderAuth()}
           <DialogAuth ref={dialogModal} />
         </div>

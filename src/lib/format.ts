@@ -22,7 +22,7 @@ export const formatTourPrice = (min_cost: number, max_cost: number) => {
   if (min_cost === 0 && max_cost === 0) {
     return 'Miễn phí';
   }
-  return `Khoảng ${formatPrice(min_cost)} - ${formatPrice(max_cost)}đ`;
+  return `Khoảng ${formatPrice(min_cost)} - ${formatPrice(max_cost)}đ / người`;
 };
 
 export const formatPrice = (value: number) => {

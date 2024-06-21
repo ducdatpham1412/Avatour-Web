@@ -14,6 +14,15 @@ export const apiGetResource = async () => {
   return res.data;
 };
 
+export const apiCreateTour = async (
+  data: Pick<TypeTour, 'name' | 'description' | 'duration' | 'min_cost' | 'max_cost'> & {
+    schedule: Array<number[]>;
+  },
+) => {
+  const res: { id: number } = await request.post('/common/tours', data);
+  return res;
+};
+
 export const apiGetSWR = async <T>(
   path: string,
   params?: Record<string, any>,

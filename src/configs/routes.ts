@@ -17,3 +17,7 @@ export const TOUR_ROUTES = {
 export const PROFILE_ROUTES = {
   myProfile: '/profile',
 };
+
+export const SEARCH_ROUTES = {
+  searchResult: (result: string) => `/search/${result}`,
+};

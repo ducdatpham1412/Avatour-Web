@@ -1,5 +1,7 @@
+import { CreateTour } from '@/features/tour';
+
 const page = () => {
-  return <div>page</div>;
+  return <CreateTour />;
 };
 
 export default page;

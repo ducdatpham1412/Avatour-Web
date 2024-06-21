@@ -1,2 +1,2 @@
-export { default as TourLayout } from './TourLayout';
+export { default as CreateTour } from './CreateTour';
 export { default as TourPage } from './TourPage';

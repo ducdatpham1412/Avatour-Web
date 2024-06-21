@@ -24,17 +24,23 @@ input:focus::placeholder {
   transform: translateX(0.3em);
 }
 
-.beautìul-scrollbar {
+.beautiful-scrollbar {
   -webkit-appearance: none;
   appearance: none;
 }
 
-.beautìul-scrollbar::-webkit-scrollbar {
-  width: 10px;
+.beautiful-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
 
-.beautìul-scrollbar::-webkit-scrollbar-thumb {
+.beautiful-scrollbar::-webkit-scrollbar-thumb {
   background-color: theme('colors.gray_400');
+  border-radius: 10px;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
 }
 
 input:-internal-autofill-selected {
@@ -58,8 +64,30 @@ input:-internal-autofill-selected {
   align-items: center;
 }
 
+
+@layer components {
+    .container {
+        @media only screen and (min-width: 0px) {
+            padding-left: 20px;
+            padding-right: 20px;
+        };
+        @media only screen and (min-width: 1024px) {
+            padding-left: 120px;
+            padding-right: 120px;
+        };
+    }
+  }
+
+
+
 div[role='dialog'] {
   overflow-y: auto !important;
+}
+
+
+.scale-hover:hover {
+    scale: 1.02;
+    transition-duration: 300ms;
 }
 
 

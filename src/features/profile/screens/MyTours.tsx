@@ -37,9 +37,9 @@ const MyTours = ({ userId }: Props) => {
   return (
     <>
       <div className="w-full inline-flex items-center justify-between mt-[20px]">
-        <p>Tour của tôi</p>
+        <p className="text-[20px]">Tour của tôi</p>
         <Link
-          className="w-[32px] h-[32px] bg-p_600 inline-flex items-center justify-center rounded-full"
+          className="w-[32px] h-[32px] bg-p_600 inline-flex items-center justify-center rounded-full scale-hover"
           href={TOUR_ROUTES.createTour}
         >
           <PlusIcon size={20} />

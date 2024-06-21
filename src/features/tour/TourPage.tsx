@@ -6,7 +6,8 @@ import { useRouter } from '@/hooks';
 
 import { TourQuickDetail, TourQuickDetailFocusing } from '../search/components';
 import { DayItem, RelatedPlaces, TourHeader, getElementLocId } from './components';
-import type { TourProps } from './types';
+
+type TourProps = { params: { tour_id?: number } };
 
 interface TourPageProps extends TourProps {
   searchParams: {

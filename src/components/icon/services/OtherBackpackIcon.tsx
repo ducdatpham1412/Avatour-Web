@@ -1,9 +1,12 @@
-import { SVGAttributes } from 'react';
-
-type SVGProps = SVGAttributes<SVGElement>;
-
-const OtherBackpackIcon = (props: SVGProps) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="none" {...props}>
+const OtherBackpackIcon = ({ size = 24, ...rest }: BaseIconProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    {...rest}
+  >
     <g>
       <path
         fill="#D9D9D9"
@@ -19,4 +22,5 @@ const OtherBackpackIcon = (props: SVGProps) => (
     </g>
   </svg>
 );
+
 export default OtherBackpackIcon;
