@@ -1,12 +1,19 @@
 'use client';
+
+import { useRef } from 'react';
+
 import { useAppContext } from '@/app/provider';
+import { SEARCH_ROUTES } from '@/configs/routes';
+import { useRouter } from '@/hooks';
 
 import { SearchInputBase, SuggestSearchItem } from '../../components';
 import AppStoreBadge from './AppStoreBadge';
 import GooglePlayBadge from './GooglePlayBadge';
 
 const Body = () => {
+  const router = useRouter();
   const [{ resource }] = useAppContext();
+  const text = useRef('');
 
   return (
     <div className="absolute top-0 bottom-0 left-0 right-0 flex flex-col items-center justify-center min-h-[100vh] gap-y-7">
@@ -22,7 +29,10 @@ const Body = () => {
       <div className="min-h-[200px] w-full flex flex-col items-center gap-y-7">
         {!!resource && (
           <>
-            <SearchInputBase />
+            <SearchInputBase
+              onChangeValue={v => (text.current = v)}
+              onSearch={() => router.push(SEARCH_ROUTES.searchResult(text.current))}
+            />
             <div className="flex flex-wrap justify-center gap-3 px-5">
               {resource.top_searches.map((e, i) => (
                 <SuggestSearchItem key={i}>{e}</SuggestSearchItem>

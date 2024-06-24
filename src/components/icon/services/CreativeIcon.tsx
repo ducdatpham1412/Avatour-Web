@@ -1,9 +1,12 @@
-import { SVGAttributes } from 'react';
-
-type SVGProps = SVGAttributes<SVGElement>;
-
-const CreativeIcon = (props: SVGProps) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="none" {...props}>
+const CreativeIcon = ({ size = 24, ...rest }: BaseIconProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    {...rest}
+  >
     <path
       stroke="currentColor"
       strokeLinecap="round"

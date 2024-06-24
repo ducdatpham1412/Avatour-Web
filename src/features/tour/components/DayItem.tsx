@@ -2,7 +2,7 @@
 
 import * as Accordion from '@radix-ui/react-accordion';
 
-import { Icon } from '@/components/icon';
+import { Icon, StarIcon } from '@/components/icon';
 import { Image } from '@/components/ui';
 import { serviceDataDetail } from '@/features/search/constants';
 import { formatTourPrice } from '@/lib/format';
@@ -75,7 +75,7 @@ const DayItem = ({ day, profiles, onItemClick }: DayItemProps) => {
 
                         <div className="flex items-center gap-x-2">
                           <div className="flex items-center gap-x-[2px]">
-                            <Icon name="star" size={24} />
+                            <StarIcon size={24} />
                             <div className="text-[14px] text-black leading-[24px] font-light">
                               {profile.average_stars || 5}
                             </div>

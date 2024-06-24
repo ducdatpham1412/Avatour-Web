@@ -10,6 +10,7 @@ import {
 } from 'react';
 
 import { apiGetPassport, apiGetResource } from '@/api/common';
+import '@/configs/bootstrap';
 import { logger } from '@/lib';
 
 interface Props {

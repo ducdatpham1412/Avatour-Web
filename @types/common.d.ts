@@ -21,9 +21,13 @@ declare type BaseIconProps = {
   size?: number;
 };
 
-interface DialogRefs<TO, TC = any> {
-  open: (v: TO) => void;
-  close: (v: TC) => void;
+interface DialogRefs<TO = any, TC = any> {
+  open: (v?: TO) => void;
+  close: (v?: TC) => void;
 }
 
 declare type NextPage = import('next').NextPage<PageProps>;
+
+interface PropsWithClassName {
+  className?: string;
+}
