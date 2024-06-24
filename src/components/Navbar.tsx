@@ -61,7 +61,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="relative inline-flex top-0 left-0 w-full items-center justify-between h-[68px] px-[20px] sm:px-[50px] z-20">
+    <div className="relative inline-flex top-0 left-0 w-full items-center justify-between h-[68px] px-[20px] sm:px-[50px] z-20 flex-shrink-0">
       <Link href="/">
         <LogoIcon className="w-[142px] h-[36px]" />
       </Link>
@@ -80,7 +80,7 @@ const Navbar = () => {
           <DialogAuth ref={dialogModal} />
         </div>
       )}
-    </nav>
+    </div>
   );
 };
 

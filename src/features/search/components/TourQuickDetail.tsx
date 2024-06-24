@@ -1,5 +1,5 @@
 'use client';
-import { useMemo } from 'react';
+import { CSSProperties, useMemo } from 'react';
 
 import { Icon } from '@/components';
 import { cn } from '@/lib';
@@ -11,11 +11,13 @@ export type TourQuickDetailFocusing = {
   index: number | undefined;
 };
 
-type TourQuickDetailProps = {
+type Props = {
   tour: TypeTour | undefined;
   formatDescription: (loc: TypeProfile) => string;
   focusing?: TourQuickDetailFocusing;
   onChangeFocusing?: (v: TourQuickDetailFocusing) => void;
+  className?: string;
+  style?: CSSProperties;
 };
 
 const TourQuickDetail = ({
@@ -23,14 +25,13 @@ const TourQuickDetail = ({
   formatDescription,
   focusing,
   onChangeFocusing,
-}: TourQuickDetailProps) => {
-  const tourName = useMemo(
-    () =>
-      tour?.name === ''
-        ? `${tour.schedule[0]?.[0].name} -> ${tour.schedule.at(-1)?.at(-1)?.name}`
-        : tour?.name,
-    [tour?.name],
-  );
+  className,
+  style,
+}: Props) => {
+  const tourName =
+    tour?.name === ''
+      ? `${tour.schedule[0]?.[0].name} -> ${tour.schedule.at(-1)?.at(-1)?.name}`
+      : tour?.name;
 
   const renderContent = () => {
     if (!tour) {
@@ -65,7 +66,13 @@ const TourQuickDetail = ({
   };
 
   return (
-    <div className="w-[95vw] min-w-[95vw] md:w-[420px] md:min-w-[420px] sticky top-24 right-0 p-[28px_20px] md:p-[24px_28px] flex flex-col gap-y-3 rounded-[20px] border-[1px] border-gray_300 bg-white">
+    <div
+      className={cn(
+        'sticky top-24 p-[28px_20px] md:p-[24px_28px] flex flex-col gap-y-3 rounded-[20px] border-[1px] border-gray_300 bg-white',
+        className,
+      )}
+      style={style}
+    >
       <h4 className="text-[16px] leading-[24px] font-medium">
         {tour ? tourName : 'Lịch trình du lịch'}
       </h4>

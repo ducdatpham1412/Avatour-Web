@@ -7,7 +7,6 @@ interface TimelineColumnProps {
     description: string;
     image: string;
   }[];
-  className?: string;
   showImage?: boolean;
   indexFocusing?: number;
   onChangeIndex?: (v: number) => void;
@@ -15,24 +14,18 @@ interface TimelineColumnProps {
 
 const Timeline = ({
   steps,
-  className,
   showImage = true,
   indexFocusing,
   onChangeIndex,
 }: TimelineColumnProps) => {
   return (
-    <div
-      className={cn(
-        'flex flex-col gap-y-7 items-start max-h-[400px] overflow-y-auto overflow-x-hidden',
-        className,
-      )}
-    >
+    <div className="w-full inline-flex flex-col gap-y-7 items-start max-h-[400px] overflow-y-auto beautiful-scrollbar">
       {steps.map((step, index) => {
         const isFocusing = index === indexFocusing;
 
         return (
           <div
-            className="relative flex items-start gap-4 w-full cursor-pointer"
+            className="relative w-full inline-flex items-start gap-4 cursor-pointer"
             title={step.title}
             key={index}
             role="button"
@@ -61,23 +54,18 @@ const Timeline = ({
                   className="w-[48px] h-[48px] [&_>_img]:!object-cover rounded-[8px]"
                 />
               )}
-              <div className="flex flex-1 flex-col items-start">
+              <div className="flex flex-1 flex-col items-start flex-shrink-0">
                 <h4
                   className={cn(
-                    'text-[16px] leading-[24px] font-normal line-clamp-1',
+                    'w-full text-[16px] leading-[24px] font-normal line-clamp-1',
                     isFocusing && 'text-p_700 font-medium',
                   )}
                 >
                   {step.title}
                 </h4>
-                <div className="flex flex-wrap  items-center gap-2 text-[14px] text-black/[0.4]">
-                  <span
-                    className="whitespace-nowrap text-[14px] leading-[24px] font-normal text-gray_500"
-                    title={step.description}
-                  >
-                    {step.description}
-                  </span>
-                </div>
+                <p className="line-clamp-1 text-gray_500" title={step.description}>
+                  {step.description}
+                </p>
               </div>
             </div>
           </div>

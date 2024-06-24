@@ -8,8 +8,15 @@ interface Props {
 
 const ItemTour = ({ item, onClick }: Props) => {
   return (
-    <div role="button" onClick={onClick} className="w-full md:w-[48%] lg:w-full xl:w-[48%]">
-      <Image src={item.schedule[0][0].avatar} className="w-full aspect-[306/204] rounded-[14px]" />
+    <div
+      role="button"
+      onClick={onClick}
+      className="w-full md:w-[48%] lg:w-full xl:w-[48%] hover:scale-[1.01] duration-500"
+    >
+      <Image
+        src={item.schedule[0][0].avatar}
+        className="w-full aspect-[306/204] rounded-[14px] hover:shadow-all"
+      />
       <p className="text-[16px] mt-[8px] line-clamp-2 font-medium">{formatTourName(item)}</p>
       <p className="text-[14px]">
         <span className="text-p_700 ">{formatTourPrice(item.min_cost, item.max_cost)}</span>

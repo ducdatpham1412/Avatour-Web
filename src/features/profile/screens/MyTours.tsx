@@ -1,5 +1,6 @@
 import { PlusIcon } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import { SuccessIcon, TourLoadingIcon } from '@/components';
 import { Button } from '@/components/ui';
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const MyTours = ({ userId }: Props) => {
+  const router = useRouter();
   const [{ data, error, loading }] = useTours(userId);
 
   const content = () => {
@@ -26,7 +28,7 @@ const MyTours = ({ userId }: Props) => {
       );
     }
 
-    if (!error || !data?.length) {
+    if (error || !data?.length) {
       return (
         <div className="flex flex-1 flex-col items-center">
           <SuccessIcon size={350} className="animate-zoom-out" />
@@ -44,7 +46,15 @@ const MyTours = ({ userId }: Props) => {
     return (
       <>
         {data.map(tour => {
-          return <ItemTour key={tour.id} item={tour} />;
+          return (
+            <ItemTour
+              key={tour.id}
+              item={tour}
+              onClick={() =>
+                router.push(TOUR_ROUTES.tourDetail(tour.id ? tour.id : undefined, undefined))
+              }
+            />
+          );
         })}
       </>
     );

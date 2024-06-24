@@ -2,36 +2,58 @@
 
 import { useMemo, useState } from 'react';
 
-import { useRouter } from '@/hooks';
+import { ErrorIcon, TourLoadingIcon } from '@/components/icon';
+import { Button } from '@/components/ui';
 
+import { useTour } from '../profile/hooks';
 import { TourQuickDetail, TourQuickDetailFocusing } from '../search/components';
 import { DayItem, RelatedPlaces, TourHeader, getElementLocId } from './components';
 
-type TourProps = { params: { tour_id?: number } };
+type Params = {
+  tour_id: number;
+};
 
-interface TourPageProps extends TourProps {
-  searchParams: {
-    t: string;
-  };
-}
+type SearchParams = {
+  t: string;
+};
 
-const TourPage = ({ searchParams }: TourPageProps) => {
-  const router = useRouter();
+const TourPage = ({ searchParams, params }: PageProps<Params, SearchParams>) => {
+  const dataSearchParams = useMemo(() => {
+    if (!searchParams.t) {
+      return undefined;
+    }
+    const storage = localStorage.getItem(searchParams.t);
+    return storage ? (JSON.parse(storage) as TypeTour) : undefined;
+  }, []);
+  const [{ data: dataApi, loading, validating, error }, { mutate }] = useTour(
+    searchParams.t ? null : params.tour_id,
+  );
 
   const [focusing, setFocusing] = useState<TourQuickDetailFocusing>({
     day: 0,
     index: 0,
   });
 
-  const data = useMemo(
-    () =>
-      (searchParams.t ? JSON.parse(localStorage.getItem(searchParams.t) ?? '{}') : {}) as TypeTour,
-    [],
-  );
+  const data = dataSearchParams ?? dataApi;
 
-  if (!Object.keys(data).length) {
-    router.replace('/search');
-    return null;
+  if (loading || validating) {
+    return (
+      <div className="flex flex-1 items-center justify-center">
+        <TourLoadingIcon className="w-[300px] h-[300px]" />
+      </div>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <div className="flex flex-1 flex-col items-center justify-center">
+        <ErrorIcon size={300} />
+        <p>Có một vài lỗi xảy ra</p>
+        <Button onClick={() => mutate()} className="px-[70px] mt-8">
+          Thử lại
+        </Button>
+      </div>
+    );
   }
 
   let previewProfile: TypeProfile | undefined = undefined;
@@ -60,7 +82,7 @@ const TourPage = ({ searchParams }: TourPageProps) => {
   }, [] as TypeProfile[]);
 
   return (
-    <main className="flex flex-col gap-y-12 md:gap-y-[124px]">
+    <main className="relative inline-flex container flex-col gap-y-12 md:gap-y-[124px] mt-4">
       <article className="flex flex-col gap-y-[56px]">
         <TourHeader tour={data} />
 
@@ -75,7 +97,7 @@ const TourPage = ({ searchParams }: TourPageProps) => {
             ))}
           </section>
 
-          <section className="hidden md:block w-[max(60%,_432px)]">
+          <section className="hidden md:block">
             <TourQuickDetail
               tour={data}
               formatDescription={loc => loc.location}
@@ -85,6 +107,7 @@ const TourPage = ({ searchParams }: TourPageProps) => {
                 element?.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
                 setFocusing(v);
               }}
+              className="w-[30vw] lg:w-[25vw]"
             />
           </section>
         </div>
