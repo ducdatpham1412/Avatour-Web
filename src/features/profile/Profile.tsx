@@ -1,6 +1,7 @@
 'use client';
 
 import { ChevronRight } from 'lucide-react';
+import { ElementRef, useRef } from 'react';
 
 import { useAppContext } from '@/app/provider';
 import { TabView } from '@/components';
@@ -12,6 +13,7 @@ import { CheckIn, FavoriteTours, MyTours } from './screens';
 
 const Profile = () => {
   const [{ profile }] = useAppContext();
+  const tabRef = useRef<ElementRef<typeof TabView>>(null);
 
   if (!profile) {
     return null;
@@ -44,7 +46,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="mx-[20px] lg:mx-[120px] xl:mx-[120px] flex flex-col lg:flex-row pt-4">
+    <div className="container flex flex-col lg:flex-row pt-4">
       <div className="w-full self-start lg:w-[460px] lg:sticky lg:top-6">
         <div className="w-[200px] mx-auto lg:w-full shadow-all p-[8px] pb-[14px] lg:p-[16px] lg:pb-[28px]">
           <Image
@@ -60,20 +62,24 @@ const Profile = () => {
         </div>
 
         <div className="w-full rounded-[16px] border-[1px] border-gray_300 mt-[24px] p-[16px] inline-flex flex-col gap-[12px]">
-          <div className="w-full inline-flex items-center justify-between">
+          <div
+            className="w-full inline-flex items-center justify-between"
+            role="button"
+            onClick={() => tabRef.current?.navigate('check_in')}
+          >
             <div className="inline-flex items-center gap-[8px]">
               <CameraIcon size={20} />
-              <p>
-                {/* <span className="font-medium">6 </span> */}
-                Check-in
-              </p>
+              Check-in
             </div>
             <ChevronRight />
           </div>
 
-          <div className="w-full border-t-[1px] border-t-gray_300" />
-
-          <p>{profile.description}</p>
+          {!!profile.description && (
+            <>
+              <div className="w-full border-t-[1px] border-t-gray_300" />
+              <p>{profile.description}</p>
+            </>
+          )}
 
           {renderServices()}
         </div>
@@ -82,18 +88,22 @@ const Profile = () => {
       <div className="w-[180px] h-[24px] md:h-[40px]" />
 
       <TabView
+        ref={tabRef}
         tabs={[
           {
+            id: 'my_tour',
             title: 'Tour của tôi',
             icon: <BagIcon size={16} />,
             children: <MyTours userId={profile.id} />,
           },
           {
+            id: 'favorite',
             title: 'Tour yêu thích',
             icon: <BookMarkIcon size={16} />,
             children: <FavoriteTours userId={profile.id} />,
           },
           {
+            id: 'check_in',
             title: 'Check-in',
             icon: <CameraIcon size={16} />,
             children: <CheckIn />,

@@ -45,3 +45,11 @@ export const ACCOUNT_TYPE = {
 export type REQUEST_STATUS = (typeof REQUEST_STATUS)[keyof typeof REQUEST_STATUS];
 export type TYPE_AUTH_REQUEST = (typeof TYPE_AUTH_REQUEST)[keyof typeof TYPE_AUTH_REQUEST];
 export type STATUS_JOIN_ESTIMATE = (typeof STATUS_JOIN_ESTIMATE)[keyof typeof STATUS_JOIN_ESTIMATE];
+
+export const CONTAINER_WIDTH = {
+  sm: 640,
+  md: 768,
+  lg: 1024,
+  xl: 1280,
+  '2xl': 1536,
+};

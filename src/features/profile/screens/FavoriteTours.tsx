@@ -1,4 +1,4 @@
-import { TourLoadingIcon } from '@/components';
+import { SuccessIcon, TourLoadingIcon } from '@/components';
 
 import { ItemTour } from '../components';
 import { useTours } from '../hooks';
@@ -10,7 +10,7 @@ interface Props {
 const FavoriteTours = ({ userId }: Props) => {
   const [{ data, error, loading }] = useTours(userId, 'favorite');
 
-  if (!data || loading || error) {
+  if (loading) {
     return (
       <div className="flex justify-center mt-[100px]">
         <div className="w-[200px] h-[200px]">
@@ -18,6 +18,10 @@ const FavoriteTours = ({ userId }: Props) => {
         </div>
       </div>
     );
+  }
+
+  if (error || !data?.length) {
+    return <SuccessIcon size={350} className="mx-auto mt-[10vh] animate-zoom-out" />;
   }
 
   return (

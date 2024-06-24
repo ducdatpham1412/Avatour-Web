@@ -1,1 +1,1 @@
-export { default as useTours } from './useTours';
+export { default as useTours, type CreateTourForm } from './useTours';

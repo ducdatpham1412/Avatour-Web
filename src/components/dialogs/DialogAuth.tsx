@@ -19,8 +19,10 @@ const DialogAuth = forwardRef((_: any, ref: Ref) => {
     ref,
     () => ({
       open: v => {
-        setMode(v.mode);
-        setOpen(true);
+        if (v) {
+          setMode(v.mode);
+          setOpen(true);
+        }
       },
       close: () => null,
     }),

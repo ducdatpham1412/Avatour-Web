@@ -1,9 +1,7 @@
+import { SuccessIcon } from '@/components/icon';
+
 const CheckIn = () => {
-  return (
-    <>
-      <div className="w-full flex flex-col flex-wrap md:flex-row justify-between gap-[24px] mt-0 pb-[100px]"></div>
-    </>
-  );
+  return <SuccessIcon size={350} className="mx-auto mt-[10vh] animate-zoom-out" />;
 };
 
 export default CheckIn;

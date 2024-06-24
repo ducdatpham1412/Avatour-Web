@@ -20,6 +20,7 @@ const AdminTemplate = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex">
       <div className="sticky left-0 top-0 w-[72px] min-w-[72px] h-[100svh] bg-white p-[32px_16px] flex flex-col gap-6">
+        <NavigateItem href="/" name="logo" active={false} />
         <NavigateItem
           href="/admin/suppliers"
           name="home"

@@ -28,7 +28,7 @@ function svgToElement(element: SVGElement | undefined, data: any) {
   return element!;
 }
 
-const TourLoadingIcon = () => {
+const TourLoadingIcon = ({ className }: PropsWithClassName) => {
   const [currentFrame, setCurrentFrame] = useState(0);
   useEffect(() => {
     const interval = setInterval(() => {
@@ -52,6 +52,7 @@ const TourLoadingIcon = () => {
           ref.appendChild(svgToElement(undefined, animationFrames[currentFrame]));
         }
       }}
+      className={className}
     ></div>
   );
 };

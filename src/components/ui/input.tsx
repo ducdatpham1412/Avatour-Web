@@ -1,11 +1,17 @@
 'use client';
-import { Fragment, forwardRef, useRef } from 'react';
+import { Fragment, ReactElement, forwardRef, useRef } from 'react';
 
 import { cn } from '@/lib/utils';
 
-export type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
+export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+  leftComponent?: ReactElement;
+};
 
-type Form = { useForm: true; errorMessage?: string };
+type Form = {
+  useForm: true;
+  errorMessage?: string;
+  renderError?: (error: boolean) => ReactElement;
+};
 
 const Input = forwardRef<HTMLInputElement, InputProps & ({ useForm?: false } | Form)>(
   ({ className, type, useForm, ...props }, ref) => {
@@ -30,8 +36,18 @@ const Input = forwardRef<HTMLInputElement, InputProps & ({ useForm?: false } | F
 );
 
 const FormInput = forwardRef<HTMLInputElement, InputProps & Form>(
-  ({ className, type, errorMessage, ...rest }, ref) => {
+  ({ className, type, errorMessage, renderError, ...rest }, ref) => {
     const isError = !!errorMessage;
+
+    const error = () => {
+      if (renderError) {
+        return renderError(isError);
+      }
+      if (isError) {
+        return <p className={cn('text-sm text-red mt-2 ml-2', className)}>{errorMessage}</p>;
+      }
+      return null;
+    };
 
     return (
       <Fragment>
@@ -46,7 +62,7 @@ const FormInput = forwardRef<HTMLInputElement, InputProps & Form>(
           ref={ref}
           {...rest}
         />
-        {isError && <p className={cn('text-sm text-red mt-2 ml-2', className)}>{errorMessage}</p>}
+        {error()}
       </Fragment>
     );
   },
