@@ -3,6 +3,7 @@
 import { useState } from 'react';
 
 import { formatDuration } from '@/lib/format';
+import { useWindowSize } from '@/hooks';
 
 import { TourQuickDetail, TourQuickDetailFocusing } from '../../components';
 import { serviceDataDetail } from '../../constants';
@@ -13,6 +14,7 @@ type SearchResultProps = {
 };
 
 const SearchResult = ({ data }: SearchResultProps) => {
+  const { width } = useWindowSize();
   const [index, setIndex] = useState<number>();
   const [focusing, setFocusing] = useState<TourQuickDetailFocusing>();
 
@@ -23,7 +25,7 @@ const SearchResult = ({ data }: SearchResultProps) => {
       </span>
 
       <div className="relative flex items-start gap-x-8">
-        <div className="flex-grow flex flex-col gap-y-6 md:gap-y-2">
+        <div className="flex-grow flex flex-col gap-y-6 lg:gap-y-2 pb-[100px]">
           {data.map((location, idx) => (
             <ItemTour
               key={location.id}
@@ -36,7 +38,7 @@ const SearchResult = ({ data }: SearchResultProps) => {
             />
           ))}
         </div>
-        <div className="min_lg:hidden contents">
+        <div className="hidden lg:contents">
           <TourQuickDetail
             tour={index !== undefined ? data[index] : undefined}
             formatDescription={loc =>
@@ -46,6 +48,8 @@ const SearchResult = ({ data }: SearchResultProps) => {
             }
             focusing={focusing}
             onChangeFocusing={v => setFocusing(v)}
+            className={`w-[30vw] lg:w-[25vw]`}
+            style={{ minWidth: width * 0.25 }}
           />
         </div>
       </div>

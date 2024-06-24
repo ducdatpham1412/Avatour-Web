@@ -8,6 +8,7 @@ import { TOUR_ROUTES } from '@/configs/routes';
 import { useRouter } from '@/hooks';
 import { cn, getCategoriesByServices } from '@/lib';
 import { formatDuration, formatTourDuration, formatTourName, formatTourPrice } from '@/lib/format';
+import { CONTAINER_WIDTH } from '@/configs/constants';
 
 import { TourQuickDetail, TourQuickDetailFocusing } from '../../components';
 import { serviceDataDetail } from '../../constants';
@@ -69,6 +70,7 @@ const LocationDetailDialog = ({ children, data }: LocationDetailDialogProps) => 
           }
           focusing={focusing}
           onChangeFocusing={v => setFocusing(v)}
+          className="w-[90vw] md:w-[80vw]"
         />
       </DialogContent>
     </Dialog>
@@ -136,17 +138,17 @@ const ItemTour = ({ item, onHover, isActive }: Props) => {
   return (
     <div
       className={cn(
-        'flex py-2 md:p-2 rounded-2xl flex-col md:flex-row gap-0 md:gap-6 overflow-hidden max-h-[unset] md:max-h-[250px] md:hover:bg-[#F4F4F4] cursor-pointer',
-        isActive ? 'bg-transparent md:bg-gray_100' : '',
+        'inline-flex py-2 lg:p-2 rounded-2xl flex-col lg:flex-row gap-0 lg:gap-6 overflow-hidden max-h-[unset] lg:max-h-[250px] hover:bg-gray_100 cursor-pointer hover-slow hover:scale-[1.001]',
+        isActive ? 'bg-transparent lg:bg-gray_100' : '',
       )}
       onMouseOver={() => {
-        if (document.body.offsetWidth >= 1200) {
+        if (document.body.offsetWidth >= CONTAINER_WIDTH.lg) {
           onHover?.(item.id);
         }
       }}
       onClick={handleClick}
     >
-      <div className="md:w-1/2 w-full shrink-0 rounded-xl overflow-hidden aspect-[3/2]">
+      <div className="lg:w-1/2 w-full shrink-0 rounded-xl overflow-hidden aspect-[3/2]">
         <Image src={item.schedule[0][0].avatar} className="h-full w-full [&_>_img]:!object-cover" />
       </div>
       <div className="flex flex-col justify-between py-[6px] gap-y-1">
@@ -185,7 +187,7 @@ const ItemTour = ({ item, onHover, isActive }: Props) => {
             </div>
           </div>
 
-          <div className="block md:hidden">
+          <div className="block lg:hidden">
             <LocationDetailDialog data={item}>
               <div className="h-10 w-10 flex rounded-full bg-p_200 justify-center items-center">
                 <Icon name="calendar" />

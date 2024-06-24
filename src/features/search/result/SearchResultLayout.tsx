@@ -17,7 +17,7 @@ const SearchResultLayout = ({
   const search = useRef(parseSearchData(params.search_text));
 
   return (
-    <div className="px-5 pb-[92px] sm:px-40 pt-4 sm:pt-[2px] w-full flex flex-col gap-7">
+    <div className="container sm:px-[15vw] lg:px-[3vw] xl:px-[120px] w-full flex flex-col gap-7">
       <Background />
       <div className="z-20 py-4 sticky top-0 left-0 right-0 bg-background">
         <SearchInputBase

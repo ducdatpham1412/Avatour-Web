@@ -1,4 +1,6 @@
 import { useMemo } from 'react';
+import { ArrowLeftIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 import { getCategoriesByServices } from '@/lib';
 import { formatTourDuration, formatTourPrice } from '@/lib/format';
@@ -10,6 +12,8 @@ interface TourHeaderProps {
 }
 
 const TourHeader = ({ tour }: TourHeaderProps) => {
+  const router = useRouter();
+
   const categories = useMemo(() => {
     const services = tour.schedule.flatMap(profile => profile.flatMap(p => p.services));
     return getCategoriesByServices(services);
@@ -25,8 +29,11 @@ const TourHeader = ({ tour }: TourHeaderProps) => {
 
   return (
     <header className="flex flex-col">
-      <div className="text-gray_500 text-[14px] font-normal leading-[24px]">
-        {categories.join(' | ')}
+      <div className="inline-flex items-center gap-[16px]">
+        <button className="p-[8px] bg-gray_200 rounded-full" onClick={() => router.back()}>
+          <ArrowLeftIcon size={16} />
+        </button>
+        <p className="text-gray_500">{categories.join(' | ')}</p>
       </div>
 
       <section className="flex flex-col md:flex-row items-start gap-y-6 md:gap-x-[min(20%,_254px)] justify-between">

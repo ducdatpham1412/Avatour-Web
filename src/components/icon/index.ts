@@ -13,5 +13,6 @@ export { default as SuccessIcon } from './SuccessIcon';
 export { default as TourLoadingIcon } from './TourLoadingIcon';
 export { default as TrashCanIcon } from './TrashCanIcon';
 export { default as WalletIcon } from './WalletIcon';
+export { default as ErrorIcon } from './ErrorIcon';
 export type { IconNames } from './iconNames';
 export * from './services';
