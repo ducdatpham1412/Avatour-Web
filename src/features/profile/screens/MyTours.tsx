@@ -34,10 +34,11 @@ const MyTours = ({ userId }: Props) => {
           <SuccessIcon size={350} className="animate-zoom-out" />
           <p>Bạn chưa có tour nào</p>
           <p>Đi tới tạo tour của riêng mình nhé</p>
-          <Button className="px-[70px] mt-[5vh]">
-            <Link href={TOUR_ROUTES.createTour} className="text-[14px] font-medium">
-              Tạo tour của tôi
-            </Link>
+          <Button
+            className="px-[70px] mt-[5vh]"
+            onClick={() => router.push(TOUR_ROUTES.createTour)}
+          >
+            <p className="text-[14px] font-medium">Tạo tour của tôi</p>
           </Button>
         </div>
       );
