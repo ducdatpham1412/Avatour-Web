@@ -12,6 +12,7 @@ import { parseErrorMessage } from '@/lib';
 const AdminLogin = () => {
   const router = useRouter();
   const { toast } = useToast();
+
   const [loading, setLoading] = useState(false);
   const [formState, setFormState] = useState({
     email: '',
