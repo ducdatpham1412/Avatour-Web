@@ -8,8 +8,8 @@ interface Login {
   password: string;
 }
 interface LoginResponse {
-  token: string;
-  refreshToken: string;
+  token?: string;
+  refreshToken?: string;
 }
 
 interface Register {
@@ -27,14 +27,24 @@ type RequestOTP = {
 
 export const setTokenCookies = (data: LoginResponse) => {
   const cookies = getCookies();
-  cookies.set('token', data.token, {
-    httpOnly: true,
-    // secure: process.env.NODE_ENV === 'production', // Uncomment this when having https
-  });
-  cookies.set('refresh_token', data.refreshToken, {
-    httpOnly: true,
-    // secure: process.env.NODE_ENV === 'production', // Uncomment this when having https
-  });
+  if (data.token) {
+    cookies.set('token', data.token, {
+      httpOnly: true,
+      // secure: process.env.NODE_ENV === 'production', // Uncomment this when having https
+    });
+  }
+  if (data.refreshToken) {
+    cookies.set('refresh_token', data.refreshToken, {
+      httpOnly: true,
+      // secure: process.env.NODE_ENV === 'production', // Uncomment this when having https
+    });
+  }
+};
+
+export const deleteTokenCookies = () => {
+  const cookies = getCookies();
+  cookies.delete('token');
+  cookies.delete('refresh_token');
 };
 
 export const apiLogin = async (p: Login) => {
@@ -57,4 +67,12 @@ export const apiRequestOTP = async (p: RequestOTP) => {
   await request.post('/auth/otp', p, {
     authorize: false,
   });
+};
+
+export const apiLogOut = async () => {
+  const cookies = getCookies();
+  await request.post('/auth/log-out', {
+    refreshToken: cookies.get('refresh_token')?.value,
+  });
+  deleteTokenCookies();
 };

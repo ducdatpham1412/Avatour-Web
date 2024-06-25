@@ -1,29 +1,51 @@
 'use client';
 
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, LogOutIcon } from 'lucide-react';
 import { ElementRef, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 
 import { useAppContext } from '@/app/provider';
 import { TabView } from '@/components';
 import { BagIcon, BookMarkIcon, CameraIcon, LocationIcon } from '@/components/icon';
 import { Image } from '@/components/ui';
+import { parseErrorMessage, twConfigs } from '@/lib';
+import { apiLogOut } from '@/api/auth';
+import { toast } from '@/hooks';
 
 import { serviceDataDetail } from '../search/constants';
 import { CheckIn, FavoriteTours, MyTours } from './screens';
 
+const Border = () => {
+  return <div className="w-full border-t-[1px] border-t-gray_300" />;
+};
+
 const Profile = () => {
-  const [{ profile }] = useAppContext();
+  const route = useRouter();
+  const [{ profile }, { setProfile }] = useAppContext();
   const tabRef = useRef<ElementRef<typeof TabView>>(null);
 
   if (!profile) {
     return null;
   }
 
+  const onLogOut = async () => {
+    try {
+      await apiLogOut();
+      setProfile(undefined);
+      route.replace('/');
+    } catch (err) {
+      toast({
+        variant: 'destructive',
+        description: parseErrorMessage(err),
+      });
+    }
+  };
+
   const renderServices = () => {
     if (profile.services.length) {
       return (
         <>
-          <div className="w-full border-t-[1px] border-t-gray_300" />
+          <Border />
           <div className="inline-flex flex-col gap-[10px]">
             {profile.services.map(s => {
               const sData = serviceDataDetail[s];
@@ -76,13 +98,21 @@ const Profile = () => {
 
           {!!profile.description && (
             <>
-              <div className="w-full border-t-[1px] border-t-gray_300" />
+              <Border />
               <p>{profile.description}</p>
             </>
           )}
 
           {renderServices()}
         </div>
+
+        <button
+          className="inline-flex items-center self-start gap-[4px] mt-[24px]"
+          onClick={onLogOut}
+        >
+          <LogOutIcon size={13} color={twConfigs.theme?.colors?.red as string} />
+          <p className="text-[12px] text-red">Đăng xuất</p>
+        </button>
       </div>
 
       <div className="w-[180px] h-[24px] md:h-[40px]" />
