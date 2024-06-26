@@ -9,7 +9,7 @@ import { ERROR_MESSAGE } from './constants';
 import { deleteTokenCookies, setTokenCookies } from '../auth';
 
 type DataError = {
-  errorMessage: string;
+  errorMessage: string | Record<string, any>;
   errorKey: string;
   status: number;
 };
@@ -26,9 +26,11 @@ const parseError = (data: DataError | string) => {
   if (typeof data === 'string') {
     return new Error(ERROR_MESSAGE.init_err);
   } else if (typeof data === 'object' && 'errorMessage' in data) {
-    return new Error(data.errorMessage);
+    if (typeof data.errorMessage === 'string') {
+      return new Error(data.errorMessage);
+    }
+    return new Error(JSON.stringify(data.errorMessage));
   }
-
   return new Error(ERROR_MESSAGE.init_err);
 };
 
@@ -155,6 +157,8 @@ const api: API = async <T>(
         deleteTokenCookies();
         throw error;
       }
+
+      throw error;
     }
 
     return data;
