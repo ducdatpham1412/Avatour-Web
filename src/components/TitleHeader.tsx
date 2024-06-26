@@ -5,8 +5,8 @@ interface Props {
   className?: string;
 }
 
-const HeaderCreateTour = ({ title, className }: Props) => {
+const TitleHeader = ({ title, className }: Props) => {
   return <p className={cn('text-[16px] sm:text-[24px]', className)}>{title}</p>;
 };
 
-export default HeaderCreateTour;
+export default TitleHeader;

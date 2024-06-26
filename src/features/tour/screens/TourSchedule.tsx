@@ -1,14 +1,13 @@
 import { PlusIcon, XIcon } from 'lucide-react';
 import { ElementRef, useEffect, useRef } from 'react';
 
-import { PencilIcon, TabView, WalletIcon } from '@/components';
+import { PencilIcon, TabView, TitleHeader, WalletIcon } from '@/components';
 import { DialogLocations } from '@/components/dialogs';
 import { Button } from '@/components/ui';
 import { cn, estTourPrice } from '@/lib';
 import { formatTourPrice } from '@/lib/format';
 
 import DayTour from './DayTour';
-import HeaderCreateTour from './HeaderCreateTour';
 
 interface Props {
   schedule: Array<TypeProfile[]>;
@@ -85,7 +84,7 @@ const TourSchedule = ({ schedule, onChangeSchedule, isEditing, onChangeEditing }
 
   return (
     <div className="w-full h-full inline-flex flex-col">
-      <HeaderCreateTour title="Bạn sẽ khám phá những địa điểm nào?" />
+      <TitleHeader title="Bạn sẽ khám phá những địa điểm nào?" />
 
       <InfoBar
         schedule={schedule}

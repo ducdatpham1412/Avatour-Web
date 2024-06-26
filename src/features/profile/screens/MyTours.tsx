@@ -66,7 +66,7 @@ const MyTours = ({ userId }: Props) => {
       <div className="w-full inline-flex items-center justify-between mt-[20px]">
         <p className="text-[20px]">Tour của tôi</p>
         <Link
-          className="w-[32px] h-[32px] bg-p_600 inline-flex items-center justify-center rounded-full scale-hover"
+          className="w-[32px] h-[32px] bg-p_600 inline-flex items-center justify-center rounded-full hover-scale hover:scale-[1.1]"
           href={TOUR_ROUTES.createTour}
         >
           <PlusIcon size={20} />

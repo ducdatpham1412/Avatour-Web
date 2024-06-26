@@ -6,11 +6,12 @@ import { useRouter } from 'next/navigation';
 
 import { useAppContext } from '@/app/provider';
 import { TabView } from '@/components';
-import { BagIcon, BookMarkIcon, CameraIcon, LocationIcon } from '@/components/icon';
+import { BagIcon, BookMarkIcon, CameraIcon, LocationIcon, PencilIcon } from '@/components/icon';
 import { Image } from '@/components/ui';
 import { parseErrorMessage, twConfigs } from '@/lib';
 import { apiLogOut } from '@/api/auth';
 import { toast } from '@/hooks';
+import { PROFILE_ROUTES } from '@/configs/routes';
 
 import { serviceDataDetail } from '../search/constants';
 import { CheckIn, FavoriteTours, MyTours } from './screens';
@@ -76,7 +77,14 @@ const Profile = () => {
             defaultSrc="https://vietflag.vn/ckfinder/userfiles/images/tin-tuc/quoc-ky-viet-nam-1.jpg"
             imgClassName="aspect-square"
           />
-          <p className="text-[18px] mt-[12px] font-medium">{profile.name}</p>
+          <div className="w-full mt-[12px] inline-flex items-center">
+            <div className="flex flex-1 flex-wrap">
+              <p className="text-[18px] font-medium">{profile.name}</p>
+            </div>
+            <button onClick={() => route.push(PROFILE_ROUTES.editProfile)}>
+              <PencilIcon />
+            </button>
+          </div>
           <div className="flex gap-[2px] items-center">
             <LocationIcon size={17} />
             <p className="text-gray_500">{profile.location}</p>
@@ -85,7 +93,7 @@ const Profile = () => {
 
         <div className="w-full rounded-[16px] border-[1px] border-gray_300 mt-[24px] p-[16px] inline-flex flex-col gap-[12px]">
           <div
-            className="w-full inline-flex items-center justify-between"
+            className="w-full inline-flex items-center justify-between hover-scale"
             role="button"
             onClick={() => tabRef.current?.navigate('check_in')}
           >
@@ -110,8 +118,8 @@ const Profile = () => {
           className="inline-flex items-center self-start gap-[4px] mt-[24px]"
           onClick={onLogOut}
         >
-          <LogOutIcon size={13} color={twConfigs.theme?.colors?.red as string} />
-          <p className="text-[12px] text-red">Đăng xuất</p>
+          <LogOutIcon size={13} color={twConfigs.theme?.colors?.gray_500 as string} />
+          <p className="text-[12px] text-gray_500">Đăng xuất</p>
         </button>
       </div>
 

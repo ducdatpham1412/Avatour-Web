@@ -56,7 +56,7 @@ const ItemLocationCreateTour = ({
             </button>
             <div
               ref={setNodeRef}
-              className="absolute w-[30px] h-[30px] inline-flex items-center justify-center scale-hover my-auto left-0 top-0 bottom-0 sm:mx-auto sm:bottom-0 sm:left-0 sm:right-0 sm:top-auto"
+              className="absolute w-[30px] h-[30px] inline-flex items-center justify-center hover-scale my-auto left-0 top-0 bottom-0 sm:mx-auto sm:bottom-0 sm:left-0 sm:right-0 sm:top-auto"
               {...attributes}
               {...listeners}
             >

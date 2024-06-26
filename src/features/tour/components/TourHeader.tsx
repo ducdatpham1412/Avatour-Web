@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 
 import { getCategoriesByServices } from '@/lib';
 import { formatTourDuration, formatTourPrice } from '@/lib/format';
+import { ButtonBack } from '@/components/buttons';
 
 import TruncatedText from './TruncatedText';
 
@@ -30,9 +31,7 @@ const TourHeader = ({ tour }: TourHeaderProps) => {
   return (
     <header className="flex flex-col">
       <div className="inline-flex items-center gap-[16px]">
-        <button className="p-[8px] bg-gray_200 rounded-full" onClick={() => router.back()}>
-          <ArrowLeftIcon size={16} />
-        </button>
+        <ButtonBack onClick={() => router.back()} />
         <p className="text-gray_500">{categories.join(' | ')}</p>
       </div>
 

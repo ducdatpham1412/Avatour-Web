@@ -16,6 +16,7 @@ export const TOUR_ROUTES = {
 
 export const PROFILE_ROUTES = {
   myProfile: '/profile',
+  editProfile: '/profile/edit',
 };
 
 export const SEARCH_ROUTES = {

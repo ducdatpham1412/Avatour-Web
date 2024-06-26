@@ -40,10 +40,11 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   loading?: boolean;
+  label?: string;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, loading, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, loading, variant, size, label, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : 'button';
     return (
       <Comp
@@ -58,7 +59,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         <Show.Const when={loading}>
           <Icon name="loading" size={16} />
         </Show.Const>
-        {props.children}
+        {props.children ?? label}
       </Comp>
     );
   },

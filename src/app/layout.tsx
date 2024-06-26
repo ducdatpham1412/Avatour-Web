@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { Lexend } from 'next/font/google';
 import { ReactNode } from 'react';
 
-import { ProgressBar } from '@/components';
+import { AppModals, ProgressBar } from '@/components';
 import { Toaster } from '@/components/ui';
 
 import Provider from './provider';
@@ -31,6 +31,7 @@ const RootLayout = ({ children }: Props) => {
           {children}
           <Toaster />
           <ProgressBar />
+          <AppModals />
         </body>
       </html>
     </Provider>

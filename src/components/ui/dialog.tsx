@@ -10,9 +10,9 @@ import {
   forwardRef,
 } from 'react';
 
-import { Icon } from '@/components/icon';
 import { cn } from '@/lib/utils';
 
+import { ButtonClose } from '../buttons';
 import { Show } from './show';
 
 const Dialog = DialogPrimitive.Root;
@@ -40,7 +40,7 @@ const DialogOverlay = forwardRef<
 const DialogContent = forwardRef<
   ElementRef<typeof DialogPrimitive.Content>,
   ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
-    closeButton?: ReactElement;
+    closeButton?: ReactElement | null;
   }
 >(({ className, closeButton, children, ...props }, ref) => (
   <DialogPortal>
@@ -59,10 +59,10 @@ const DialogContent = forwardRef<
         autoFocus={false}
       >
         <Show.Const
-          when={!!closeButton}
+          when={closeButton === null}
           fallback={
             <Fragment>
-              <Icon name="close" />
+              <ButtonClose />
               <span className="sr-only">Close</span>
             </Fragment>
           }

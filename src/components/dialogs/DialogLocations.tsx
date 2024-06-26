@@ -48,7 +48,7 @@ const ItemLocation = ({ item, status, onClick }: ItemLocationProps) => {
         className="w-[40px] h-[40px] sm:w-[70px] sm:h-[70px] rounded-[8px] self-center"
       />
 
-      <div className="flex flex-1 flex-col justify-center scale-hover">
+      <div className="flex flex-1 flex-col justify-center hover-scale">
         <div className="w-full inline-flex items-center gap-[8px]">
           <p className="flex-1 text-[14px] sm:text-[16px] line-clamp-1">{item.name}</p>
           <NumberStars stars={5} />

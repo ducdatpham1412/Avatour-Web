@@ -4,4 +4,6 @@ export * from './Pagination';
 export * from './ProgressBar';
 export { default as TabTrigger } from './TabTrigger';
 export { default as TabView } from './TabView';
+export { default as TitleHeader } from './TitleHeader';
+export { default as AppModals } from './AppModals';
 export * from './icon';
