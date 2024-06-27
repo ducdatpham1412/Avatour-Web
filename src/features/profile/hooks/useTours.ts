@@ -42,7 +42,7 @@ const useTours = (userId?: number, type: 'list' | 'favorite' = 'list') => {
       });
 
       const res: TypeTour = {
-        id: resCreate.id,
+        id: resCreate.data.id,
         name: arg.name,
         description: arg.description,
         duration,

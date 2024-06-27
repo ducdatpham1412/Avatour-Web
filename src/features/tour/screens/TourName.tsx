@@ -1,8 +1,7 @@
 import { UseFormRegisterReturn } from 'react-hook-form';
 
 import { Input } from '@/components/ui';
-
-import HeaderCreateTour from './HeaderCreateTour';
+import { TitleHeader } from '@/components';
 
 interface Props {
   onNext: () => void;
@@ -14,7 +13,7 @@ const TourName = ({ onNext, register, errorMessage }: Props) => {
   return (
     <div className="w-full h-full inline-flex justify-center items-center">
       <div className="w-[90%] md:w-[70%] lg:w-[65%] xl:w-[60%] animate-zoom-out">
-        <HeaderCreateTour title="Chuyến đi của bạn là gì?" />
+        <TitleHeader title="Chuyến đi của bạn là gì?" />
 
         <Input
           className="border-gray_300 mt-[16px] px-[16px] rounded-full h-14 text-[14px]"

@@ -84,14 +84,19 @@ div[role='dialog'] {
   overflow-y: auto !important;
 }
 
-
-.scale-hover:hover {
-    scale: 1.02;
+.hover-scale {
     transition-duration: 300ms;
+}
+.hover-scale:hover {
+    scale: 1.02;
+    transition-timing-function: ease-in-out;
+}
+
+.hover-slow {
+    transition-duration: 500ms;
 }
 .hover-slow:hover {
     scale: 1.01;
-    transition-duration: 500ms;
     box-shadow: 0 2px 6px -1px rgba(0, 0, 0, 0.10), 0 6px 24px 0px rgba(0, 0, 0, 0.10);
 }
 

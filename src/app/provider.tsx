@@ -52,7 +52,6 @@ const Provider = ({ children }: Props) => {
         const value = JSON.parse(store) as ContextValue;
         setProfile(value.profile);
         setResource(value.resource);
-        setInitLoading(false);
       }
 
       try {

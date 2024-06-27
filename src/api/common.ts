@@ -19,7 +19,7 @@ export const apiCreateTour = async (
     schedule: Array<number[]>;
   },
 ) => {
-  const res: { id: number } = await request.post('/common/tours', data);
+  const res: TypeApi<{ id: number }> = await request.post('/common/tours', data);
   return res;
 };
 
