@@ -8,10 +8,13 @@ import { Button, Input } from '@/components/ui';
 import { ADMIN_ROUTES } from '@/configs/routes';
 import { useToast } from '@/hooks';
 import { parseErrorMessage } from '@/lib';
+import { useAppContext } from '@/app/provider';
+import { apiGetPassport } from '@/api/common';
 
 const AdminLogin = () => {
   const router = useRouter();
   const { toast } = useToast();
+  const [, { setProfile }] = useAppContext();
 
   const [loading, setLoading] = useState(false);
   const [formState, setFormState] = useState({
@@ -25,6 +28,8 @@ const AdminLogin = () => {
     try {
       setLoading(true);
       await adminLogin(formState.email, formState.password);
+      const passport = await apiGetPassport();
+      setProfile(passport.profile);
       router.replace(ADMIN_ROUTES.suppliers);
     } catch (err) {
       toast({

@@ -1,5 +1,11 @@
-import { useRouter } from 'next/navigation';
-import { ReactElement, useRef, useState } from 'react';
+import {
+  ForwardedRef,
+  ReactElement,
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 
 import { addSupplier, deleteOrActiveSupplier, updateSupplier } from '@/api/admin';
 import { ButtonClose } from '@/components/buttons';
@@ -8,6 +14,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTrigger } from '@/components
 import { useToast } from '@/hooks';
 import { logger, parseErrorMessage } from '@/lib';
 
+import { useSuppliers } from '../../hooks';
 import { editSupplierFields } from '../constants';
 import { SupplierData } from '../types';
 import SuppliersForm, { OnSubmitSupplierForm } from './SuppliersForm';
@@ -20,81 +27,114 @@ type EditSuppliersDialogProps = {
   type: 'update' | 'create';
 };
 
-const EditSuppliersDialog = ({
-  children,
-  onOpenChange,
-  open,
-  data,
-  type,
-}: EditSuppliersDialogProps) => {
-  const router = useRouter();
-  const { toast } = useToast();
-  const hasChangedStatus = useRef(false);
-  const [dialogOpen, setDialogOpen] = useState(false);
+const EditSuppliersDialog = forwardRef(
+  (
+    { children, onOpenChange, open, data, type }: EditSuppliersDialogProps,
+    ref: ForwardedRef<DialogRefs>,
+  ) => {
+    const { toast } = useToast();
+    const [, { mutate }] = useSuppliers();
 
-  const toggleDialog = (status: boolean) => {
-    setDialogOpen(status);
-    onOpenChange?.(status);
+    const hasChangedStatus = useRef(false);
+    const [dialogOpen, setDialogOpen] = useState(false);
 
-    if (status) {
-      hasChangedStatus.current = false;
-    } else {
-      if (hasChangedStatus.current) {
-        router.refresh();
+    useImperativeHandle(
+      ref,
+      () => ({
+        open: () => setDialogOpen(true),
+        close: () => setDialogOpen(false),
+      }),
+      [setDialogOpen],
+    );
+
+    const toggleDialog = (status: boolean) => {
+      setDialogOpen(status);
+      onOpenChange?.(status);
+
+      if (status) {
+        hasChangedStatus.current = false;
+      } else {
+        if (hasChangedStatus.current) {
+          mutate().catch(console.log);
+        }
       }
-    }
-  };
+    };
 
-  const onDeleteOrActive = async () => {
-    if (data) {
-      try {
-        await deleteOrActiveSupplier(data.id);
-        hasChangedStatus.current = true;
-      } catch (err) {
-        toast({
-          description: parseErrorMessage(err),
-          variant: 'destructive',
-        });
+    const onDeleteOrActive = async () => {
+      if (data) {
+        try {
+          await deleteOrActiveSupplier(data.id);
+          hasChangedStatus.current = true;
+        } catch (err) {
+          toast({
+            description: parseErrorMessage(err),
+            variant: 'destructive',
+          });
+        }
       }
-    }
-  };
+    };
 
-  const onSubmit = async (formData: SupplierData): Promise<OnSubmitSupplierForm> => {
-    if (Object.keys(formData).length === 0) {
-      toast({
-        description: type === 'update' ? 'Bạn chưa thay đổi gì' : 'Bạn chưa nhập gì',
-      });
-      return 'error';
-    }
-
-    if (formData.services && Array.isArray(formData.services)) {
-      const services = editSupplierFields.services.options?.map(o => o.id) ?? [];
-      formData.services = formData.services.filter(s => services.includes(s));
-
-      if (!formData.services.length) {
+    const onSubmit = async (formData: SupplierData): Promise<OnSubmitSupplierForm> => {
+      if (Object.keys(formData).length === 0) {
         toast({
-          description: 'Chưa chọn loại hình',
-          variant: 'destructive',
+          description: type === 'update' ? 'Bạn chưa thay đổi gì' : 'Bạn chưa nhập gì',
         });
         return 'error';
       }
-    }
 
-    if (type === 'update') {
-      if (!data) {
+      if (formData.services && Array.isArray(formData.services)) {
+        const services = editSupplierFields.services.options?.map(o => o.id) ?? [];
+        formData.services = formData.services.filter(s => services.includes(s));
+
+        if (!formData.services.length) {
+          toast({
+            description: 'Chưa chọn loại hình',
+            variant: 'destructive',
+          });
+          return 'error';
+        }
+      }
+
+      if (type === 'update') {
+        if (!data) {
+          return 'error';
+        }
+
+        try {
+          await updateSupplier(data.id, formData);
+          toast({
+            description: 'Chỉnh sửa thành công',
+          });
+          mutate().catch(console.log);
+          return 'update-success';
+        } catch (err) {
+          logger.error(err);
+          toast({
+            description: parseErrorMessage(err),
+            variant: 'destructive',
+            action: (
+              <ToastAction onClick={() => onSubmit(formData)} altText="Try again">
+                Thử lại
+              </ToastAction>
+            ),
+          });
+        }
+
         return 'error';
       }
 
+      /**
+       * Create new supplier
+       */
       try {
-        await updateSupplier(data.id, formData);
+        await addSupplier(formData);
         toast({
-          description: 'Chỉnh sửa thành công',
+          description: 'Thêm địa điểm thành công',
         });
-        router.refresh();
+        mutate().catch(console.log);
 
-        return 'update-success';
+        return 'create-success';
       } catch (err) {
-        logger.error(err);
         toast({
           description: parseErrorMessage(err),
           variant: 'destructive',
@@ -107,56 +147,31 @@ const EditSuppliersDialog = ({
       }
 
       return 'error';
-    }
+    };
 
-    /**
-     * Create new supplier
-     */
-    try {
-      await addSupplier(formData);
-      toast({
-        description: 'Thêm địa điểm thành công',
-      });
-      router.refresh();
-
-      return 'create-success';
-    } catch (err) {
-      toast({
-        description: parseErrorMessage(err),
-        variant: 'destructive',
-        action: (
-          <ToastAction onClick={() => onSubmit(formData)} altText="Try again">
-            Thử lại
-          </ToastAction>
-        ),
-      });
-    }
-
-    return 'error';
-  };
-
-  return (
-    <Dialog open={open ?? dialogOpen} onOpenChange={toggleDialog}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent
-        closeButton={<ButtonClose />}
-        className="xl:w-[1305px] xl:h-min xl:max-h-[calc(100vh_-_40px)] xl:!rounded-[20px] !rounded-none xl w-full h-full max-w-full max-h-full bg-background overflow-hidden p-0"
-      >
-        <DialogHeader className="h-0" />
-        <SuppliersForm
-          defaultValues={
-            data ?? {
-              link: [],
+    return (
+      <Dialog open={open ?? dialogOpen} onOpenChange={toggleDialog}>
+        <DialogTrigger asChild>{children}</DialogTrigger>
+        <DialogContent
+          closeButton={<ButtonClose />}
+          className="xl:w-[1305px] xl:h-min xl:max-h-[calc(100vh_-_40px)] xl:!rounded-[20px] !rounded-none xl w-full h-full max-w-full max-h-full bg-background overflow-hidden p-0"
+        >
+          <DialogHeader className="h-0" />
+          <SuppliersForm
+            defaultValues={
+              data ?? {
+                link: [],
+              }
             }
-          }
-          onSubmit={onSubmit}
-          onDeleteOrActive={onDeleteOrActive}
-          titleButton={type === 'create' ? 'Thêm mới' : 'Cập nhật'}
-        />
-      </DialogContent>
-    </Dialog>
-  );
-};
+            onSubmit={onSubmit}
+            onDeleteOrActive={onDeleteOrActive}
+            titleButton={type === 'create' ? 'Thêm mới' : 'Cập nhật'}
+          />
+        </DialogContent>
+      </Dialog>
+    );
+  },
+);
 
 export { type EditSuppliersDialogProps };
 export default EditSuppliersDialog;

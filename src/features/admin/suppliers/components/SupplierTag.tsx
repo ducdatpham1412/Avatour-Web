@@ -3,70 +3,64 @@ import { Image, Skeleton } from '@/components/ui';
 import { serviceDataDetail } from '@/features/search/constants';
 import { formatPrice } from '@/lib/format';
 
-import EditSuppliersDialog from './EditSuppliersDialog';
-
 interface SupplierTagProps {
   data: TypeProfile;
-  onSubmitEnd?: () => void;
+  onEdit: () => void;
 }
 
-const SupplierTag = ({ data }: SupplierTagProps) => {
+const SupplierTag = ({ data, onEdit }: SupplierTagProps) => {
   const service = data.services.reduce((pre: string, cur) => {
     return `${pre}${pre ? ', ' : ''}${serviceDataDetail[cur].name || cur}`;
   }, '');
 
   return (
-    <>
-      <tr className="h-[80px]">
-        <td className="bg-white rounded-[20px_0_0_20px]">
-          <div className="p-4">
-            <Image
-              className="h-[60px] w-[60px] rounded-[10px] overflow-hidden"
-              fit="cover"
-              src={data.avatar}
-            />
-          </div>
-        </td>
+    <tr className="h-[80px]">
+      <td className="bg-white rounded-[20px_0_0_20px]">
+        <div className="p-4">
+          <Image
+            className="h-[60px] w-[60px] rounded-[10px] overflow-hidden"
+            fit="cover"
+            src={data.avatar}
+          />
+        </div>
+      </td>
 
-        <td className="bg-white">
-          <div className="flex items-center min-h-[40px] p-[0_10px]">{data.name}</div>
-        </td>
+      <td className="bg-white">
+        <div className="flex items-center min-h-[40px] p-[0_10px]">{data.name}</div>
+      </td>
 
-        <td className="bg-white">
-          <div className="flex items-center min-h-[40px] p-[0_10px] border-l-[1px]">
-            {data.account_type}
-          </div>
-        </td>
+      <td className="bg-white">
+        <div className="flex items-center min-h-[40px] p-[0_10px] border-l-[1px]">
+          {data.account_type}
+        </div>
+      </td>
 
-        <td className="bg-white">
-          <div className="flex items-center min-h-[40px] p-[0_10px] border-l-[1px] text-[12px]">
-            {service}
-          </div>
-        </td>
+      <td className="bg-white">
+        <div className="flex items-center min-h-[40px] p-[0_10px] border-l-[1px] text-[12px]">
+          {service}
+        </div>
+      </td>
 
-        <td className="bg-white">
-          <div className="flex items-center min-h-[40px] p-[0_10px] border-l-[1px] text-[12px]">
-            {data.location}
-          </div>
-        </td>
+      <td className="bg-white">
+        <div className="flex items-center min-h-[40px] p-[0_10px] border-l-[1px] text-[12px]">
+          {data.location}
+        </div>
+      </td>
 
-        <td className="bg-white">
-          <div className="flex items-center min-h-[40px] p-[0_10px] border-l-[1px]">
-            {data.max_cost ? `${formatPrice(data.max_cost)} đ` : 'Miễn Phí'}
-          </div>
-        </td>
+      <td className="bg-white">
+        <div className="flex items-center min-h-[40px] p-[0_10px] border-l-[1px]">
+          {data.max_cost ? `${formatPrice(data.max_cost)} đ` : 'Miễn Phí'}
+        </div>
+      </td>
 
-        <td className="bg-white rounded-[0_20px_20px_0]">
-          <div className="flex items-center min-h-[40px] p-[0_10px] ">
-            <EditSuppliersDialog data={data} type="update">
-              <button>
-                <Icon name="edit" size={24} />
-              </button>
-            </EditSuppliersDialog>
-          </div>
-        </td>
-      </tr>
-    </>
+      <td className="bg-white rounded-[0_20px_20px_0]">
+        <div className="flex items-center min-h-[40px] p-[0_10px] ">
+          <button onClick={onEdit}>
+            <Icon name="edit" size={24} />
+          </button>
+        </div>
+      </td>
+    </tr>
   );
 };
 

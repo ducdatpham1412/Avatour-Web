@@ -1,5 +1,4 @@
 'use server';
-import { revalidateTag } from 'next/cache';
 
 import request from '@/api/request';
 import { logger, parseFormData } from '@/lib';
@@ -61,13 +60,11 @@ export const getSuppliers = async (options: Partial<GetSuppliersFilter>) => {
 
 export const addSupplier = async (data: Partial<TypeProfile>) => {
   await request.post(SUPPLIERS_PATH, parseFormData(data));
-  revalidateTag(SUPPLIERS_TAG);
 };
 
 export const updateSupplier = async (id: number, data: Partial<TypeProfile>) => {
   const formData = parseFormData(data);
   await request.put(`${SUPPLIERS_PATH}/${id}`, formData);
-  revalidateTag(SUPPLIERS_TAG);
 };
 
 export const deleteOrActiveSupplier = async (id: number) => {

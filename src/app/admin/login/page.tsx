@@ -1,15 +1,29 @@
+'use client';
 import { redirect } from 'next/navigation';
+import { useEffect } from 'react';
 
-import { getProfile } from '@/api/admin/login';
+import { useAppContext } from '@/app/provider';
+import { TourLoadingIcon } from '@/components';
 import { ADMIN_ROUTES } from '@/configs/routes';
 import AdminLogin from '@/features/admin/auth/Login';
 
-const Page = async () => {
-  const { data: userProfile } = await getProfile();
+const Page = () => {
+  const [{ profile, initLoading }] = useAppContext();
 
-  if (userProfile) {
-    redirect(ADMIN_ROUTES.suppliers);
+  useEffect(() => {
+    if (!initLoading && profile) {
+      redirect(ADMIN_ROUTES.suppliers);
+    }
+  }, [profile, initLoading]);
+
+  if (initLoading) {
+    return (
+      <div className="flex flex-1 items-center justify-center">
+        <TourLoadingIcon className="w-[500px] h-[500px]" />
+      </div>
+    );
   }
+
   return <AdminLogin />;
 };
 
