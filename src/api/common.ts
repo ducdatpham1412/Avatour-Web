@@ -10,6 +10,9 @@ export const apiGetPassport = async () => {
 export const apiGetResource = async () => {
   const res: TypeApi<Resource> = await request.get('/common/resource', undefined, {
     authorize: false,
+    next: {
+      revalidate: 10,
+    },
   });
   return res.data;
 };

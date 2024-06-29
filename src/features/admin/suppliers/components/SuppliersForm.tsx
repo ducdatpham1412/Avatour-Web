@@ -5,6 +5,7 @@ import { Button } from '@/components/ui';
 import { Form } from '@/components/ui/form';
 import { Switch } from '@/components/ui/switch';
 import { USER_STATUS } from '@/configs/constants';
+import { useAppContext } from '@/app/provider';
 
 import { editSupplierFields } from '../constants';
 import { SupplierData } from '../types';
@@ -23,6 +24,7 @@ interface Props {
 }
 
 const SuppliersForm = ({ defaultValues, onSubmit, onDeleteOrActive, titleButton }: Props) => {
+  const [{ resource }] = useAppContext();
   const [submitting, setSubmitting] = useState(false);
 
   const controller = useForm<SupplierData>({
@@ -34,6 +36,12 @@ const SuppliersForm = ({ defaultValues, onSubmit, onDeleteOrActive, titleButton 
     control: controller.control,
     name: 'status',
   });
+
+  if (!resource) {
+    return;
+  }
+
+  const fields = editSupplierFields(resource.cats);
 
   const handleSubmit = async (data: SupplierData) => {
     setSubmitting(true);
@@ -62,16 +70,8 @@ const SuppliersForm = ({ defaultValues, onSubmit, onDeleteOrActive, titleButton 
         </div>
         <div className="flex flex-col flex-grow gap-1">
           <div className="flex gap-5 flex-grow pr-8 items-center">
-            <InputField
-              {...editSupplierFields.avatar}
-              className="flex-grow"
-              control={controller.control}
-            />
-            <InputField
-              {...editSupplierFields.location}
-              className="flex-grow"
-              control={controller.control}
-            />
+            <InputField {...fields.avatar} className="flex-grow" control={controller.control} />
+            <InputField {...fields.location} className="flex-grow" control={controller.control} />
             {status !== undefined && (
               <Switch
                 checked={status === USER_STATUS.active}
@@ -84,88 +84,44 @@ const SuppliersForm = ({ defaultValues, onSubmit, onDeleteOrActive, titleButton 
           </div>
           <div className="flex gap-5 flex-grow pr-8">
             <InputField
-              {...editSupplierFields.name}
+              {...fields.name}
               className="w-[calc(50%_-_1.25em_/_2)]"
               control={controller.control}
             />
             <div className="flex flex-grow gap-5">
-              <InputField
-                {...editSupplierFields.lat}
-                className="flex-grow"
-                control={controller.control}
-              />
-              <InputField
-                {...editSupplierFields.lng}
-                className="flex-grow"
-                control={controller.control}
-              />
+              <InputField {...fields.lat} className="flex-grow" control={controller.control} />
+              <InputField {...fields.lng} className="flex-grow" control={controller.control} />
             </div>
           </div>
           <div className="flex gap-5 flex-grow pr-20">
-            <InputField
-              {...editSupplierFields.duration}
-              className="flex-grow"
-              control={controller.control}
-            />
+            <InputField {...fields.duration} className="flex-grow" control={controller.control} />
 
-            <InputField
-              {...editSupplierFields.min_cost}
-              className="flex-grow"
-              control={controller.control}
-            />
-            <InputField
-              {...editSupplierFields.max_cost}
-              className="flex-grow"
-              control={controller.control}
-            />
-            <InputField
-              {...editSupplierFields.start_time}
-              className="flex-grow"
-              control={controller.control}
-            />
-            <InputField
-              {...editSupplierFields.end_time}
-              className="flex-grow"
-              control={controller.control}
-            />
+            <InputField {...fields.min_cost} className="flex-grow" control={controller.control} />
+            <InputField {...fields.max_cost} className="flex-grow" control={controller.control} />
+            <InputField {...fields.start_time} className="flex-grow" control={controller.control} />
+            <InputField {...fields.end_time} className="flex-grow" control={controller.control} />
           </div>
         </div>
       </div>
 
       <div className="flex gap-2">
-        <InputField
-          {...editSupplierFields.email}
-          className="flex-grow"
-          control={controller.control}
-        />
-        <InputField
-          {...editSupplierFields.phone}
-          className="flex-grow"
-          control={controller.control}
-        />
-        <InputField
-          {...editSupplierFields.gg_map}
-          className="flex-grow"
-          control={controller.control}
-        />
-        <InputField {...editSupplierFields.ward} className="grow-0" control={controller.control} />
+        <InputField {...fields.email} className="flex-grow" control={controller.control} />
+        <InputField {...fields.phone} className="flex-grow" control={controller.control} />
+        <InputField {...fields.gg_map} className="flex-grow" control={controller.control} />
+        <InputField {...fields.ward} className="grow-0" control={controller.control} />
       </div>
 
       <div>
-        <SupplierChecklistField {...editSupplierFields.account_type} control={controller.control} />
+        <SupplierChecklistField {...fields.account_type} control={controller.control} />
       </div>
 
       <div className="flex mt-3">
-        <SupplierChecklistField
-          {...editSupplierFields.services}
-          control={controller.control}
-          multiple
-        />
+        <SupplierChecklistField {...fields.services} control={controller.control} multiple />
       </div>
 
       <div className="flex mt-3">
         <InputField
-          {...editSupplierFields.description}
+          {...fields.description}
           className="flex-grow"
           type="textarea"
           control={controller.control}
@@ -173,11 +129,7 @@ const SuppliersForm = ({ defaultValues, onSubmit, onDeleteOrActive, titleButton 
       </div>
 
       <div>
-        <ListField
-          {...editSupplierFields.link}
-          className="flex-grow"
-          control={controller.control}
-        />
+        <ListField {...fields.link} className="flex-grow" control={controller.control} />
       </div>
 
       <div className="flex justify-center mt-10">

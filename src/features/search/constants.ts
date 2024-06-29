@@ -5,6 +5,7 @@ import {
   HomeIcon,
   HotelIcon,
   ShoppingCartIcon,
+  SparklesIcon,
 } from 'lucide-react';
 
 import {
@@ -174,6 +175,14 @@ export const serviceDataDetail: Record<
   entertainment: {
     name: 'Giải trí',
     icon: ClapperboardIcon,
+  },
+  resort: {
+    name: 'Resort',
+    icon: HotelIcon,
+  },
+  spa: {
+    name: 'Spa',
+    icon: SparklesIcon,
   },
   'other-service': {
     name: 'Khác',

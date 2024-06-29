@@ -51,6 +51,8 @@ type Service =
   | 'shopping' // Mua sắm
   | 'fishing' // Câu cá
   | 'entertainment' // Giải trí
+  | 'resort'
+  | 'spa'
   | 'other-service'; // Dịch vụ khác
 
 interface TypeProfile {

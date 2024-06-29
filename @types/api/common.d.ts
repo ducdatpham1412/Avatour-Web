@@ -45,4 +45,5 @@ interface Resource {
     android: string;
     download_link: string;
   };
+  cats: Service[];
 }

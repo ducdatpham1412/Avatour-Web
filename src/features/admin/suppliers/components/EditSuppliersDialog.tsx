@@ -8,6 +8,7 @@ import {
 } from 'react';
 
 import { addSupplier, deleteOrActiveSupplier, updateSupplier } from '@/api/admin';
+import { useAppContext } from '@/app/provider';
 import { ButtonClose } from '@/components/buttons';
 import { ToastAction } from '@/components/ui';
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from '@/components/ui/dialog';
@@ -15,7 +16,6 @@ import { useToast } from '@/hooks';
 import { logger, parseErrorMessage } from '@/lib';
 
 import { useSuppliers } from '../../hooks';
-import { editSupplierFields } from '../constants';
 import { SupplierData } from '../types';
 import SuppliersForm, { OnSubmitSupplierForm } from './SuppliersForm';
 
@@ -33,6 +33,7 @@ const EditSuppliersDialog = forwardRef(
     ref: ForwardedRef<DialogRefs>,
   ) => {
     const { toast } = useToast();
+    const [{ resource }] = useAppContext();
     const [, { mutate }] = useSuppliers();
 
     const hasChangedStatus = useRef(false);
@@ -75,6 +76,10 @@ const EditSuppliersDialog = forwardRef(
     };
 
     const onSubmit = async (formData: SupplierData): Promise<OnSubmitSupplierForm> => {
+      if (!resource) {
+        return 'error';
+      }
+
       if (Object.keys(formData).length === 0) {
         toast({
           description: type === 'update' ? 'Bạn chưa thay đổi gì' : 'Bạn chưa nhập gì',
@@ -83,8 +88,7 @@ const EditSuppliersDialog = forwardRef(
       }
 
       if (formData.services && Array.isArray(formData.services)) {
-        const services = editSupplierFields.services.options?.map(o => o.id) ?? [];
-        formData.services = formData.services.filter(s => services.includes(s));
+        formData.services = formData.services.filter(s => resource.cats.includes(s));
 
         if (!formData.services.length) {
           toast({
