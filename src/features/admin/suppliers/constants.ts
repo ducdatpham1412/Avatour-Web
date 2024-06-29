@@ -3,106 +3,108 @@ import { serviceDataDetail } from '@/features/search/constants';
 
 import { FormFieldDefine } from './types';
 
-const editSupplierFields = {
-  avatar: {
-    name: 'avatar',
-    label: 'Avatar',
-    placeholder: 'Add your here',
-  },
-  location: {
-    name: 'location',
-    label: 'Location',
-    placeholder: 'Location',
-  },
-  name: {
-    name: 'name',
-    label: 'Name',
-    placeholder: 'Name',
-  },
-  lat: {
-    name: 'lat',
-    label: 'Lat',
-    placeholder: 'Lat',
-  },
-  lng: {
-    name: 'lng',
-    label: 'Lng',
-    placeholder: 'Lng',
-  },
-  gg_map: {
-    name: 'gg_map',
-    label: 'Gg map',
-    placeholder: 'Gg map',
-  },
-  ward: {
-    name: 'ward',
-    label: 'Ward',
-    placeholder: 'Ward',
-  },
-  duration: {
-    name: 'duration',
-    label: 'Duration (hours)',
-    placeholder: 'Duration',
-  },
-  min_cost: {
-    name: 'min_cost',
-    label: 'Min cost',
-    placeholder: 'Min cost',
-  },
-  max_cost: {
-    name: 'max_cost',
-    label: 'Max cost',
-    placeholder: 'Max cost',
-  },
-  start_time: {
-    name: 'start_time',
-    label: 'Start time',
-    placeholder: 'Start time',
-  },
-  end_time: {
-    name: 'end_time',
-    label: 'End time',
-    placeholder: 'End time',
-  },
-  email: {
-    name: 'email',
-    label: 'Email',
-    placeholder: 'Email',
-  },
-  phone: {
-    name: 'phone',
-    label: 'SDT',
-    placeholder: 'Phone',
-  },
-  services: {
-    name: 'services',
-    label: 'Loại hình',
-    options: Object.keys(serviceDataDetail).map(key => {
-      return {
-        id: key,
-        name: serviceDataDetail[key as Service].name,
-      };
-    }),
-  },
-  account_type: {
-    name: 'account_type',
-    label: 'Loại tài khoản',
-    options: [
-      { id: ACCOUNT_TYPE.shop, name: 'Shop' },
-      { id: ACCOUNT_TYPE.location, name: 'Location' },
-    ],
-  },
-  description: {
-    name: 'description',
-    label: 'Description',
-    placeholder: 'Description',
-  },
-  link: {
-    name: 'link',
-    label: 'Link',
-    placeholder: 'Paste link',
-  },
-} as FormFieldDefine<TypeProfile>;
+const editSupplierFields = (cats: Resource['cats']) => {
+  return {
+    avatar: {
+      name: 'avatar',
+      label: 'Avatar',
+      placeholder: 'Add your here',
+    },
+    location: {
+      name: 'location',
+      label: 'Location',
+      placeholder: 'Location',
+    },
+    name: {
+      name: 'name',
+      label: 'Name',
+      placeholder: 'Name',
+    },
+    lat: {
+      name: 'lat',
+      label: 'Lat',
+      placeholder: 'Lat',
+    },
+    lng: {
+      name: 'lng',
+      label: 'Lng',
+      placeholder: 'Lng',
+    },
+    gg_map: {
+      name: 'gg_map',
+      label: 'Gg map',
+      placeholder: 'Gg map',
+    },
+    ward: {
+      name: 'ward',
+      label: 'Ward',
+      placeholder: 'Ward',
+    },
+    duration: {
+      name: 'duration',
+      label: 'Duration (hours)',
+      placeholder: 'Duration',
+    },
+    min_cost: {
+      name: 'min_cost',
+      label: 'Min cost',
+      placeholder: 'Min cost',
+    },
+    max_cost: {
+      name: 'max_cost',
+      label: 'Max cost',
+      placeholder: 'Max cost',
+    },
+    start_time: {
+      name: 'start_time',
+      label: 'Start time',
+      placeholder: 'Start time',
+    },
+    end_time: {
+      name: 'end_time',
+      label: 'End time',
+      placeholder: 'End time',
+    },
+    email: {
+      name: 'email',
+      label: 'Email',
+      placeholder: 'Email',
+    },
+    phone: {
+      name: 'phone',
+      label: 'SDT',
+      placeholder: 'Phone',
+    },
+    services: {
+      name: 'services',
+      label: 'Loại hình',
+      options: cats.map(c => {
+        return {
+          id: c,
+          name: serviceDataDetail[c].name || c,
+        };
+      }),
+    },
+    account_type: {
+      name: 'account_type',
+      label: 'Loại tài khoản',
+      options: [
+        { id: ACCOUNT_TYPE.shop, name: 'Shop' },
+        { id: ACCOUNT_TYPE.location, name: 'Location' },
+      ],
+    },
+    description: {
+      name: 'description',
+      label: 'Description',
+      placeholder: 'Description',
+    },
+    link: {
+      name: 'link',
+      label: 'Link',
+      placeholder: 'Paste link',
+    },
+  } as FormFieldDefine<TypeProfile>;
+};
 
 const filterSuppliersFields = {
   account_type: {
