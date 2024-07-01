@@ -1,5 +1,6 @@
 import { ACCOUNT_TYPE } from '@/configs/constants';
 import { serviceDataDetail } from '@/features/search/constants';
+import { SupplierData } from '@/api/admin';
 
 import { FormFieldDefine } from './types';
 
@@ -19,16 +20,6 @@ const editSupplierFields = (cats: Resource['cats']) => {
       name: 'name',
       label: 'Name',
       placeholder: 'Name',
-    },
-    lat: {
-      name: 'lat',
-      label: 'Lat',
-      placeholder: 'Lat',
-    },
-    lng: {
-      name: 'lng',
-      label: 'Lng',
-      placeholder: 'Lng',
     },
     gg_map: {
       name: 'gg_map',
@@ -103,76 +94,12 @@ const editSupplierFields = (cats: Resource['cats']) => {
       label: 'Link',
       placeholder: 'Paste link',
     },
-  } as FormFieldDefine<TypeProfile>;
+    lat_lng: {
+      name: 'lat_lng',
+      label: 'Lat, Lng',
+      placeholder: 'Lat, Lng',
+    },
+  } as FormFieldDefine<SupplierData>;
 };
 
-const filterSuppliersFields = {
-  account_type: {
-    name: 'at',
-    label: 'Loại tài khoản',
-    options: [
-      {
-        id: 'all',
-        name: 'All',
-      },
-      {
-        id: ACCOUNT_TYPE.shop,
-        name: 'Shop',
-      },
-      {
-        id: ACCOUNT_TYPE.location,
-        name: 'Location',
-      },
-      {
-        id: 'del',
-        name: 'Đã xoá',
-      },
-    ],
-  },
-  services: {
-    name: 'sv',
-    label: 'Loại hình',
-    options: [
-      {
-        id: 'backpack',
-        name: 'Đi phượt',
-      },
-      {
-        id: 'cuisine',
-        name: 'Ẩm thực',
-      },
-      {
-        id: 'camping',
-        name: 'Cám trại',
-      },
-      {
-        id: 'team-building',
-        name: 'Team building',
-      },
-    ],
-  },
-  price: {
-    name: 'p',
-    label: 'Giá tiền',
-    options: [
-      {
-        id: 1,
-        name: '0 - 1.000.000 vnđ',
-      },
-      {
-        id: 2,
-        name: '1.000.000 - 3.000.000 vnđ',
-      },
-      {
-        id: 3,
-        name: '3.000.000 - 5.000.000 vnđ',
-      },
-      {
-        id: 4,
-        name: 'Trên 5.000.000 vnđ',
-      },
-    ],
-  },
-} satisfies FormFieldDefine<Record<string, any>>;
-
-export { editSupplierFields, filterSuppliersFields };
+export { editSupplierFields };

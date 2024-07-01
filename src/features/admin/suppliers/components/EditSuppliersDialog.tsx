@@ -7,16 +7,22 @@ import {
   useState,
 } from 'react';
 
-import { addSupplier, deleteOrActiveSupplier, updateSupplier } from '@/api/admin';
+import {
+  SupplierData,
+  SupplierDataParams,
+  addSupplier,
+  deleteOrActiveSupplier,
+  updateSupplier,
+} from '@/api/admin';
 import { useAppContext } from '@/app/provider';
 import { ButtonClose } from '@/components/buttons';
 import { ToastAction } from '@/components/ui';
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks';
 import { logger, parseErrorMessage } from '@/lib';
+import { validateIsNumber } from '@/lib/validate';
 
 import { useSuppliers } from '../../hooks';
-import { SupplierData } from '../types';
 import SuppliersForm, { OnSubmitSupplierForm } from './SuppliersForm';
 
 type EditSuppliersDialogProps = {
@@ -104,8 +110,27 @@ const EditSuppliersDialog = forwardRef(
           return 'error';
         }
 
+        const updateFormData: Partial<SupplierDataParams> = Object.assign(formData, {
+          lat: undefined,
+          lng: undefined,
+        });
+        if (formData.lat_lng) {
+          const [lat, lng] = formData.lat_lng.split(', ').map(v => {
+            if (validateIsNumber(v)) {
+              return Number(v);
+            }
+            return undefined;
+          });
+          if (!lat || !lng) {
+            return 'error';
+          }
+          delete formData.lat_lng;
+          updateFormData.lat = lat;
+          updateFormData.lng = lng;
+        }
+
         try {
-          await updateSupplier(data.id, formData);
+          await updateSupplier(data.id, updateFormData);
           toast({
             description: 'Chỉnh sửa thành công',
           });
@@ -130,8 +155,25 @@ const EditSuppliersDialog = forwardRef(
       /**
        * Create new supplier
        */
+      if (!formData.lat_lng) {
+        return 'error';
+      }
+
+      const [lat, lng] = formData.lat_lng.split(', ').map(v => {
+        if (validateIsNumber(v, { isDecimal: true })) {
+          return Number(v);
+        }
+        return undefined;
+      });
+      if (!lat || !lng) {
+        return 'error';
+      }
+
+      delete formData.lat_lng;
+      const createFormData: SupplierDataParams = Object.assign(formData, { lat, lng });
+
       try {
-        await addSupplier(formData);
+        await addSupplier(createFormData);
         toast({
           description: 'Thêm địa điểm thành công',
         });
@@ -161,16 +203,40 @@ const EditSuppliersDialog = forwardRef(
           className="xl:w-[1305px] xl:h-min xl:max-h-[calc(100vh_-_40px)] xl:!rounded-[20px] !rounded-none xl w-full h-full max-w-full max-h-full bg-background overflow-hidden p-0"
         >
           <DialogHeader className="h-0" />
-          <SuppliersForm
-            defaultValues={
-              data ?? {
-                link: [],
+          {(!data || data.account_type === 'location' || data.account_type === 'shop') && (
+            <SuppliersForm
+              defaultValues={
+                data
+                  ? {
+                      id: data.id,
+                      email: data.email,
+                      phone: data.phone,
+                      name: data.name,
+                      description: data.description,
+                      avatar: data.avatar,
+                      location: data.location,
+                      services: data.services,
+                      link: data.link,
+                      status: data.status,
+                      account_type: data.account_type,
+                      ward: data.info.ward,
+                      gg_map: data.info.gg_map,
+                      min_cost: data.info.min_cost,
+                      max_cost: data.info.max_cost,
+                      duration: data.info.duration,
+                      start_time: data.info.start_time,
+                      end_time: data.info.end_time,
+                      lat_lng: `${data.info.lat}, ${data.info.lng}`,
+                    }
+                  : {
+                      link: [],
+                    }
               }
-            }
-            onSubmit={onSubmit}
-            onDeleteOrActive={onDeleteOrActive}
-            titleButton={type === 'create' ? 'Thêm mới' : 'Cập nhật'}
-          />
+              onSubmit={onSubmit}
+              onDeleteOrActive={onDeleteOrActive}
+              titleButton={type === 'create' ? 'Thêm mới' : 'Cập nhật'}
+            />
+          )}
         </DialogContent>
       </Dialog>
     );

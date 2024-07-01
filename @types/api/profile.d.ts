@@ -55,33 +55,55 @@ type Service =
   | 'spa'
   | 'other-service'; // Dịch vụ khác
 
-interface TypeProfile {
-  id: number;
-  account_type: 'holder' | 'admin' | 'user' | 'shop' | 'location' | 'tour-guide';
-  email: string | null;
-  phone: string | null;
-  name: string;
-  avatar: string;
-  description: string;
-  ward: string;
-  gg_map: string;
-  followers: number;
-  followings: number;
-  gender: number;
-  location: string;
+type ProfileInfo = {
   lat: number;
   lng: number;
-  gg_map: string;
   ward: string;
+  gg_map: string;
   min_cost: number;
   max_cost: number;
   duration: number;
-  services: Service[];
   start_time: number;
   end_time: number;
   total_ratings: number;
   average_stars: number;
-  link: string[];
   rank: number;
+};
+
+type ProfileSetting = {
+  gender: number;
+  birthday: string;
+  theme: 'dark' | 'light';
+  language: 'vi' | 'en';
+};
+
+type TypeProfile = {
+  id: number;
+  email: string | null;
+  phone: string | null;
+  name: string;
+  description: string;
+  avatar: string;
+  followers: number;
+  followings: number;
+  location: string;
+  services: Service[];
+  link: string[];
   status: number;
-}
+} & (
+  | {
+      account_type: 'location';
+      info: ProfileInfo;
+      setting: null;
+    }
+  | {
+      account_type: 'holder' | 'admin' | 'user' | 'tour-guide';
+      info: null;
+      setting: ProfileSetting;
+    }
+  | {
+      account_type: 'shop';
+      info: ProfileInfo;
+      setting: ProfileSetting;
+    }
+);

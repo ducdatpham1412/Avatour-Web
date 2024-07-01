@@ -34,15 +34,19 @@ const DayItem = ({ day, profiles, onItemClick }: DayItemProps) => {
         defaultValue={day === 1 ? [profiles?.[0]?.name ?? ''] : undefined}
       >
         {profiles?.map((profile, i) => {
+          if (profile.account_type !== 'location' && profile.account_type !== 'shop') {
+            return null;
+          }
+
           const ServiceIcon =
             serviceDataDetail[profile.services.length ? profile.services[0] : 'other-service'].icon;
 
           const services = profile.services.map(s => serviceDataDetail[s].name || '').join(' • ');
 
           const time = (() => {
-            const startTime = convertDecimalToTime(profile.start_time);
-            const endTime = convertDecimalToTime(profile.end_time);
-            const duration = convertDecimalToTime(profile.duration);
+            const startTime = convertDecimalToTime(profile.info.start_time);
+            const endTime = convertDecimalToTime(profile.info.end_time);
+            const duration = convertDecimalToTime(profile.info.duration);
             const availableTime = startTime === endTime ? 'cả ngày' : `${startTime} - ${endTime}`;
             return `Mở cửa: ${availableTime} • Trải nghiệm: ${duration}p`;
           })();
@@ -77,7 +81,7 @@ const DayItem = ({ day, profiles, onItemClick }: DayItemProps) => {
                           <div className="flex items-center gap-x-[2px]">
                             <StarIcon size={24} />
                             <div className="text-[14px] text-black leading-[24px] font-light">
-                              {profile.average_stars || 5}
+                              {profile.info.average_stars || 5}
                             </div>
                           </div>
                           {/* <div className="text-black text-[14px] leading-[24px] font-light"> • </div>
@@ -131,7 +135,7 @@ const DayItem = ({ day, profiles, onItemClick }: DayItemProps) => {
                     <div className="text-black font-medium text-[15px] md:text-[16px] leading-[24px]">
                       {'Chi phí: '}
                       <span className="text-p_700">
-                        {formatTourPrice(profile.min_cost, profile.max_cost)}
+                        {formatTourPrice(profile.info.min_cost, profile.info.max_cost)}
                       </span>
                     </div>
                   </div>

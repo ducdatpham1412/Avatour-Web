@@ -6,9 +6,9 @@ import { Form } from '@/components/ui/form';
 import { Switch } from '@/components/ui/switch';
 import { USER_STATUS } from '@/configs/constants';
 import { useAppContext } from '@/app/provider';
+import { SupplierData } from '@/api/admin';
 
 import { editSupplierFields } from '../constants';
-import { SupplierData } from '../types';
 import AvatarPreview from './AvatarPreview';
 import InputField from './InputField';
 import ListField from './ListField';
@@ -70,8 +70,12 @@ const SuppliersForm = ({ defaultValues, onSubmit, onDeleteOrActive, titleButton 
         </div>
         <div className="flex flex-col flex-grow gap-1">
           <div className="flex gap-5 flex-grow pr-8 items-center">
+            <InputField
+              {...fields.name}
+              className="flex-grow font-medium"
+              control={controller.control}
+            />
             <InputField {...fields.avatar} className="flex-grow" control={controller.control} />
-            <InputField {...fields.location} className="flex-grow" control={controller.control} />
             {status !== undefined && (
               <Switch
                 checked={status === USER_STATUS.active}
@@ -84,13 +88,13 @@ const SuppliersForm = ({ defaultValues, onSubmit, onDeleteOrActive, titleButton 
           </div>
           <div className="flex gap-5 flex-grow pr-8">
             <InputField
-              {...fields.name}
-              className="w-[calc(50%_-_1.25em_/_2)]"
+              {...fields.location}
+              //   className="w-[calc(50%_-_1.25em_/_2)]"
+              className="w-[65%]"
               control={controller.control}
             />
             <div className="flex flex-grow gap-5">
-              <InputField {...fields.lat} className="flex-grow" control={controller.control} />
-              <InputField {...fields.lng} className="flex-grow" control={controller.control} />
+              <InputField {...fields.lat_lng} className="flex-grow" control={controller.control} />
             </div>
           </div>
           <div className="flex gap-5 flex-grow pr-20">

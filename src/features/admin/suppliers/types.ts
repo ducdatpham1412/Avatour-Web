@@ -1,6 +1,6 @@
 import { Control, RegisterOptions } from 'react-hook-form';
 
-type SupplierData = Partial<TypeProfile>;
+import { SupplierData } from '@/api/admin';
 
 type FormFieldProps<T extends Record<string, any>> = {
   control: Control<Partial<T> | T, any>;
@@ -14,7 +14,7 @@ type FormFieldProps<T extends Record<string, any>> = {
   placeholder?: string;
   rules?:
     | Omit<
-        RegisterOptions<Partial<TypeProfile>>,
+        RegisterOptions<SupplierData>,
         'setValueAs' | 'disabled' | 'valueAsNumber' | 'valueAsDate'
       >
     | undefined;
@@ -25,4 +25,4 @@ type FormFieldDefine<T extends Record<string, any>> = Record<
   Omit<FormFieldProps<T>, 'control'>
 >;
 
-export type { FormFieldDefine, FormFieldProps, SupplierData };
+export type { FormFieldDefine, FormFieldProps };

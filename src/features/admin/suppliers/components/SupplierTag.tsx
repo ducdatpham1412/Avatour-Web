@@ -26,11 +26,13 @@ const SupplierTag = ({ data, onEdit }: SupplierTagProps) => {
       </td>
 
       <td className="bg-white">
-        <div className="flex items-center min-h-[40px] p-[0_10px]">{data.name}</div>
+        <div className="flex items-center min-h-[40px] p-[0_10px] text-[12px] font-medium">
+          {data.name}
+        </div>
       </td>
 
       <td className="bg-white">
-        <div className="flex items-center min-h-[40px] p-[0_10px] border-l-[1px]">
+        <div className="flex items-center min-h-[40px] p-[0_10px] border-l-[1px] text-[12px]">
           {data.account_type}
         </div>
       </td>
@@ -42,14 +44,14 @@ const SupplierTag = ({ data, onEdit }: SupplierTagProps) => {
       </td>
 
       <td className="bg-white">
-        <div className="flex items-center min-h-[40px] p-[0_10px] border-l-[1px] text-[12px]">
-          {data.location}
+        <div className="flex items-center min-h-[40px] p-[0_10px] border-l-[1px]">
+          <p className="text-[12px] line-clamp-2">{data.location}</p>
         </div>
       </td>
 
       <td className="bg-white">
-        <div className="flex items-center min-h-[40px] p-[0_10px] border-l-[1px]">
-          {data.max_cost ? `${formatPrice(data.max_cost)} đ` : 'Miễn Phí'}
+        <div className="flex items-center min-h-[40px] p-[0_10px] border-l-[1px] text-[12px]">
+          {data.info?.max_cost ? `${formatPrice(data.info.max_cost)} đ` : 'Miễn Phí'}
         </div>
       </td>
 
