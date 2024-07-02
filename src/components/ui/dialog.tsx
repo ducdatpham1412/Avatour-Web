@@ -59,12 +59,14 @@ const DialogContent = forwardRef<
         autoFocus={false}
       >
         <Show.Const
-          when={closeButton === null}
+          when
           fallback={
-            <Fragment>
-              <ButtonClose />
-              <span className="sr-only">Close</span>
-            </Fragment>
+            closeButton === null ? undefined : (
+              <Fragment>
+                <ButtonClose />
+                {/* <span className="sr-only">Close</span> */}
+              </Fragment>
+            )
           }
         >
           {closeButton}
