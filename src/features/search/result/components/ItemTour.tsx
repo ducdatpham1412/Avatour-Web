@@ -65,7 +65,7 @@ const LocationDetailDialog = ({ children, data }: LocationDetailDialogProps) => 
           tour={data}
           formatDescription={loc =>
             `${serviceDataDetail[loc.services[0]].name || loc.services[0]}・${formatDuration(
-              loc.duration,
+              loc.info?.duration ?? 0,
             )}`
           }
           focusing={focusing}

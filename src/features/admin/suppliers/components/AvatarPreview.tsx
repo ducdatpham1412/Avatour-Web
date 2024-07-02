@@ -2,8 +2,9 @@ import { memo, useEffect, useRef, useState } from 'react';
 import { useWatch } from 'react-hook-form';
 
 import { Image } from '@/components/ui';
+import { SupplierData } from '@/api/admin';
 
-import { FormFieldProps, SupplierData } from '../types';
+import { FormFieldProps } from '../types';
 
 type AvatarPreviewProps = Pick<FormFieldProps<SupplierData>, 'control'> & {
   defaultValue?: string;

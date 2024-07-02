@@ -43,7 +43,7 @@ const SearchResult = ({ data }: SearchResultProps) => {
             tour={index !== undefined ? data[index] : undefined}
             formatDescription={loc =>
               `${serviceDataDetail[loc.services[0]].name || loc.services[0]}・${formatDuration(
-                loc.duration,
+                loc.info?.duration ?? 0,
               )}`
             }
             focusing={focusing}

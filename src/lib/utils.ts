@@ -168,8 +168,8 @@ export const estTourPrice = (schedule: TypeTour['schedule']) => {
 
   schedule.forEach(day => {
     day.forEach(loc => {
-      minCost += loc.min_cost;
-      maxCost += loc.max_cost;
+      minCost += loc.info?.min_cost ?? 0;
+      maxCost += loc.info?.max_cost ?? 0;
     });
   });
 

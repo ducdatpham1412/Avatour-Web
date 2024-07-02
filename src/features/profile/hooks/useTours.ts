@@ -28,7 +28,7 @@ const useTours = (userId?: number, type: 'list' | 'favorite' = 'list') => {
       let duration = 0;
       arg.schedule.forEach(day => {
         day.forEach(loc => {
-          duration += loc.duration;
+          duration += loc.info?.duration ?? 0;
         });
       });
       const cost = estTourPrice(arg.schedule);

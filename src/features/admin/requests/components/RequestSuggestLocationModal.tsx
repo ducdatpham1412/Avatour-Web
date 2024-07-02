@@ -60,12 +60,12 @@ const RequestSuggestLocationModal = withRequest<'suggest_location'>(
                 <li>
                   <span className="font-bold">Kinh độ vĩ độ:</span>{' '}
                   <span>
-                    {data.data.lng} {data.data.lng}
+                    {data.data.info?.lat} {data.data.info?.lng}
                   </span>
                 </li>
                 <li>
                   <span className="font-bold">Thời gian trải nghiệm:</span>{' '}
-                  <span>{data.data.duration}</span>
+                  <span>{data.data.info?.duration}</span>
                 </li>
                 <li>
                   <span className="font-bold">Mô hình địa điểm:</span> <span>Địa điểm</span>
@@ -81,7 +81,7 @@ const RequestSuggestLocationModal = withRequest<'suggest_location'>(
                 <li>
                   <span className="font-bold">Chi phí:</span>{' '}
                   <span>
-                    {data.data.min_cost} - {data.data.max_cost}
+                    {data.data.info?.min_cost} - {data.data.info?.max_cost}
                   </span>
                 </li>
                 <li>
