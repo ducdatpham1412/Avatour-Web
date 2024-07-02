@@ -16,3 +16,14 @@ export const validatePassword = (pw: string) => {
 };
 
 export const validateName = (v: string) => v.length <= 100;
+
+type ValidateNumberOptions = {
+  isDecimal?: boolean;
+};
+export const validateIsNumber = (value: string | number, params?: ValidateNumberOptions) => {
+  //   return /^[0-9]+$/.test(value);
+  if (!params?.isDecimal) {
+    return /^\d+?$/.test(String(value));
+  }
+  return /^\d+?$/.test(String(value)) || /^\d+(.(\d+)?)?$/.test(String(value));
+};

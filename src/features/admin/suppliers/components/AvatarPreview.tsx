@@ -3,9 +3,9 @@ import { useWatch } from 'react-hook-form';
 
 import { Image } from '@/components/ui';
 
-import { FormFieldProps } from '../types';
+import { FormFieldProps, SupplierData } from '../types';
 
-type AvatarPreviewProps = Pick<FormFieldProps<TypeProfile>, 'control'> & {
+type AvatarPreviewProps = Pick<FormFieldProps<SupplierData>, 'control'> & {
   defaultValue?: string;
 };
 

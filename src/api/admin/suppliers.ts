@@ -12,6 +12,31 @@ interface GetSuppliersFilter {
   dt: string;
 }
 
+export type SupplierData = Partial<
+  Pick<
+    TypeProfile,
+    | 'id'
+    | 'email'
+    | 'phone'
+    | 'name'
+    | 'description'
+    | 'avatar'
+    | 'location'
+    | 'services'
+    | 'link'
+    | 'status'
+  > & {
+    account_type: 'location' | 'shop';
+  } & Omit<ProfileInfo, 'lat' | 'lng'> & {
+      lat_lng: string;
+    }
+>;
+
+export type SupplierDataParams = Omit<SupplierData, 'lat_lng'> & {
+  lat: number;
+  lng: number;
+};
+
 const applyFilterSuppliers = (data: TypeProfile[], searchQueries: Partial<GetSuppliersFilter>) => {
   const services = searchQueries.sv;
   const filter = {
@@ -58,11 +83,11 @@ export const getSuppliers = async (options: Partial<GetSuppliersFilter>) => {
   }
 };
 
-export const addSupplier = async (data: Partial<TypeProfile>) => {
+export const addSupplier = async (data: SupplierDataParams) => {
   await request.post(SUPPLIERS_PATH, parseFormData(data));
 };
 
-export const updateSupplier = async (id: number, data: Partial<TypeProfile>) => {
+export const updateSupplier = async (id: number, data: Partial<SupplierDataParams>) => {
   const formData = parseFormData(data);
   await request.put(`${SUPPLIERS_PATH}/${id}`, formData);
 };
