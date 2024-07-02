@@ -122,11 +122,18 @@ const EditSuppliersDialog = forwardRef(
             return undefined;
           });
           if (!lat || !lng) {
+            toast({
+              description: 'Chưa nhập lat, lng',
+              variant: 'destructive',
+            });
             return 'error';
           }
           delete formData.lat_lng;
           updateFormData.lat = lat;
           updateFormData.lng = lng;
+        }
+        if (formData.parent !== undefined) {
+          formData.parent = formData.parent || null;
         }
 
         try {
@@ -156,6 +163,10 @@ const EditSuppliersDialog = forwardRef(
        * Create new supplier
        */
       if (!formData.lat_lng) {
+        toast({
+          description: 'Chưa nhập lat lng',
+          variant: 'destructive',
+        });
         return 'error';
       }
 
@@ -214,19 +225,34 @@ const EditSuppliersDialog = forwardRef(
                       name: data.name,
                       description: data.description,
                       avatar: data.avatar,
-                      location: data.location,
                       services: data.services,
                       link: data.link,
                       status: data.status,
                       account_type: data.account_type,
+                      parent: data.parent,
+                      // Location
+                      location: data.location,
                       ward: data.info.ward,
                       gg_map: data.info.gg_map,
+                      lat_lng: `${data.info.lat}, ${data.info.lng}`,
+                      // Cost
                       min_cost: data.info.min_cost,
                       max_cost: data.info.max_cost,
+                      info_cost: data.info.info_cost,
+                      currencies: data.info.currencies,
+                      // Time
                       duration: data.info.duration,
                       start_time: data.info.start_time,
                       end_time: data.info.end_time,
-                      lat_lng: `${data.info.lat}, ${data.info.lng}`,
+                      best_hours: data.info.best_hours,
+                      best_time: data.info.best_time,
+                      // Other info
+                      value: data.info.value,
+                      tag: data.info.tag,
+                      facilities: data.info.facilities,
+                      take_away: data.info.take_away,
+                      dresses: data.info.dresses,
+                      activities: data.info.activities,
                     }
                   : {
                       link: [],

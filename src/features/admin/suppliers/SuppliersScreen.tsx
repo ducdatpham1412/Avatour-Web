@@ -41,7 +41,7 @@ const SuppliersScreen = () => {
           <tr className="h-[70px]">
             <th className="w-[90px]"></th>
             <th className="rounded-[70px_0_0_70px] bg-white w-[200px]">
-              <div font-medium>Tên</div>
+              <div className="font-medium">Tên</div>
             </th>
             <th className="bg-white w-[100px]">
               <div className="border-l-[1px] font-medium">Loại tk</div>

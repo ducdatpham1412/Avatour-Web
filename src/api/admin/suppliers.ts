@@ -25,6 +25,7 @@ export type SupplierData = Partial<
     | 'services'
     | 'link'
     | 'status'
+    | 'parent'
   > & {
     account_type: 'location' | 'shop';
   } & Omit<ProfileInfo, 'lat' | 'lng'> & {
