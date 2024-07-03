@@ -82,7 +82,7 @@ const Profile = () => {
               <p className="text-[18px] font-medium">{profile.name}</p>
             </div>
             <button onClick={() => route.push(PROFILE_ROUTES.editProfile)}>
-              <PencilIcon />
+              <PencilIcon className="hover-scale" />
             </button>
           </div>
           <div className="flex gap-[2px] items-center">

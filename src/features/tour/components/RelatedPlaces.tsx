@@ -34,9 +34,9 @@ const RelatedPlaces = ({ profiles, previewProfile }: Props) => (
                   <div className="flex flex-col gap-y-1">
                     {p.link.map(l => {
                       return (
-                        <a href={l} target="_blank">
+                        <a href={l.link} target="_blank">
                           <p className="line-clamp-2 text-[13px] leading-[20px] font-normal text-gray_500 underline">
-                            {l}
+                            {l.link}
                           </p>
                         </a>
                       );

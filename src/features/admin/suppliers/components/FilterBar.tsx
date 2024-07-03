@@ -177,6 +177,7 @@ const FilterBar = () => {
               <h4 className="font-bold">Lọc theo mã địa phương</h4>
               <Input
                 placeholder="Mã quận, huyện"
+                defaultValue={filter.district ?? ''}
                 onChange={e => {
                   clearTimeout(timeOut.current);
                   timeOut.current = setTimeout(() => {

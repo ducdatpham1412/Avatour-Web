@@ -69,7 +69,7 @@ const DialogContent = forwardRef<
             )
           }
         >
-          {closeButton}
+          {closeButton === null ? null : closeButton}
         </Show.Const>
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>
