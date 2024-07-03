@@ -1,27 +1,22 @@
 'use client';
 import dayjs from 'dayjs';
-import { ReactElement, memo, useMemo, useState } from 'react';
+import { memo, useMemo } from 'react';
 
 import { Icon } from '@/components';
-import { Dialog, DialogContent, DialogTrigger, Image } from '@/components/ui';
+import { Image } from '@/components/ui';
+import { CONTAINER_WIDTH } from '@/configs/constants';
 import { TOUR_ROUTES } from '@/configs/routes';
 import { useRouter } from '@/hooks';
 import { cn, getCategoriesByServices } from '@/lib';
-import { formatDuration, formatTourDuration, formatTourName, formatTourPrice } from '@/lib/format';
-import { CONTAINER_WIDTH } from '@/configs/constants';
+import { formatTourDuration, formatTourName, formatTourPrice } from '@/lib/format';
 
-import { TourQuickDetail, TourQuickDetailFocusing } from '../../components';
 import { serviceDataDetail } from '../../constants';
 
 type Props = {
   isActive?: boolean;
   item: TypeTour;
   onHover?: (e: number | null) => void;
-};
-
-type LocationDetailDialogProps = {
-  children: ReactElement;
-  data: TypeTour;
+  onPreview?: () => void;
 };
 
 type TourServiceProps = {
@@ -49,35 +44,7 @@ const TourService = ({ name, count }: TourServiceProps) => {
   );
 };
 
-const LocationDetailDialog = ({ children, data }: LocationDetailDialogProps) => {
-  const [focusing, setFocusing] = useState<TourQuickDetailFocusing>();
-
-  return (
-    <Dialog>
-      <DialogTrigger asChild onClick={e => e.stopPropagation()}>
-        {children}
-      </DialogTrigger>
-      <DialogContent
-        onClick={e => e.stopPropagation()}
-        className="max-w-[unset] !w-[min-content] !p-0 !border-none !bg-transparent !rounded-[20px]"
-      >
-        <TourQuickDetail
-          tour={data}
-          formatDescription={loc =>
-            `${serviceDataDetail[loc.services[0]].name || loc.services[0]}・${formatDuration(
-              loc.info?.duration ?? 0,
-            )}`
-          }
-          focusing={focusing}
-          onChangeFocusing={v => setFocusing(v)}
-          className="w-[90vw] md:w-[80vw]"
-        />
-      </DialogContent>
-    </Dialog>
-  );
-};
-
-const ItemTour = ({ item, onHover, isActive }: Props) => {
+const ItemTour = ({ item, onHover, isActive, onPreview }: Props) => {
   const router = useRouter();
 
   const serviceCountMap = useMemo(() => {
@@ -188,11 +155,12 @@ const ItemTour = ({ item, onHover, isActive }: Props) => {
           </div>
 
           <div className="block lg:hidden">
-            <LocationDetailDialog data={item}>
-              <div className="h-10 w-10 flex rounded-full bg-p_200 justify-center items-center">
-                <Icon name="calendar" />
-              </div>
-            </LocationDetailDialog>
+            <button
+              className="h-10 w-10 flex rounded-full bg-p_200 justify-center items-center"
+              onClick={onPreview}
+            >
+              <Icon name="calendar" />
+            </button>
           </div>
         </div>
       </div>

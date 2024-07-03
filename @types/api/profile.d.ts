@@ -103,7 +103,10 @@ type TypeProfile = {
   followings: number;
   location: string;
   services: Service[];
-  link: string[];
+  link: Array<{
+    img: string;
+    link: string;
+  }>;
   parent: number | null;
   status: number;
 } & (
