@@ -1,5 +1,7 @@
 'use client';
 
+import { ClassValue } from 'clsx';
+
 import { SearchIcon } from '@/components';
 import { cn } from '@/lib';
 
@@ -9,7 +11,7 @@ interface SearchInputProps {
   onChangeValue?: (v: string) => void;
   placeholder?: string;
   className?: string;
-  inputClassName?: string;
+  inputClassName?: ClassValue;
   onSearch?: () => void;
 }
 

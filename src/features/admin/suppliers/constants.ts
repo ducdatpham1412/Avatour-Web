@@ -6,36 +6,48 @@ import { FormFieldDefine } from './types';
 
 const editSupplierFields = (cats: Resource['cats']) => {
   return {
-    avatar: {
-      name: 'avatar',
-      label: 'Avatar',
-      placeholder: 'Add your here',
-    },
-    location: {
-      name: 'location',
-      label: 'Location',
-      placeholder: 'Location',
-    },
     name: {
       name: 'name',
       label: 'Name',
       placeholder: 'Name',
     },
-    gg_map: {
-      name: 'gg_map',
-      label: 'Gg map',
-      placeholder: 'Gg map',
+    avatar: {
+      name: 'avatar',
+      label: 'Avatar',
+      placeholder: 'Add your here',
+    },
+    email: {
+      name: 'email',
+      label: 'Email',
+      placeholder: 'Email',
+    },
+    phone: {
+      name: 'phone',
+      label: 'SDT',
+      placeholder: 'Phone',
+    },
+    // Location
+    location: {
+      name: 'location',
+      label: 'Location',
+      placeholder: 'Location',
     },
     ward: {
       name: 'ward',
       label: 'Ward',
       placeholder: 'Ward',
     },
-    duration: {
-      name: 'duration',
-      label: 'Duration (hours)',
-      placeholder: 'Duration',
+    gg_map: {
+      name: 'gg_map',
+      label: 'Gg map',
+      placeholder: 'Gg map',
     },
+    lat_lng: {
+      name: 'lat_lng',
+      label: 'Lat, Lng',
+      placeholder: 'Lat, Lng',
+    },
+    // Cost
     min_cost: {
       name: 'min_cost',
       label: 'Min cost',
@@ -45,6 +57,21 @@ const editSupplierFields = (cats: Resource['cats']) => {
       name: 'max_cost',
       label: 'Max cost',
       placeholder: 'Max cost',
+    },
+    info_cost: {
+      name: 'info_cost',
+      label: 'Info cost',
+      placeholder: 'Giá bao gồm ...',
+    },
+    currencies: {
+      name: 'currencies',
+      label: 'Tiền tệ thanh toán',
+    },
+    // Time
+    duration: {
+      name: 'duration',
+      label: 'Tgian (giờ)',
+      placeholder: 'Tgian chơi',
     },
     start_time: {
       name: 'start_time',
@@ -56,15 +83,42 @@ const editSupplierFields = (cats: Resource['cats']) => {
       label: 'End time',
       placeholder: 'End time',
     },
-    email: {
-      name: 'email',
-      label: 'Email',
-      placeholder: 'Email',
+    best_hours: {
+      name: 'best_hours',
+      label: 'Giờ đẹp nhất',
+      placeholder: 'Bạn nên đi từ ...',
     },
-    phone: {
-      name: 'phone',
-      label: 'SDT',
-      placeholder: 'Phone',
+    best_time: {
+      name: 'best_time',
+      label: 'Đẹp nhất trong năm',
+      placeholder: 'Mùa hè... Tháng...',
+    },
+    // Other info
+    value: {
+      name: 'value',
+      label: 'Giá trị nhận được',
+      placeholder: 'Giá trị nhận được',
+    },
+    tag: {
+      name: 'tag',
+      label: 'Tag đi kèm',
+      placeholder: 'Tag đi kèm',
+    },
+    activities: {
+      name: 'activities',
+      label: 'Các hoạt động',
+    },
+    facilities: {
+      name: 'facilities',
+      label: 'Cơ sở vật chất',
+    },
+    take_away: {
+      name: 'take_away',
+      label: 'Mang gì theo',
+    },
+    dresses: {
+      name: 'dresses',
+      label: 'Mặc gì đi',
     },
     services: {
       name: 'services',
@@ -94,10 +148,10 @@ const editSupplierFields = (cats: Resource['cats']) => {
       label: 'Link',
       placeholder: 'Paste link',
     },
-    lat_lng: {
-      name: 'lat_lng',
-      label: 'Lat, Lng',
-      placeholder: 'Lat, Lng',
+    parent: {
+      name: 'parent',
+      label: 'Parent',
+      placeholder: '--',
     },
   } as FormFieldDefine<SupplierData>;
 };

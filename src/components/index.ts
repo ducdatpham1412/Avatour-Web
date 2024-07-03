@@ -6,4 +6,5 @@ export { default as TabTrigger } from './TabTrigger';
 export { default as TabView } from './TabView';
 export { default as TitleHeader } from './TitleHeader';
 export { default as AppModals } from './AppModals';
+export { default as DropDown } from './DropDown';
 export * from './icon';

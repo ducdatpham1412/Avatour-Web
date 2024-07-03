@@ -56,15 +56,30 @@ type Service =
   | 'other-service'; // Dịch vụ khác
 
 type ProfileInfo = {
+  // Location
   lat: number;
   lng: number;
   ward: string;
   gg_map: string;
+  // Cost
   min_cost: number;
   max_cost: number;
+  info_cost: string;
+  currencies: string[];
+  // Time
   duration: number;
   start_time: number;
   end_time: number;
+  best_hours: string;
+  best_time: string;
+  // Other info
+  value: string;
+  tag: string;
+  facilities: string[];
+  take_away: string[];
+  dresses: string[];
+  activities: string[];
+  // Contributed by users
   total_ratings: number;
   average_stars: number;
   rank: number;
@@ -89,6 +104,7 @@ type TypeProfile = {
   location: string;
   services: Service[];
   link: string[];
+  parent: number | null;
   status: number;
 } & (
   | {

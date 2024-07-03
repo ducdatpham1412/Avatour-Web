@@ -30,7 +30,7 @@ const AvatarPreview: React.FC<AvatarPreviewProps> = memo(({ control, defaultValu
   return (
     <Image
       src={url}
-      className="h-[250px] w-[250px] rounded-[16px] bg-white border-[2px] border-gray-300"
+      className="h-[200px] w-[200px] rounded-[16px] bg-white border-[2px] border-gray-300"
       fit="cover"
     />
   );

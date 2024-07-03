@@ -27,7 +27,7 @@ const SupplierTag = ({ data, onEdit }: SupplierTagProps) => {
 
       <td className="bg-white">
         <div className="flex items-center min-h-[40px] p-[0_10px] text-[12px] font-medium">
-          {data.name}
+          ({data.id}) {data.name}
         </div>
       </td>
 
