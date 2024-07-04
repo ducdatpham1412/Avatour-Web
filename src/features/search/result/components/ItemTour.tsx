@@ -1,12 +1,9 @@
 'use client';
-import dayjs from 'dayjs';
-import { memo, useMemo } from 'react';
+import { MouseEventHandler, memo, useMemo } from 'react';
 
 import { Icon } from '@/components';
 import { Image } from '@/components/ui';
 import { CONTAINER_WIDTH } from '@/configs/constants';
-import { TOUR_ROUTES } from '@/configs/routes';
-import { useRouter } from '@/hooks';
 import { cn, getCategoriesByServices } from '@/lib';
 import { formatTourDuration, formatTourName, formatTourPrice } from '@/lib/format';
 
@@ -16,7 +13,8 @@ type Props = {
   isActive?: boolean;
   item: TypeTour;
   onHover?: (e: number | null) => void;
-  onPreview?: () => void;
+  onPreview?: MouseEventHandler<HTMLButtonElement>;
+  onClick?: MouseEventHandler<HTMLDivElement>;
 };
 
 type TourServiceProps = {
@@ -44,9 +42,7 @@ const TourService = ({ name, count }: TourServiceProps) => {
   );
 };
 
-const ItemTour = ({ item, onHover, isActive, onPreview }: Props) => {
-  const router = useRouter();
-
+const ItemTour = ({ item, onHover, isActive, onPreview, onClick }: Props) => {
   const serviceCountMap = useMemo(() => {
     const record = item.schedule.reduce((pre, cur) => {
       cur.forEach(profile => {
@@ -89,19 +85,6 @@ const ItemTour = ({ item, onHover, isActive, onPreview }: Props) => {
     return getCategoriesByServices(services);
   }, []);
 
-  const handleClick = () => {
-    if (item.id) {
-      router.push(TOUR_ROUTES.tourDetail(item.id, undefined));
-      return;
-    }
-
-    const timestamp = dayjs().unix().toString();
-    localStorage.clear();
-    localStorage.setItem(timestamp, JSON.stringify(item));
-
-    router.push(TOUR_ROUTES.tourDetail(undefined, timestamp));
-  };
-
   return (
     <div
       className={cn(
@@ -113,12 +96,12 @@ const ItemTour = ({ item, onHover, isActive, onPreview }: Props) => {
           onHover?.(item.id);
         }
       }}
-      onClick={handleClick}
+      onClick={onClick}
     >
       <div className="lg:w-1/2 w-full shrink-0 rounded-xl overflow-hidden aspect-[3/2]">
         <Image src={item.schedule[0][0].avatar} className="h-full w-full [&_>_img]:!object-cover" />
       </div>
-      <div className="flex flex-col justify-between py-[6px] gap-y-1">
+      <div className="flex flex-col justify-between py-[6px] gap-y-1 px-2 lg:px-0">
         <div className="flex flex-col">
           <div className="flex items-center gap-2 text-black/[0.36] text-[14px] leading-[24px] font-normal text-gray_500">
             {categories.join(' | ')}

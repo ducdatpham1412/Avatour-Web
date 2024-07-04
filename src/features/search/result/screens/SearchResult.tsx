@@ -1,11 +1,14 @@
 'use client';
 
 import { ElementRef, ForwardedRef, forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import dayjs from 'dayjs';
 
 import { formatDuration } from '@/lib/format';
 import { useWindowSize } from '@/hooks';
 import { Dialog, DialogContent } from '@/components/ui';
 import { ButtonClose } from '@/components/buttons';
+import { TOUR_ROUTES } from '@/configs/routes';
 
 import { TourQuickDetail, TourQuickDetailFocusing } from '../../components';
 import { serviceDataDetail } from '../../constants';
@@ -57,6 +60,7 @@ const DialogPreview = forwardRef(
 );
 
 const SearchResult = ({ data }: SearchResultProps) => {
+  const router = useRouter();
   const { width } = useWindowSize();
 
   const previewRef = useRef<ElementRef<typeof DialogPreview>>(null);
@@ -82,9 +86,22 @@ const SearchResult = ({ data }: SearchResultProps) => {
                 setFocusing(undefined);
                 setIndex(idx);
               }}
-              onPreview={() => {
+              onPreview={e => {
+                e.stopPropagation();
                 setPreview(location);
                 previewRef.current?.open();
+              }}
+              onClick={() => {
+                if (location.id) {
+                  router.push(TOUR_ROUTES.tourDetail(location.id, undefined));
+                  return;
+                }
+
+                const timestamp = dayjs().unix().toString();
+                localStorage.clear();
+                localStorage.setItem(timestamp, JSON.stringify(location));
+
+                router.push(TOUR_ROUTES.tourDetail(undefined, timestamp));
               }}
             />
           ))}
