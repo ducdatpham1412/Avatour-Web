@@ -2,6 +2,7 @@ import { clsx, type ClassValue } from 'clsx';
 import { omit as om } from 'lodash';
 import { twMerge } from 'tailwind-merge';
 import resolveConfig from 'tailwindcss/resolveConfig';
+import dayjs from 'dayjs';
 
 import { PARSE_ERROR_MESSAGE } from '@/api/request/constants';
 
@@ -238,3 +239,36 @@ export const search = (sample: string[], text: string) => {
 };
 
 export { cn, isDev, omit, paramsToUrl, parseFormData };
+
+type CheckOpenTimeParams = {
+  startTime: number;
+  endTime: number;
+};
+export const checkOpenTime = ({ startTime, endTime }: CheckOpenTimeParams) => {
+  const currentTime = Number(`${dayjs().hour()}.${dayjs().minute()}`);
+  if (startTime < endTime) {
+    if (currentTime > startTime && currentTime < endTime) {
+      return 'open';
+    }
+  } else {
+    if (currentTime > startTime || currentTime < endTime) {
+      return 'open';
+    }
+  }
+  return 'close';
+};
+
+export function convertDecimalToTime(decimalHours: number) {
+  const hours = Math.floor(decimalHours);
+  const minutes = Math.round((decimalHours - hours) * 100);
+
+  // Create a dayjs object for today's date and set the hours and minutes
+  const time = dayjs().hour(hours).minute(minutes);
+
+  // Format the time as "H[h]mm"
+  return time.format('H[h]mm');
+}
+
+export const navigateNewTab = (path: string) => {
+  window.open(`${window.origin}/${path}`, '_blank');
+};
