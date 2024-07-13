@@ -32,6 +32,9 @@ const useApi = <T>(path: string | null | undefined, options?: TypeParamsApi<T>) 
       const res = await apiGetSWR<T>(_path as string, _params as typeof params, {
         authorize: config?.authorize ?? true,
         cache: 'no-store',
+        next: {
+          revalidate: 0,
+        },
       });
       return res.data;
     },

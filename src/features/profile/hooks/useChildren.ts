@@ -5,6 +5,9 @@ const useChildren = (userId: number) => {
     params: {
       user_id: userId,
     },
+    config: {
+      authorize: false,
+    },
   });
 
   return [{ data, loading, validating }, { mutate }] as const;
