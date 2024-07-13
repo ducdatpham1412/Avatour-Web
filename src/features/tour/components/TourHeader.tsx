@@ -30,16 +30,16 @@ const TourHeader = ({ tour }: TourHeaderProps) => {
 
   return (
     <header className="flex flex-col">
-      <div className="inline-flex items-center gap-[16px]">
-        <ButtonBack onClick={() => router.back()} />
-        <p className="text-gray_500">{categories.join(' | ')}</p>
-      </div>
+      <ButtonBack onClick={() => router.back()} className="self-start" />
 
-      <section className="flex flex-col md:flex-row items-start gap-y-6 md:gap-x-[min(20%,_254px)] justify-between">
+      <section className="flex flex-col md:flex-row items-start gap-y-6 md:gap-x-[min(20%,_254px)] justify-between mt-[12px]">
         <div className="flex flex-col gap-y-5">
-          <h1 className="text-[24px] leading-[36px] md:text-[32px] md:leading-[44px] font-normal text-black">
-            {name}
-          </h1>
+          <div>
+            <h1 className="text-[24px] leading-[36px] md:text-[32px] md:leading-[44px] font-normal text-black">
+              {name}
+            </h1>
+            <p className="text-gray_500">{categories.join(' | ')}</p>
+          </div>
           {!!tour.description && (
             <TruncatedText
               headerTitle={tour.name}

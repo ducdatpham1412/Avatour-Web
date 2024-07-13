@@ -82,7 +82,7 @@ const TourPage = ({ searchParams, params }: PageProps<Params, SearchParams>) => 
   }, [] as TypeProfile[]);
 
   return (
-    <main className="relative inline-flex container flex-col gap-y-12 md:gap-y-[124px] mt-4">
+    <main className="relative inline-flex container flex-col gap-y-12 md:gap-y-[124px] mt-4 pb-[100px]">
       <article className="flex flex-col gap-y-[56px]">
         <TourHeader tour={data} />
 

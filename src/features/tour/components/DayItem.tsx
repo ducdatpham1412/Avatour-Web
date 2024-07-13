@@ -2,12 +2,14 @@
 
 import * as Accordion from '@radix-ui/react-accordion';
 
-import { Icon, StarIcon } from '@/components/icon';
+import { Icon } from '@/components/icon';
 import { Image } from '@/components/ui';
+import { PROFILE_ROUTES } from '@/configs/routes';
 import { serviceDataDetail } from '@/features/search/constants';
 import { formatTourPrice } from '@/lib/format';
+import { cn, convertDecimalToTime } from '@/lib/utils';
 
-import { convertDecimalToTime } from '../utils';
+import NameStars from './NameStars';
 import TruncatedText from './TruncatedText';
 
 interface DayItemProps {
@@ -38,6 +40,8 @@ const DayItem = ({ day, profiles, onItemClick }: DayItemProps) => {
             return null;
           }
 
+          const isLast = i === profiles.length - 1;
+
           const ServiceIcon =
             serviceDataDetail[profile.services.length ? profile.services[0] : 'other-service'].icon;
 
@@ -56,46 +60,35 @@ const DayItem = ({ day, profiles, onItemClick }: DayItemProps) => {
               <Accordion.Item
                 value={profile.name}
                 key={i}
-                className="py-5 md:py-6 border-b w-full overflow-hidden"
+                className={cn('py-5 md:py-6 w-full overflow-hidden', isLast ? '' : 'border-b')}
                 onClick={() => onItemClick(i)}
               >
                 <Accordion.Header className="">
-                  <Accordion.Trigger className="group w-full">
-                    <div className="flex items-start md:items-center justify-between w-full">
-                      <div className="flex flex-col md:flex-row items-start md:items-center gap-x-2 gap-y-[6px]">
-                        <div className="flex items-center gap-x-2">
-                          <ServiceIcon
-                            width="24px"
-                            height="24px"
-                            className="min-w-[24px] min-h-[24px]"
-                            strokeWidth={1.5}
-                          />
-                          <h2 className="text-[16px] text-black leading-[24px] md:text-[18px] md:leading-[28px] font-medium text-left">
-                            {profile.name}
-                          </h2>
-                        </div>
+                  <div className="w-full inline-flex">
+                    <div className="inline-flex items-start md:items-center justify-between">
+                      <div className="flex flex-row items-center gap-x-2 gap-y-[6px]">
+                        <ServiceIcon
+                          width="24px"
+                          height="24px"
+                          className="min-w-[24px] min-h-[24px]"
+                          strokeWidth={1.5}
+                        />
 
-                        <div className="hidden md:block w-[1px] h-7 bg-gray_300" />
-
-                        <div className="flex items-center gap-x-2">
-                          <div className="flex items-center gap-x-[2px]">
-                            <StarIcon size={24} />
-                            <div className="text-[14px] text-black leading-[24px] font-light">
-                              {profile.info.average_stars || 5}
-                            </div>
-                          </div>
-                          {/* <div className="text-black text-[14px] leading-[24px] font-light"> • </div>
-                        <div className="text-[14px] text-black leading-[24px] font-light underline">
-                          2k+ đánh giá
-                        </div> */}
-                        </div>
+                        <NameStars
+                          name={profile.name}
+                          stars={5}
+                          ratings={0}
+                          href={PROFILE_ROUTES.profileId(profile.id)}
+                        />
                       </div>
+                    </div>
 
+                    <Accordion.Trigger className="group flex flex-1 justify-end">
                       <div className="rotate-180 group-data-[state=open]:rotate-0 duration-200">
                         <Icon name="arrow-up" size={24} />
                       </div>
-                    </div>
-                  </Accordion.Trigger>
+                    </Accordion.Trigger>
+                  </div>
                 </Accordion.Header>
 
                 <Accordion.Content className="data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up overflow-hidden">
