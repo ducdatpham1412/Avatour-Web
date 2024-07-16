@@ -1,5 +1,5 @@
 'use client';
-import { MouseEventHandler, memo, useMemo } from 'react';
+import { MouseEventHandler, useMemo } from 'react';
 
 import { Icon } from '@/components';
 import { Image } from '@/components/ui';
@@ -151,4 +151,4 @@ const ItemTour = ({ item, onHover, isActive, onPreview, onClick }: Props) => {
   );
 };
 
-export default memo(ItemTour);
+export default ItemTour;

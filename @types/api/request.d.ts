@@ -2,6 +2,7 @@ interface RequestOptions extends RequestInit {
   baseUrl?: string;
   queries?: URLSearchParams;
   authorize?: boolean;
+  params?: Record<string, any>; // params is used for patch params in POST and PUT request
 }
 
 interface API {

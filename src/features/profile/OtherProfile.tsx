@@ -31,7 +31,9 @@ const OtherProfile = ({ userId }: Props) => {
 
   return (
     <div className="container inline-flex flex-col">
-      <ButtonBack className="self-start mt-[20px]" onClick={() => router.back()} />
+      {window.history.length > 1 && (
+        <ButtonBack className="self-start mt-[20px]" onClick={() => router.back()} />
+      )}
       {content()}
     </div>
   );

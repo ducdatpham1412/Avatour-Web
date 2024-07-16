@@ -10,7 +10,18 @@ const SearchPageResult = async ({ params }: PageProps) => {
     return <SearchError error={response} searchText={searchText} />;
   }
 
-  return <SearchResult data={'data' in response ? response.data : []} />;
+  if ('data' in response) {
+    return (
+      <SearchResult
+        data={{
+          text: searchText,
+          tours: response.data,
+        }}
+      />
+    );
+  }
+
+  return null;
 };
 
 export default SearchPageResult;

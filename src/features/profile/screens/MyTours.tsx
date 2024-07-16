@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { SuccessIcon, TourLoadingIcon } from '@/components';
 import { Button } from '@/components/ui';
 import { TOUR_ROUTES } from '@/configs/routes';
+import { toast } from '@/hooks';
+import { parseErrorMessage } from '@/lib/utils';
 
 import { ItemTour } from '../components';
 import { useTours } from '../hooks';
@@ -15,7 +17,8 @@ interface Props {
 
 const MyTours = ({ userId }: Props) => {
   const router = useRouter();
-  const [{ data, error, loading }] = useTours(userId);
+  const [{ data, error, loading }, { likeTour, mutate }] = useTours(userId);
+  const [, { mutate: mutateFavorite }] = useTours(userId, 'favorite');
 
   const content = () => {
     if (loading) {
@@ -44,6 +47,33 @@ const MyTours = ({ userId }: Props) => {
       );
     }
 
+    const onLikeTour = async (tourId: number) => {
+      try {
+        const res = await likeTour(tourId);
+        await mutate(
+          pre => {
+            if (pre) {
+              return pre.map(item => {
+                if (item.id !== tourId) {
+                  return item;
+                }
+                return {
+                  ...item,
+                  is_liked: res.status === 'like',
+                };
+              });
+            }
+          },
+          { revalidate: false },
+        );
+        await mutateFavorite();
+      } catch (err) {
+        toast({
+          variant: 'destructive',
+          description: parseErrorMessage(err),
+        });
+      }
+    };
     return (
       <>
         {data.map(tour => {
@@ -51,9 +81,8 @@ const MyTours = ({ userId }: Props) => {
             <ItemTour
               key={tour.id}
               item={tour}
-              onClick={() =>
-                router.push(TOUR_ROUTES.tourDetail(tour.id ? tour.id : undefined, undefined))
-              }
+              onClick={() => router.push(TOUR_ROUTES.tourDetail(tour.id))}
+              onLike={() => onLikeTour(tour.id ?? 0)}
             />
           );
         })}

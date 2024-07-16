@@ -4,12 +4,17 @@ export const ADMIN_ROUTES = {
 };
 
 export const TOUR_ROUTES = {
-  tourDetail: (tourId: number | undefined, timestamp: string | undefined) => {
+  tourDetail: (tourId: TypeTour['id'], index?: number) => {
+    if (tourId && index !== undefined) {
+      return `/tour/${tourId}?index=${index}`;
+    }
     if (tourId) {
       return `/tour/${tourId}`;
     }
-    const time = timestamp ? `?t=${timestamp}` : '';
-    return `/tour/0${time}`;
+    if (index !== undefined) {
+      return `/tour/0?index=${index}`;
+    }
+    return `/tour/0`;
   },
   createTour: '/tour',
 };

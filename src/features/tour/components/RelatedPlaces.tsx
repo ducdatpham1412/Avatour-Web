@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { Icon } from '@/components/icon';
 import { Image } from '@/components/ui';
 
@@ -20,37 +22,36 @@ const RelatedPlaces = ({ profiles, previewProfile }: Props) => (
       <div className="flex flex-col w-full md:w-[50%] gap-y-6">
         {profiles.map(p => {
           return (
-            <div key={p.id} className="flex flex-col md:flex-row gap-x-6 gap-y-2">
+            <div key={p.id} className="w-full inline-flex flex-col md:flex-row gap-x-6 gap-y-2">
               <Image
-                src={p.avatar}
-                className="rounded-[12px] md:h-[188px] aspect-[4/3] [&_>_img]:!object-cover"
+                src={p.link[0]?.img ?? p.avatar}
+                className="rounded-[12px] md:h-[188px] aspect-[4/3] [&_>_img]:!object-cover shrink-0"
               />
 
               <div className="flex flex-col flex-1 justify-between gap-y-2">
-                <div className="flex flex-col">
+                <div className="w-full">
                   <h4 className="text-[16px] text-black leading-[24px] md:text-[20px] md:leading-[28px] font-medium">
                     {p.name}
                   </h4>
-                  <div className="flex flex-col gap-y-1">
+                  <div className="w-[300px] gap-y-2 inline-flex flex-col text-ellipsis">
                     {p.link.map(l => {
                       return (
-                        <a href={l.link} target="_blank">
-                          <p className="line-clamp-2 text-[13px] leading-[20px] font-normal text-gray_500 underline">
-                            {l.link}
-                          </p>
-                        </a>
+                        <Link
+                          href={l.link}
+                          target="_blank"
+                          className="w-full line-clamp-1 text-[12px] leading-[20px] font-normal text-gray_500 underline "
+                        >
+                          {l.link}
+                        </Link>
                       );
                     })}
                   </div>
                 </div>
 
-                <div className="flex flex-col">
+                <div className="w-full">
                   <p className="line-clamp-3 text-[13px] leading-[20px] font-normal text-gray_500">
                     {p.description}
                   </p>
-                  {/* <p className="text-[13px] leading-[20px] font-normal text-gray_500">
-                  27 thg 1, 2024
-                </p> */}
                 </div>
               </div>
             </div>

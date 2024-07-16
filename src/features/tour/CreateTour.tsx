@@ -1,40 +1,82 @@
 'use client';
-import { ElementRef, useEffect, useRef, useState } from 'react';
+import { ElementRef, useEffect, useMemo, useRef, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 
 import { TabTrigger, TabView } from '@/components';
 import { Button, Form } from '@/components/ui';
 import { toast } from '@/hooks';
-import { cn, parseErrorMessage } from '@/lib';
+import { cn, getTourName, parseErrorMessage } from '@/lib';
 import { useAppContext } from '@/app/provider';
 import { DialogAuth } from '@/components/dialogs';
+import { getTourCreate, removeTourCreate } from '@/lib/storage';
 
 import { CreateTourForm, useTours } from '../profile/hooks';
 import { CreateSuccess, TourDescription, TourName, TourSchedule } from './screens';
 
 const CreateTour = () => {
   const [{ initLoading, profile }] = useAppContext();
-  const [, { createTour, mutate }] = useTours();
+  const [, { createTour, mutate, editTour }] = useTours();
+  const [, { mutate: mutateFavorite }] = useTours(undefined, 'favorite');
 
   const tabRef = useRef<ElementRef<typeof TabView>>(null);
 
   const [tab, setTab] = useState<'name' | 'schedule' | 'description' | 'success'>('name');
   const [isEditing, setIsEditing] = useState(false);
+  const defaultValues = useMemo((): {
+    value: CreateTourForm;
+    isEdit: boolean;
+    haveValueBefore: boolean;
+  } => {
+    const tour = getTourCreate();
+    if (!tour) {
+      return {
+        value: {
+          name: '',
+          schedule: [[]],
+          description: '',
+        },
+        isEdit: false,
+        haveValueBefore: false,
+      };
+    }
+    removeTourCreate();
+
+    if (!tour.id || tour.creator !== profile?.id) {
+      return {
+        value: {
+          name: getTourName(tour),
+          schedule: tour.schedule,
+          description: tour.description,
+          tourId: tour.id,
+        },
+        isEdit: false,
+        haveValueBefore: true,
+      };
+    }
+
+    return {
+      value: {
+        name: getTourName(tour),
+        schedule: tour.schedule,
+        description: tour.description,
+        tourId: tour.id,
+      },
+      isEdit: true,
+      haveValueBefore: true,
+    };
+  }, []);
 
   const controller = useForm<Partial<CreateTourForm>>({
-    defaultValues: {
-      name: '',
-      schedule: [[]],
-      description: '',
-    },
+    defaultValues: defaultValues.value,
     mode: 'onChange',
   });
   const schedule = useWatch({ control: controller.control, name: 'schedule' });
   const { errors, isValid, isSubmitting, isDirty } = controller.formState;
+  const errorDirty = defaultValues.haveValueBefore ? false : !isDirty;
 
-  const disableSchedule = !isDirty || !!errors.name || isEditing;
+  const disableSchedule = errorDirty || !!errors.name || isEditing;
   const disableDescription =
-    !isDirty || !!errors.name || !schedule?.length || !!errors.description || isEditing;
+    errorDirty || !!errors.name || !schedule?.length || !!errors.description || isEditing;
 
   useEffect(() => {
     if (!profile && !initLoading) {
@@ -57,19 +99,33 @@ const CreateTour = () => {
     }
 
     try {
-      const res = await createTour({
-        name: e.name,
-        description: e.description ?? '',
-        schedule: e.schedule,
-      });
-      await mutate(
-        pre => {
-          if (pre) {
-            return [res].concat(pre);
-          }
-        },
-        { revalidate: false },
-      );
+      if (!defaultValues.isEdit) {
+        const res = await createTour({
+          name: e.name,
+          description: e.description ?? '',
+          schedule: e.schedule,
+        });
+        await mutate(
+          pre => {
+            if (pre) {
+              return [res].concat(pre);
+            }
+          },
+          { revalidate: false },
+        );
+      } else if (e.tourId) {
+        await editTour({
+          tourId: e.tourId,
+          data: {
+            name: e.name,
+            description: e.description ?? '',
+            schedule: e.schedule,
+          },
+        });
+        await mutate();
+        await mutateFavorite();
+      }
+
       navigate('success');
     } catch (err) {
       toast({
@@ -86,17 +142,17 @@ const CreateTour = () => {
           className="text-[14px]"
           size="lg"
           type="button"
-          disabled={!isValid}
+          disabled={!isValid || (!isDirty && defaultValues.isEdit)}
           loading={isSubmitting}
           onClick={controller.handleSubmit(onSubmit)}
         >
-          Hoàn tất
+          {defaultValues.isEdit ? 'Chỉnh sửa' : 'Tạo tour'}
         </Button>
       );
     }
 
     const isError = () => {
-      if (!isDirty) {
+      if (errorDirty) {
         return true;
       }
 
@@ -135,6 +191,7 @@ const CreateTour = () => {
     >
       <TabView
         ref={tabRef}
+        // defaultTab="success"
         tabs={[
           {
             id: 'name',
@@ -156,7 +213,9 @@ const CreateTour = () => {
               <TourSchedule
                 schedule={schedule ?? [[]]}
                 onChangeSchedule={sd => {
-                  controller.setValue('schedule', sd);
+                  controller.setValue('schedule', sd, {
+                    shouldDirty: true,
+                  });
                 }}
                 isEditing={isEditing}
                 onChangeEditing={() => setIsEditing(!isEditing)}
@@ -169,7 +228,7 @@ const CreateTour = () => {
           },
           {
             id: 'success',
-            children: <CreateSuccess />,
+            children: <CreateSuccess isEdit={defaultValues.isEdit} />,
           },
         ]}
         showTabList={false}

@@ -1,32 +1,33 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
+import { useAppContext } from '@/app/provider';
 import { ErrorIcon, TourLoadingIcon } from '@/components/icon';
 import { Button } from '@/components/ui';
+import { toast } from '@/hooks';
+import { parseErrorMessage } from '@/lib';
+import { getTourOpenState, setTourOpenState } from '@/lib/storage';
 
-import { useTour } from '../profile/hooks';
+import { useTour, useTours } from '../profile/hooks';
 import { TourQuickDetail, TourQuickDetailFocusing } from '../search/components';
 import { DayItem, RelatedPlaces, TourHeader, getElementLocId } from './components';
 
 type Params = {
-  tour_id: number;
+  tour_id: string;
 };
 
 type SearchParams = {
-  t: string;
+  index?: string;
 };
 
-const TourPage = ({ searchParams, params }: PageProps<Params, SearchParams>) => {
-  const dataSearchParams = useMemo(() => {
-    if (!searchParams.t) {
-      return undefined;
-    }
-    const storage = localStorage.getItem(searchParams.t);
-    return storage ? (JSON.parse(storage) as TypeTour) : undefined;
-  }, []);
-  const [{ data: dataApi, loading, validating, error }, { mutate }] = useTour(
-    searchParams.t ? null : params.tour_id,
+const TourPage = ({ params, searchParams }: PageProps<Params, SearchParams>) => {
+  const tourId = Number(params.tour_id);
+  const [{ tourSearches }, { setTourSearches }] = useAppContext();
+  const openState = useRef(getTourOpenState(tourId));
+  const [, { createTour, mutate: mutateFavoriteTour }] = useTours(undefined, 'favorite');
+  const [{ data: dataApi, loading, validating, error }, { mutate, likeTour }] = useTour(
+    tourId === 0 ? null : tourId,
   );
 
   const [focusing, setFocusing] = useState<TourQuickDetailFocusing>({
@@ -34,7 +35,19 @@ const TourPage = ({ searchParams, params }: PageProps<Params, SearchParams>) => 
     index: 0,
   });
 
-  const data = dataSearchParams ?? dataApi;
+  const data = tourId
+    ? dataApi
+    : searchParams.index
+    ? tourSearches?.data[Number(searchParams.index)]
+    : undefined;
+
+  useEffect(() => {
+    return () => {
+      if (openState.current) {
+        setTourOpenState(tourId, openState.current);
+      }
+    };
+  }, [tourId]);
 
   if (loading || validating) {
     return (
@@ -81,10 +94,102 @@ const TourPage = ({ searchParams, params }: PageProps<Params, SearchParams>) => 
     return pre;
   }, [] as TypeProfile[]);
 
+  const onChangeValue = (v: string[], dayIndex: number) => {
+    if (!openState.current) {
+      openState.current = data.schedule.map((day, index) => {
+        if (index === dayIndex) {
+          return v;
+        }
+        return [day[0]?.name ?? ''];
+      });
+    } else {
+      openState.current = openState.current.map((value, index) => {
+        if (index !== dayIndex) {
+          return value;
+        }
+        return v;
+      });
+    }
+  };
+
+  const onLike = async () => {
+    try {
+      let res: TypeTour;
+
+      if (!data.id) {
+        res = await createTour({
+          name: data.name,
+          description: data.description,
+          schedule: data.schedule,
+          type: 'favorite',
+        });
+      } else {
+        const resLike = await likeTour();
+        res = {
+          ...data,
+          is_liked: resLike.status === 'like',
+        };
+      }
+
+      if (tourId) {
+        await mutate(
+          pre => {
+            if (pre) {
+              return res;
+            }
+          },
+          { revalidate: false },
+        );
+      }
+
+      if (searchParams.index !== undefined) {
+        const index = Number(searchParams.index);
+        setTourSearches(pre => {
+          if (!pre) {
+            return undefined;
+          }
+          const newTours = pre.data.map((v, i) => {
+            if (i !== index) {
+              return v;
+            }
+            return res;
+          });
+          return {
+            text: pre.text,
+            data: newTours,
+          };
+        });
+      }
+
+      await mutateFavoriteTour(
+        pre => {
+          if (!pre) {
+            if (res.is_liked) {
+              return [res];
+            }
+            return pre;
+          }
+
+          if (res.is_liked) {
+            return [res, ...pre];
+          }
+
+          return pre.filter(t => t.id !== res.id);
+        },
+        { revalidate: false },
+      );
+    } catch (err) {
+      toast({
+        variant: 'destructive',
+        description: parseErrorMessage(err),
+      });
+    }
+  };
+
   return (
     <main className="relative inline-flex container flex-col gap-y-12 md:gap-y-[124px] mt-4 pb-[100px]">
       <article className="flex flex-col gap-y-[56px]">
-        <TourHeader tour={data} />
+        <TourHeader tour={data} onLike={onLike} />
 
         <div className="flex flex-row gap-x-[78px]">
           <section className="flex flex-col gap-y-12 w-full">
@@ -93,6 +198,8 @@ const TourPage = ({ searchParams, params }: PageProps<Params, SearchParams>) => 
                 day={i + 1}
                 profiles={profile}
                 onItemClick={index => setFocusing({ day: i, index })}
+                defaultValue={openState.current?.[i]}
+                onChangeValue={v => onChangeValue(v, i)}
               />
             ))}
           </section>

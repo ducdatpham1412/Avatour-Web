@@ -6,7 +6,8 @@ import { NumberStars } from '@/components';
 import { MenuIcon, TrashCanIcon } from '@/components/icon';
 import { Image } from '@/components/ui';
 import { serviceDataDetail } from '@/features/search/constants';
-import { twConfigs } from '@/lib';
+import { navigateNewTab, twConfigs } from '@/lib';
+import { PROFILE_ROUTES } from '@/configs/routes';
 
 interface Props {
   item: TypeProfile;
@@ -34,7 +35,16 @@ const ItemLocationCreateTour = ({
   const Icon = serviceDataDetail[item.services[0]].icon || serviceDataDetail['other-backpack'].icon;
 
   return (
-    <div style={style} className="inline-flex flex-row sm:flex-col gap-[14px] sm:gap-[6px]">
+    <div
+      style={style}
+      className="inline-flex flex-row sm:flex-col gap-[14px] sm:gap-[6px]"
+      role={isEditing ? undefined : 'button'}
+      onClick={() => {
+        if (!isEditing) {
+          navigateNewTab(PROFILE_ROUTES.profileId(item.id));
+        }
+      }}
+    >
       <div className="relative" style={{ width: imageSize, height: imageSize }}>
         <Image
           src={item.avatar}

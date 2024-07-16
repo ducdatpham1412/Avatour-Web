@@ -1,15 +1,14 @@
 'use client';
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 
 import getUserRequests from '@/api/admin/requests';
-import { useQuery } from '@/hooks/useQuery';
 import { Pagination } from '@/components';
-import { useSearchParams } from '@/hooks';
+import { useQuery } from '@/hooks/useQuery';
 
 import FilterBar from './components/FilterBar';
-import { useRequestsFilter } from './hook';
 import TransactionItem from './components/TransactionItem';
 import TransactionItemSkeleton from './components/TransactionItemSkeleton';
+import { useRequestsFilter } from './hook';
 
 interface RequestPageProps {
   query: Record<string, any>;
@@ -49,7 +48,7 @@ const RequestPage = memo(({ query }: RequestPageProps) => {
   return (
     <div className="flex gap-5 w-full p-[30px_50px_30px_25px] min-h-[100vh] bg-[#f5f5f5]">
       <div>
-        <FilterBar query={query} supplierCount={requests?.length} />
+        <FilterBar query={query} supplierCount={requests.length} />
       </div>
       <div className="w-full flex flex-col items-center">
         <div className="w-full min-h-[calc(100vh_-_150px)]">

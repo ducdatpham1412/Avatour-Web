@@ -17,16 +17,23 @@ interface Props {
   children: ReactNode;
 }
 
+type TourSearches = {
+  text: string;
+  data: TypeTour[];
+};
+
 type ContextValue = {
   initLoading: boolean;
   profile: TypeProfile | undefined;
   resource: Resource | undefined;
+  tourSearches: TourSearches | undefined;
 };
 
 type TypeContext = [
   ContextValue,
   {
     setProfile: Dispatch<SetStateAction<TypeProfile | undefined>>;
+    setTourSearches: Dispatch<SetStateAction<TourSearches | undefined>>;
   },
 ];
 
@@ -38,11 +45,13 @@ const Provider = ({ children }: Props) => {
   const [initLoading, setInitLoading] = useState(true);
   const [profile, setProfile] = useState<TypeProfile>();
   const [resource, setResource] = useState<Resource>();
+  const [tourSearches, setTourSearches] = useState<TourSearches>();
 
   const contextValue: ContextValue = {
     initLoading,
     profile,
     resource,
+    tourSearches,
   };
 
   useEffect(() => {
@@ -84,6 +93,7 @@ const Provider = ({ children }: Props) => {
         contextValue,
         {
           setProfile,
+          setTourSearches,
         },
       ]}
     >

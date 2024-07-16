@@ -1,18 +1,21 @@
-import { useMemo } from 'react';
-import { ArrowLeftIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useMemo } from 'react';
 
-import { getCategoriesByServices } from '@/lib';
-import { formatTourDuration, formatTourPrice } from '@/lib/format';
 import { ButtonBack } from '@/components/buttons';
+import { HeartFillIcon, HeartIcon, PencilIcon } from '@/components/icon';
+import { TOUR_ROUTES } from '@/configs/routes';
+import { getCategoriesByServices, getTourName, twConfigs } from '@/lib';
+import { formatTourDuration, formatTourPrice } from '@/lib/format';
+import { setTourCreate } from '@/lib/storage';
 
 import TruncatedText from './TruncatedText';
 
 interface TourHeaderProps {
   tour: TypeTour;
+  onLike: () => void;
 }
 
-const TourHeader = ({ tour }: TourHeaderProps) => {
+const TourHeader = ({ tour, onLike }: TourHeaderProps) => {
   const router = useRouter();
 
   const categories = useMemo(() => {
@@ -20,23 +23,40 @@ const TourHeader = ({ tour }: TourHeaderProps) => {
     return getCategoriesByServices(services);
   }, []);
 
-  const name = useMemo(
-    () =>
-      !tour.name
-        ? `${tour.schedule[0]?.[0].name} -> ${tour.schedule.at(-1)?.at(-1)?.name}`
-        : tour.name,
-    [tour.name],
-  );
-
   return (
     <header className="flex flex-col">
-      <ButtonBack onClick={() => router.back()} className="self-start" />
+      <div className="w-full inline-flex justify-between">
+        {window.history.length > 1 && (
+          <ButtonBack onClick={() => router.back()} className="self-start" />
+        )}
+        <div className="inline-flex items-center gap-x-[20px]">
+          <button className="hover-scale" title="Thêm vào tour yêu thích" onClick={onLike}>
+            {!tour.is_liked ? (
+              <HeartIcon size={28} strokeWidth={1.2} />
+            ) : (
+              <HeartFillIcon color={twConfigs.theme?.colors?.red as string} size={28} />
+            )}
+          </button>
 
-      <section className="flex flex-col md:flex-row items-start gap-y-6 md:gap-x-[min(20%,_254px)] justify-between mt-[12px]">
+          <button
+            className="inline-flex items-center gap-x-2 border-[1.2px] border-black rounded-full px-[12px] py-[6px] hover-scale"
+            title="Chỉnh sửa lại theo ý thích của bạn"
+            onClick={() => {
+              setTourCreate(tour);
+              router.push(TOUR_ROUTES.createTour);
+            }}
+          >
+            <PencilIcon size={17} />
+            <p className="text-[12px]">Chỉnh sửa</p>
+          </button>
+        </div>
+      </div>
+
+      <section className="flex flex-col md:flex-row items-start gap-y-6 md:gap-x-[min(20%,_80px)] justify-between mt-[20px]">
         <div className="flex flex-col gap-y-5">
           <div>
             <h1 className="text-[24px] leading-[36px] md:text-[32px] md:leading-[44px] font-normal text-black">
-              {name}
+              {getTourName(tour)}
             </h1>
             <p className="text-gray_500">{categories.join(' | ')}</p>
           </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import * as Accordion from '@radix-ui/react-accordion';
+import { useRouter } from 'next/navigation';
 
 import { Icon } from '@/components/icon';
 import { Image } from '@/components/ui';
@@ -16,13 +17,17 @@ interface DayItemProps {
   day: number;
   profiles?: TypeProfile[];
   onItemClick: (index: number) => void;
+  defaultValue?: string[];
+  onChangeValue?: (v: string[]) => void;
 }
 
 export const getElementLocId = (day: number, index: number) => {
   return `loc-${day}-${index}`;
 };
 
-const DayItem = ({ day, profiles, onItemClick }: DayItemProps) => {
+const DayItem = ({ day, profiles, onItemClick, defaultValue, onChangeValue }: DayItemProps) => {
+  const router = useRouter();
+
   return (
     <div className="flex flex-col">
       <div className="flex gap-x-3 items-center">
@@ -33,7 +38,8 @@ const DayItem = ({ day, profiles, onItemClick }: DayItemProps) => {
       <Accordion.Root
         className="flex flex-col w-full"
         type="multiple"
-        defaultValue={day === 1 ? [profiles?.[0]?.name ?? ''] : undefined}
+        defaultValue={defaultValue ?? [profiles?.[0]?.name ?? '']}
+        onValueChange={onChangeValue}
       >
         {profiles?.map((profile, i) => {
           if (profile.account_type !== 'location' && profile.account_type !== 'shop') {
@@ -78,7 +84,7 @@ const DayItem = ({ day, profiles, onItemClick }: DayItemProps) => {
                           name={profile.name}
                           stars={5}
                           ratings={0}
-                          href={PROFILE_ROUTES.profileId(profile.id)}
+                          onClickName={() => router.push(PROFILE_ROUTES.profileId(profile.id))}
                         />
                       </div>
                     </div>
