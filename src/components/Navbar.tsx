@@ -7,7 +7,7 @@ import { ACCOUNT_TYPE } from '@/configs/constants';
 import { ADMIN_ROUTES, PROFILE_ROUTES } from '@/configs/routes';
 
 import { DialogAuth } from './dialogs';
-import { Icon } from './icon';
+import { Icon, IconAvatour } from './icon';
 import { Image } from './ui';
 
 const Navbar = () => {
@@ -56,8 +56,9 @@ const Navbar = () => {
 
   return (
     <div className="relative inline-flex top-0 left-0 w-full items-center justify-between h-[68px] px-[20px] sm:px-[50px] z-20 flex-shrink-0">
-      <Link href="/" className="hover-scale">
-        <LogoIcon className="w-[142px] h-[36px]" />
+      <Link href="/" className="hover-scale inline-flex flex-row items-center gap-[8px]">
+        <LogoIcon />
+        <IconAvatour />
       </Link>
       {!initLoading && (
         <div className="flex items-center gap-7">

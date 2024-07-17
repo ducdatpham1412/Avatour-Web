@@ -1,6 +1,4 @@
 import { ClassValue } from 'clsx';
-import Link from 'next/link';
-import { PropsWithChildren } from 'react';
 
 import { StarIcon } from '@/components/icon';
 import { cn } from '@/lib';
@@ -11,29 +9,23 @@ interface Props {
   ratings: number;
   className?: ClassValue;
   nameClassName?: ClassValue;
-  href?: string;
+  onClickName?: () => void;
 }
 
-const H2 = ({ children, className }: PropsWithClassName & PropsWithChildren) => {
-  return <h2 className={className}>{children}</h2>;
-};
-
-const NameStars = ({ name, stars, className, nameClassName, href }: Props) => {
-  const NameComp = href ? Link : H2;
-
+const NameStars = ({ name, stars, className, nameClassName, onClickName }: Props) => {
   return (
     <div className={cn('flex flex-row items-center gap-x-2', className)}>
-      <NameComp
+      <h2
         className={cn(
           'text-[16px] text-black leading-[24px] md:text-[18px] md:leading-[28px] font-medium text-left',
-          href ? 'hover:underline' : '',
+          onClickName ? 'hover:underline' : '',
           nameClassName,
         )}
-        href={href ?? ''}
-        // target="_blank"
+        role={onClickName ? 'button' : undefined}
+        onClick={onClickName}
       >
         {name}
-      </NameComp>
+      </h2>
       <div className="hidden md:block w-[1px] h-7 bg-gray_300" />
       <StarIcon size={24} />
       <div className="text-[14px] text-black leading-[24px] font-light">{stars}</div>

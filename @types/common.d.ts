@@ -19,6 +19,7 @@ declare type BaseIconProps = {
   color?: string;
   className?: string;
   size?: number;
+  strokeWidth?: number;
 };
 
 interface DialogRefs<TO = any, TC = any> {

@@ -103,10 +103,13 @@ const DayTour = ({ locations, onChangeLocations, onAddLocations, isEditing }: Pr
     const activeIndex = locations.findIndex(loc => loc.id === active.id);
     const overIndex = locations.findIndex(loc => loc.id === over?.id);
 
-    const newLocations = [...locations];
-    newLocations[activeIndex] = locations[overIndex];
-    newLocations[overIndex] = locations[activeIndex];
-    onChangeLocations(newLocations);
+    const newLocations = locations.filter((_, idx) => idx !== activeIndex);
+    const activeLoc = locations[activeIndex];
+
+    const left = newLocations.slice(0, overIndex);
+    const right = newLocations.slice(overIndex, newLocations.length);
+
+    onChangeLocations([...left, activeLoc, ...right]);
   };
 
   return (

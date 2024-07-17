@@ -1,3 +1,7 @@
+export { default as AppModals } from './AppModals';
+export { default as ButtonAbsolute } from './ButtonAbsolute';
+export { default as DropDown } from './DropDown';
+export * from './icon';
 export { default as Navbar } from './Navbar';
 export { default as NumberStars } from './NumberStars';
 export * from './Pagination';
@@ -5,6 +9,3 @@ export * from './ProgressBar';
 export { default as TabTrigger } from './TabTrigger';
 export { default as TabView } from './TabView';
 export { default as TitleHeader } from './TitleHeader';
-export { default as AppModals } from './AppModals';
-export { default as DropDown } from './DropDown';
-export * from './icon';

@@ -34,7 +34,12 @@ interface TypeTour {
   duration: number;
   min_cost: number;
   max_cost: number;
+  creator: number | null;
+  creator_name: string;
+  creator_avatar: string;
+  total_reacts: number;
   schedule: Array<TypeProfile[]>;
+  is_liked?: boolean;
 }
 
 interface Resource {

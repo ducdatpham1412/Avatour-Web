@@ -23,7 +23,7 @@ const SearchResultLayout = ({
         <SearchInputBase
           inputClassName="text-[15px] sm:text-[16px] leading-[24px]"
           className={cn('w-full', 'p-[12px_16px] sm:p-[16px_24px]')}
-          onSearch={() => router.push(SEARCH_ROUTES.searchResult(search.current))}
+          onSearch={() => router.replace(SEARCH_ROUTES.searchResult(search.current))}
           onChangeValue={v => (search.current = v)}
           defaultValue={search.current}
         />

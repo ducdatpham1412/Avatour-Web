@@ -68,12 +68,16 @@ const api: API = async <T>(
   let url = (options.baseUrl ?? API_ENDPOINT) + path;
   let body: BodyInit | undefined;
 
-  if ((params && method === 'post') || method === 'put') {
+  if (method === 'post' || method === 'put') {
     if (params instanceof FormData) {
       body = params;
     } else {
       body = JSON.stringify(omitEmpty(params ?? {}));
       headers.set('Content-Type', 'application/json');
+    }
+    if (options.params) {
+      url += `?${paramsToUrl(omitEmpty(options.params))}`;
+      delete options.params;
     }
   } else if (params) {
     url += `?${paramsToUrl(omitEmpty(params))}`;

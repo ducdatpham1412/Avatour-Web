@@ -20,6 +20,16 @@ const Border = () => {
   return <div className="w-full border-t-[1px] border-t-gray_300" />;
 };
 
+let cacheTab: string;
+const getLocalTab = () => {
+  const storage = localStorage.getItem('tab_profile');
+  if (storage) {
+    localStorage.removeItem('tab_profile');
+    return storage;
+  }
+  return cacheTab;
+};
+
 const Profile = () => {
   const route = useRouter();
   const [{ profile }, { setProfile }] = useAppContext();
@@ -127,6 +137,8 @@ const Profile = () => {
 
       <TabView
         ref={tabRef}
+        defaultTab={getLocalTab()}
+        onChangeTabId={v => (cacheTab = v)}
         tabs={[
           {
             id: 'my_tour',

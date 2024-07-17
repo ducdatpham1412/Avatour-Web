@@ -1,26 +1,38 @@
 'use client';
 
-import { ElementRef, ForwardedRef, forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import dayjs from 'dayjs';
+import {
+  ElementRef,
+  ForwardedRef,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 
-import { formatDuration } from '@/lib/format';
-import { useWindowSize } from '@/hooks';
-import { Dialog, DialogContent } from '@/components/ui';
+import { useAppContext } from '@/app/provider';
 import { ButtonClose } from '@/components/buttons';
+import { Dialog, DialogContent } from '@/components/ui';
 import { TOUR_ROUTES } from '@/configs/routes';
+import { useWindowSize } from '@/hooks';
+import { formatDuration } from '@/lib/format';
+import { removeTourOpenState } from '@/lib/storage';
 
 import { TourQuickDetail, TourQuickDetailFocusing } from '../../components';
 import { serviceDataDetail } from '../../constants';
 import { ItemTour } from '../components';
 
-type SearchResultProps = {
-  data: TypeTour[];
-};
-
 type DialogPreviewProps = {
   preview: TypeTour | undefined;
 };
+
+interface Props {
+  data: {
+    text: string;
+    tours: TypeTour[];
+  };
+}
 
 const DialogPreview = forwardRef(
   ({ preview }: DialogPreviewProps, ref: ForwardedRef<DialogRefs>) => {
@@ -59,9 +71,11 @@ const DialogPreview = forwardRef(
   },
 );
 
-const SearchResult = ({ data }: SearchResultProps) => {
+const SearchResult = ({ data }: Props) => {
   const router = useRouter();
   const { width } = useWindowSize();
+
+  const [{ tourSearches }, { setTourSearches }] = useAppContext();
 
   const previewRef = useRef<ElementRef<typeof DialogPreview>>(null);
 
@@ -69,18 +83,40 @@ const SearchResult = ({ data }: SearchResultProps) => {
   const [focusing, setFocusing] = useState<TourQuickDetailFocusing>();
   const [preview, setPreview] = useState<TypeTour>();
 
+  useEffect(() => {
+    setTourSearches(pre => {
+      if (!pre) {
+        return {
+          text: data.text,
+          data: data.tours,
+        };
+      }
+      if (pre.text === data.text) {
+        return pre;
+      }
+      return {
+        text: data.text,
+        data: data.tours,
+      };
+    });
+  }, [data, setTourSearches]);
+
+  if (!tourSearches) {
+    return null;
+  }
+
   return (
     <div className="flex flex-col gap-y-2">
       <span className="text-[14px] sm:text-[16px] leading-[24px] text-black">
-        {data.length} kết quả
+        {tourSearches.data.length} kết quả
       </span>
 
       <div className="relative flex items-start gap-x-8">
         <div className="flex-grow flex flex-col gap-y-6 lg:gap-y-2 pb-[100px]">
-          {data.map((location, idx) => (
+          {tourSearches.data.map((tour, idx) => (
             <ItemTour
-              key={location.id}
-              item={location}
+              key={tour.id}
+              item={tour}
               isActive={index === idx}
               onHover={() => {
                 setFocusing(undefined);
@@ -88,27 +124,19 @@ const SearchResult = ({ data }: SearchResultProps) => {
               }}
               onPreview={e => {
                 e.stopPropagation();
-                setPreview(location);
+                setPreview(tour);
                 previewRef.current?.open();
               }}
               onClick={() => {
-                if (location.id) {
-                  router.push(TOUR_ROUTES.tourDetail(location.id, undefined));
-                  return;
-                }
-
-                const timestamp = dayjs().unix().toString();
-                localStorage.clear();
-                localStorage.setItem(timestamp, JSON.stringify(location));
-
-                router.push(TOUR_ROUTES.tourDetail(undefined, timestamp));
+                removeTourOpenState(tour.id ?? 0);
+                router.push(TOUR_ROUTES.tourDetail(tour.id, idx));
               }}
             />
           ))}
         </div>
         <div className="hidden lg:contents">
           <TourQuickDetail
-            tour={index !== undefined ? data[index] : undefined}
+            tour={index !== undefined ? tourSearches.data[index] : undefined}
             formatDescription={loc =>
               `${serviceDataDetail[loc.services[0]].name || loc.services[0]}・${formatDuration(
                 loc.info?.duration ?? 0,
