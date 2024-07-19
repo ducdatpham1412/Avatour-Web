@@ -128,7 +128,7 @@ const SearchResult = ({ data }: Props) => {
                 previewRef.current?.open();
               }}
               onClick={() => {
-                removeTourOpenState(tour.id ?? 0);
+                removeTourOpenState(tour.id ?? '');
                 router.push(TOUR_ROUTES.tourDetail(tour.id, idx));
               }}
             />

@@ -91,7 +91,7 @@ const ListFieldDropDown = ({
         {freeText && <FreeInput onEnter={v => onSelectValue?.(v)} />}
 
         <DropDown
-          options={options.map(o => ({ value: o.title, check: false }))}
+          options={options.map(o => ({ value: o.title, label: o.title }))}
           trigger={<p className="text-sm underline">Thêm mới</p>}
           label={label}
           onCheck={v => onSelectValue?.(v)}

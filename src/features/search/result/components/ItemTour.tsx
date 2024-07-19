@@ -12,7 +12,7 @@ import { serviceDataDetail } from '../../constants';
 type Props = {
   isActive?: boolean;
   item: TypeTour;
-  onHover?: (e: number | null) => void;
+  onHover?: () => void;
   onPreview?: MouseEventHandler<HTMLButtonElement>;
   onClick?: MouseEventHandler<HTMLDivElement>;
 };
@@ -93,7 +93,7 @@ const ItemTour = ({ item, onHover, isActive, onPreview, onClick }: Props) => {
       )}
       onMouseOver={() => {
         if (document.body.offsetWidth >= CONTAINER_WIDTH.lg) {
-          onHover?.(item.id);
+          onHover?.();
         }
       }}
       onClick={onClick}
