@@ -30,6 +30,7 @@ const CreateSuccess = ({ isEdit = false }: Props) => {
         <div className="mt-[5vh] inline-flex items-center gap-2">
           <Button
             className="px-[50px] bg-gray_200"
+            type="button"
             onClick={() => {
               router.back();
             }}
@@ -38,6 +39,7 @@ const CreateSuccess = ({ isEdit = false }: Props) => {
           </Button>
           <Button
             className="px-[50px]"
+            type="button"
             onClick={() => {
               localStorage.setItem('tab_profile', 'my_tour');
               router.replace(PROFILE_ROUTES.myProfile);

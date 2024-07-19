@@ -13,7 +13,7 @@ interface Props {
   userId: number;
 }
 
-const deletedTourIds: number[] = [];
+const deletedTourIds: string[] = [];
 
 const FavoriteTours = ({ userId }: Props) => {
   const router = useRouter();
@@ -25,7 +25,7 @@ const FavoriteTours = ({ userId }: Props) => {
         mutate(
           pre => {
             if (pre) {
-              return pre.filter(item => !deletedTourIds.includes(item.id ?? 0));
+              return pre.filter(item => !deletedTourIds.includes(item.id ?? ''));
             }
           },
           {
@@ -54,7 +54,7 @@ const FavoriteTours = ({ userId }: Props) => {
     return <SuccessIcon size={350} className="mx-auto mt-[10vh] animate-zoom-out" />;
   }
 
-  const onLikeTour = async (tourId: number) => {
+  const onLikeTour = async (tourId: string) => {
     try {
       const res = await likeTour(tourId);
       if (res.status === 'like') {
@@ -105,7 +105,7 @@ const FavoriteTours = ({ userId }: Props) => {
               key={tour.id}
               item={tour}
               onClick={() => router.push(TOUR_ROUTES.tourDetail(tour.id))}
-              onLike={() => onLikeTour(tour.id ?? 0)}
+              onLike={() => onLikeTour(tour.id ?? '')}
             />
           );
         })}

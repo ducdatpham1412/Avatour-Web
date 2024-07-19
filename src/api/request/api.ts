@@ -1,12 +1,11 @@
 'use server';
 import { cookies as getCookies } from 'next/headers';
-import nodeFetch from 'node-fetch';
 
 import { API_ENDPOINT } from '@/configs';
 import { logger, omitEmpty, paramsToUrl } from '@/lib';
 
-import { ERROR_MESSAGE } from './constants';
 import { deleteTokenCookies, setTokenCookies } from '../auth';
+import { ERROR_MESSAGE } from './constants';
 
 type DataError = {
   errorMessage: string | Record<string, any>;
@@ -64,11 +63,12 @@ const api: API = async <T>(
   options ??= {};
   const method = (options.method ?? 'get').toLowerCase();
   const headers = new Headers(options.headers);
-  const fetcher = (method === 'get' ? fetch : nodeFetch) as typeof fetch;
+  //   const fetcher = (method === 'get' ? fetch : nodeFetch) as typeof fetch;
+  const fetcher = fetch;
   let url = (options.baseUrl ?? API_ENDPOINT) + path;
   let body: BodyInit | undefined;
 
-  if (method === 'post' || method === 'put') {
+  if (method === 'post' || method === 'put' || method === 'patch') {
     if (params instanceof FormData) {
       body = params;
     } else {
@@ -93,7 +93,7 @@ const api: API = async <T>(
     headers.set('Authorization', `Bearer ${token.value}`);
   }
 
-  logger.log(url, params);
+  logger.log(url, options.method, params);
 
   const configs = { ...options, method, body, headers };
 
@@ -179,6 +179,8 @@ const request = Object.assign(api, {
     api(path, params, { ...options, method: 'POST' }),
   put: (path: string, params?: Record<string, any>, options?: RequestOptions) =>
     api(path, params, { ...options, method: 'PUT' }),
+  patch: (path: string, params?: Record<string, any>, options?: RequestOptions) =>
+    api(path, params, { ...options, method: 'PATCH' }),
   delete: (path: string, params?: Record<string, any>, options?: RequestOptions) =>
     api(path, params, { ...options, method: 'DELETE' }),
 } as HTTPRequest);

@@ -15,7 +15,7 @@ import { CreateSuccess, TourDescription, TourName, TourSchedule } from './screen
 
 const CreateTour = () => {
   const [{ initLoading, profile }] = useAppContext();
-  const [, { createTour, mutate, editTour }] = useTours();
+  const [, { createTour, mutate, editTour, makeTourBeMine }] = useTours();
   const [, { mutate: mutateFavorite }] = useTours(undefined, 'favorite');
 
   const tabRef = useRef<ElementRef<typeof TabView>>(null);
@@ -24,7 +24,7 @@ const CreateTour = () => {
   const [isEditing, setIsEditing] = useState(false);
   const defaultValues = useMemo((): {
     value: CreateTourForm;
-    isEdit: boolean;
+    mode: 'create' | 'edit' | 'make-mine';
     haveValueBefore: boolean;
   } => {
     const tour = getTourCreate();
@@ -35,33 +35,46 @@ const CreateTour = () => {
           schedule: [[]],
           description: '',
         },
-        isEdit: false,
+        mode: 'create',
         haveValueBefore: false,
       };
     }
     removeTourCreate();
 
-    if (!tour.id || tour.creator !== profile?.id) {
+    const valueForm: CreateTourForm = {
+      name: getTourName(tour),
+      schedule: tour.schedule,
+      description: tour.description,
+      tourId: tour.id,
+    };
+
+    if (!tour.id) {
       return {
-        value: {
-          name: getTourName(tour),
-          schedule: tour.schedule,
-          description: tour.description,
-          tourId: tour.id,
-        },
-        isEdit: false,
+        value: valueForm,
+        mode: 'create',
+        haveValueBefore: true,
+      };
+    }
+
+    if (!tour.creator) {
+      return {
+        value: valueForm,
+        mode: 'make-mine',
+        haveValueBefore: true,
+      };
+    }
+
+    if (tour.creator !== profile?.id) {
+      return {
+        value: valueForm,
+        mode: 'create',
         haveValueBefore: true,
       };
     }
 
     return {
-      value: {
-        name: getTourName(tour),
-        schedule: tour.schedule,
-        description: tour.description,
-        tourId: tour.id,
-      },
-      isEdit: true,
+      value: valueForm,
+      mode: 'edit',
       haveValueBefore: true,
     };
   }, []);
@@ -77,6 +90,7 @@ const CreateTour = () => {
   const disableSchedule = errorDirty || !!errors.name || isEditing;
   const disableDescription =
     errorDirty || !!errors.name || !schedule?.length || !!errors.description || isEditing;
+  const isCreateNew = defaultValues.mode === 'create';
 
   useEffect(() => {
     if (!profile && !initLoading) {
@@ -98,13 +112,15 @@ const CreateTour = () => {
       return;
     }
 
+    const valueCreate = {
+      name: e.name,
+      description: e.description ?? '',
+      schedule: e.schedule,
+    };
+
     try {
-      if (!defaultValues.isEdit) {
-        const res = await createTour({
-          name: e.name,
-          description: e.description ?? '',
-          schedule: e.schedule,
-        });
+      if (defaultValues.mode === 'create') {
+        const res = await createTour(valueCreate);
         await mutate(
           pre => {
             if (pre) {
@@ -113,14 +129,17 @@ const CreateTour = () => {
           },
           { revalidate: false },
         );
-      } else if (e.tourId) {
+      } else if (defaultValues.mode === 'edit') {
         await editTour({
-          tourId: e.tourId,
-          data: {
-            name: e.name,
-            description: e.description ?? '',
-            schedule: e.schedule,
-          },
+          tourId: e.tourId ?? '',
+          data: valueCreate,
+        });
+        await mutate();
+        await mutateFavorite();
+      } else {
+        await makeTourBeMine({
+          tourId: e.tourId ?? '',
+          data: valueCreate,
         });
         await mutate();
         await mutateFavorite();
@@ -142,11 +161,11 @@ const CreateTour = () => {
           className="text-[14px]"
           size="lg"
           type="button"
-          disabled={!isValid || (!isDirty && defaultValues.isEdit)}
+          disabled={!isValid || (!isDirty && !defaultValues.haveValueBefore)}
           loading={isSubmitting}
           onClick={controller.handleSubmit(onSubmit)}
         >
-          {defaultValues.isEdit ? 'Chỉnh sửa' : 'Tạo tour'}
+          {isCreateNew ? 'Tạo tour' : 'Chỉnh sửa'}
         </Button>
       );
     }
@@ -228,7 +247,7 @@ const CreateTour = () => {
           },
           {
             id: 'success',
-            children: <CreateSuccess isEdit={defaultValues.isEdit} />,
+            children: <CreateSuccess isEdit={!isCreateNew} />,
           },
         ]}
         showTabList={false}

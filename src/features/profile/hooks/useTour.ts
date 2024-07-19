@@ -3,7 +3,7 @@ import useSWRMutation from 'swr/mutation';
 import { apiLikeTour } from '@/api/profile';
 import { useApi } from '@/hooks';
 
-const useTour = (tourId: number | null) => {
+const useTour = (tourId: string | null) => {
   const { data, loading, validating, error, mutate } = useApi<TypeTour>(
     tourId ? `/common/tours/${tourId}` : null,
     {
@@ -16,7 +16,7 @@ const useTour = (tourId: number | null) => {
   const { trigger: likeTour, isMutating: loadingLikeTour } = useSWRMutation(
     tourId ? 'api.likeATour' : null,
     async () => {
-      const res = await apiLikeTour(tourId ?? 0);
+      const res = await apiLikeTour(tourId ?? '');
       return res.data;
     },
   );

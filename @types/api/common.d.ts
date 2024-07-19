@@ -28,7 +28,7 @@ interface TypeGroupBuying {
 }
 
 interface TypeTour {
-  id: number | null;
+  id: string | null;
   name: string;
   description: string;
   duration: number;
