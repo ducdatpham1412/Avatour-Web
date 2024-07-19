@@ -29,14 +29,22 @@ type DataCreateTour = Pick<
   schedule: Array<number[]>;
 };
 export const apiCreateTour = async (data: DataCreateTour, options?: OptionsCreateTour) => {
-  const res: TypeApi<{ tour_id: number }> = await request.post('/common/tours', data, {
+  const res: TypeApi<{ tour_id: string }> = await request.post('/common/tours', data, {
     params: options?.params,
   });
   return res;
 };
 
-export const apiEditTour = async (tourId: number, data: DataCreateTour) => {
+export const apiEditTour = async (tourId: string, data: DataCreateTour) => {
   await request.put(`/common/tours/${tourId}`, data);
+};
+
+export const apiDeleteTour = async (tourId: string) => {
+  await request.delete(`/common/tours/${tourId}`);
+};
+
+export const apiMakeTourBeMine = async (tourId: string, data: DataCreateTour) => {
+  await request.patch(`/common/tours/${tourId}`, data);
 };
 
 export const apiGetSWR = async <T>(

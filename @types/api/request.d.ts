@@ -18,6 +18,7 @@ interface HTTPRequest extends API {
   post: API;
   put: API;
   delete: API;
+  patch: API;
 }
 
 type APIPagingResponse<T> = {

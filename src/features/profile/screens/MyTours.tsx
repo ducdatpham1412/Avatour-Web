@@ -47,7 +47,7 @@ const MyTours = ({ userId }: Props) => {
       );
     }
 
-    const onLikeTour = async (tourId: number) => {
+    const onLikeTour = async (tourId: string) => {
       try {
         const res = await likeTour(tourId);
         await mutate(
@@ -82,7 +82,7 @@ const MyTours = ({ userId }: Props) => {
               key={tour.id}
               item={tour}
               onClick={() => router.push(TOUR_ROUTES.tourDetail(tour.id))}
-              onLike={() => onLikeTour(tour.id ?? 0)}
+              onLike={() => onLikeTour(tour.id ?? '')}
             />
           );
         })}

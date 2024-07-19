@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 import { useAppContext } from '@/app/provider';
 import { ErrorIcon, TourLoadingIcon } from '@/components/icon';
@@ -22,20 +23,29 @@ type SearchParams = {
 };
 
 const TourPage = ({ params, searchParams }: PageProps<Params, SearchParams>) => {
-  const tourId = Number(params.tour_id);
+  const tourId = params.tour_id;
+  const isTourNull = tourId === '0';
+  const router = useRouter();
+
   const [{ tourSearches }, { setTourSearches }] = useAppContext();
-  const openState = useRef(getTourOpenState(tourId));
-  const [, { createTour, mutate: mutateFavoriteTour }] = useTours(undefined, 'favorite');
-  const [{ data: dataApi, loading, validating, error }, { mutate, likeTour }] = useTour(
-    tourId === 0 ? null : tourId,
+
+  const [, { createTour, mutate: mutateFavoriteTour, deleteTour }] = useTours(
+    undefined,
+    'favorite',
   );
+  const [, { mutate: mutateMyTours }] = useTours(undefined, 'list');
+  const [{ data: dataApi, loading, validating, error }, { mutate, likeTour }] = useTour(
+    isTourNull ? null : tourId,
+  );
+
+  const openState = useRef(getTourOpenState(tourId));
 
   const [focusing, setFocusing] = useState<TourQuickDetailFocusing>({
     day: 0,
     index: 0,
   });
 
-  const data = tourId
+  const data = !isTourNull
     ? dataApi
     : searchParams.index
     ? tourSearches?.data[Number(searchParams.index)]
@@ -131,15 +141,8 @@ const TourPage = ({ params, searchParams }: PageProps<Params, SearchParams>) => 
         };
       }
 
-      if (tourId) {
-        await mutate(
-          pre => {
-            if (pre) {
-              return res;
-            }
-          },
-          { revalidate: false },
-        );
+      if (!isTourNull) {
+        await mutate(res, { revalidate: false });
       }
 
       if (searchParams.index !== undefined) {
@@ -178,6 +181,56 @@ const TourPage = ({ params, searchParams }: PageProps<Params, SearchParams>) => 
         },
         { revalidate: false },
       );
+      await mutateMyTours(
+        pre => {
+          const find = pre?.find(item => item.id === res.id);
+          if (find) {
+            return pre?.map(item => {
+              if (item.id !== res.id) {
+                return item;
+              }
+              return res;
+            });
+          }
+        },
+        {
+          revalidate: false,
+        },
+      );
+    } catch (err) {
+      toast({
+        variant: 'destructive',
+        description: parseErrorMessage(err),
+      });
+    }
+  };
+
+  const onDelete = async () => {
+    try {
+      await deleteTour(data.id ?? '');
+      await mutateMyTours(
+        pre => {
+          const find = pre?.find(item => item.id === data.id);
+          if (find) {
+            return pre?.filter(item => item.id !== data.id);
+          }
+        },
+        {
+          revalidate: false,
+        },
+      );
+      await mutateFavoriteTour(
+        pre => {
+          const find = pre?.find(item => item.id === data.id);
+          if (find) {
+            return pre?.filter(item => item.id !== data.id);
+          }
+        },
+        {
+          revalidate: false,
+        },
+      );
+      router.back();
     } catch (err) {
       toast({
         variant: 'destructive',
@@ -189,7 +242,7 @@ const TourPage = ({ params, searchParams }: PageProps<Params, SearchParams>) => 
   return (
     <main className="relative inline-flex container flex-col gap-y-12 md:gap-y-[124px] mt-4 pb-[100px]">
       <article className="flex flex-col gap-y-[56px]">
-        <TourHeader tour={data} onLike={onLike} />
+        <TourHeader tour={data} onLike={onLike} onDelete={onDelete} />
 
         <div className="flex flex-row gap-x-[78px]">
           <section className="flex flex-col gap-y-12 w-full">
@@ -214,7 +267,7 @@ const TourPage = ({ params, searchParams }: PageProps<Params, SearchParams>) => 
                 element?.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
                 setFocusing(v);
               }}
-              className="w-[30vw] lg:w-[25vw]"
+              className="w-[30vw] lg:w-[25vw] top-[20px]"
             />
           </section>
         </div>

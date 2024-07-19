@@ -12,4 +12,5 @@ export * from './textarea';
 export * from './toast';
 export * from './toaster';
 export * from './checkbox-group';
+export { default as Avatar } from './avatar';
 export { default as Divider } from './divider';

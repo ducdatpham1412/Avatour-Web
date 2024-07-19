@@ -11,7 +11,7 @@ export const apiEditProfile = async (userId: number, data: EditProfile) => {
   await request.put(`/admin/suppliers/${userId}`, data);
 };
 
-export const apiLikeTour = async (tourId: number) => {
+export const apiLikeTour = async (tourId: string) => {
   const res: TypeApi<{ status: 'like' | 'unlike' }> = await request.post(
     `/profile/like/${tourId}`,
     undefined,

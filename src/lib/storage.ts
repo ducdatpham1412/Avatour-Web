@@ -1,11 +1,11 @@
-export const setTourOpenState = (tourId: number, value: string[][]) => {
+export const setTourOpenState = (tourId: string, value: string[][]) => {
   localStorage.setItem(`tour-open-state-${tourId}`, JSON.stringify(value));
 };
-export const getTourOpenState = (tourId: number) => {
+export const getTourOpenState = (tourId: string) => {
   const storage = localStorage.getItem(`tour-open-state-${tourId}`);
   return storage ? (JSON.parse(storage) as string[][]) : undefined;
 };
-export const removeTourOpenState = (tourId: number) => {
+export const removeTourOpenState = (tourId: string) => {
   localStorage.removeItem(`tour-open-state-${tourId}`);
 };
 

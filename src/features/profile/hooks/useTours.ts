@@ -1,6 +1,6 @@
 import useSWRMutation from 'swr/mutation';
 
-import { apiCreateTour, apiEditTour } from '@/api/common';
+import { apiCreateTour, apiDeleteTour, apiEditTour, apiMakeTourBeMine } from '@/api/common';
 import { apiLikeTour } from '@/api/profile';
 import { useAppContext } from '@/app/provider';
 import { useApi } from '@/hooks';
@@ -11,7 +11,24 @@ export type CreateTourForm = {
   schedule: Array<TypeProfile[]>;
   description: string;
   type?: 'favorite';
-  tourId?: number | null;
+  tourId?: string | null;
+};
+
+const handleTourForm = (arg: CreateTourForm) => {
+  let duration = 0;
+  arg.schedule.forEach(day => {
+    day.forEach(loc => {
+      duration += loc.info?.duration ?? 0;
+    });
+  });
+  const cost = estTourPrice(arg.schedule);
+  const schedule = arg.schedule.map(day => day.map(loc => loc.id));
+
+  return {
+    duration,
+    cost,
+    schedule,
+  };
 };
 
 const useTours = (userId?: number, type: 'list' | 'favorite' = 'list') => {
@@ -28,14 +45,7 @@ const useTours = (userId?: number, type: 'list' | 'favorite' = 'list') => {
   const { trigger: createTour, isMutating: loadingCreateTour } = useSWRMutation(
     'api.createTour',
     async (_, { arg }: { arg: CreateTourForm }) => {
-      let duration = 0;
-      arg.schedule.forEach(day => {
-        day.forEach(loc => {
-          duration += loc.info?.duration ?? 0;
-        });
-      });
-      const cost = estTourPrice(arg.schedule);
-      const schedule = arg.schedule.map(day => day.map(loc => loc.id));
+      const { duration, cost, schedule } = handleTourForm(arg);
 
       const resCreate = await apiCreateTour(
         {
@@ -74,7 +84,7 @@ const useTours = (userId?: number, type: 'list' | 'favorite' = 'list') => {
 
   const { trigger: likeTour, isMutating: loadingLikeTour } = useSWRMutation(
     'api.likeTourInList',
-    async (_, { arg: tourId }: { arg: number }) => {
+    async (_, { arg: tourId }: { arg: string }) => {
       const res = await apiLikeTour(tourId);
       return res.data;
     },
@@ -82,15 +92,8 @@ const useTours = (userId?: number, type: 'list' | 'favorite' = 'list') => {
 
   const { trigger: editTour, isMutating: loadingEditTour } = useSWRMutation(
     'api.editTour',
-    async (_, { arg }: { arg: { tourId: number; data: CreateTourForm } }) => {
-      let duration = 0;
-      arg.data.schedule.forEach(day => {
-        day.forEach(loc => {
-          duration += loc.info?.duration ?? 0;
-        });
-      });
-      const cost = estTourPrice(arg.data.schedule);
-      const schedule = arg.data.schedule.map(day => day.map(loc => loc.id));
+    async (_, { arg }: { arg: { tourId: string; data: CreateTourForm } }) => {
+      const { duration, cost, schedule } = handleTourForm(arg.data);
 
       await apiEditTour(arg.tourId, {
         name: arg.data.name,
@@ -103,9 +106,41 @@ const useTours = (userId?: number, type: 'list' | 'favorite' = 'list') => {
     },
   );
 
+  const { trigger: makeTourBeMine, isMutating: loadingMakingTourBeMine } = useSWRMutation(
+    'api.makeTourBeMine',
+    async (_, { arg }: { arg: { tourId: string; data: CreateTourForm } }) => {
+      const { duration, cost, schedule } = handleTourForm(arg.data);
+
+      await apiMakeTourBeMine(arg.tourId, {
+        name: arg.data.name,
+        description: arg.data.description,
+        duration,
+        min_cost: cost.minCost,
+        max_cost: cost.maxCost,
+        schedule,
+      });
+    },
+  );
+
+  const { trigger: deleteTour, isMutating: loadingDeleteTour } = useSWRMutation(
+    'api.deleteTour',
+    async (_, { arg: tourId }: { arg: string }) => {
+      await apiDeleteTour(tourId);
+    },
+  );
+
   return [
-    { data, error, loading, loadingCreateTour, loadingLikeTour, loadingEditTour },
-    { mutate, createTour, likeTour, editTour },
+    {
+      data,
+      error,
+      loading,
+      loadingCreateTour,
+      loadingLikeTour,
+      loadingEditTour,
+      loadingMakingTourBeMine,
+      loadingDeleteTour,
+    },
+    { mutate, createTour, likeTour, editTour, makeTourBeMine, deleteTour },
   ] as const;
 };
 
