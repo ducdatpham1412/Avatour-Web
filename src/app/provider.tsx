@@ -56,12 +56,12 @@ const Provider = ({ children }: Props) => {
 
   useEffect(() => {
     const init = async () => {
-      const store = localStorage.getItem('context');
-      if (store) {
-        const value = JSON.parse(store) as ContextValue;
-        setProfile(value.profile);
-        setResource(value.resource);
-      }
+      //   const store = localStorage.getItem('context');
+      //   if (store) {
+      //     const value = JSON.parse(store) as ContextValue;
+      //     setProfile(value.profile);
+      //     setResource(value.resource);
+      //   }
 
       try {
         const res = await apiGetPassport();
@@ -83,9 +83,9 @@ const Provider = ({ children }: Props) => {
     init().catch(() => null);
   }, [setProfile, setResource, setInitLoading]);
 
-  useEffect(() => {
-    localStorage.setItem('context', JSON.stringify(contextValue));
-  }, [contextValue]);
+  //   useEffect(() => {
+  //     localStorage.setItem('context', JSON.stringify(contextValue));
+  //   }, [contextValue]);
 
   return (
     <Context.Provider

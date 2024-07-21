@@ -50,14 +50,15 @@ const TourPage = ({ params, searchParams }: PageProps<Params, SearchParams>) => 
     : searchParams.index
     ? tourSearches?.data[Number(searchParams.index)]
     : undefined;
+  const saveTourId = isTourNull ? searchParams.index : tourId;
 
   useEffect(() => {
     return () => {
-      if (openState.current) {
-        setTourOpenState(tourId, openState.current);
+      if (openState.current && saveTourId && openState.current[0].length) {
+        setTourOpenState(saveTourId, openState.current);
       }
     };
-  }, [tourId]);
+  }, [saveTourId]);
 
   if (loading || validating) {
     return (

@@ -19,7 +19,7 @@ const Timeline = ({
   onChangeIndex,
 }: TimelineColumnProps) => {
   return (
-    <div className="w-full inline-flex flex-col gap-y-7 items-start max-h-[400px] overflow-y-auto beautiful-scrollbar">
+    <div className="w-full inline-flex flex-col gap-y-7 items-start max-h-[400px] overflow-y-auto beautiful-scrollbar pr-4">
       {steps.map((step, index) => {
         const isFocusing = index === indexFocusing;
 

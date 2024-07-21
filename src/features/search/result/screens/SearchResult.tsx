@@ -17,7 +17,6 @@ import { Dialog, DialogContent } from '@/components/ui';
 import { TOUR_ROUTES } from '@/configs/routes';
 import { useWindowSize } from '@/hooks';
 import { formatDuration } from '@/lib/format';
-import { removeTourOpenState } from '@/lib/storage';
 
 import { TourQuickDetail, TourQuickDetailFocusing } from '../../components';
 import { serviceDataDetail } from '../../constants';
@@ -128,7 +127,6 @@ const SearchResult = ({ data }: Props) => {
                 previewRef.current?.open();
               }}
               onClick={() => {
-                removeTourOpenState(tour.id ?? '');
                 router.push(TOUR_ROUTES.tourDetail(tour.id, idx));
               }}
             />
