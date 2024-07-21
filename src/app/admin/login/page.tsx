@@ -11,10 +11,10 @@ const Page = () => {
   const [{ profile, initLoading }] = useAppContext();
 
   useEffect(() => {
-    if (!initLoading && profile) {
+    if (profile) {
       redirect(ADMIN_ROUTES.suppliers);
     }
-  }, [profile, initLoading]);
+  }, [profile]);
 
   if (initLoading) {
     return (

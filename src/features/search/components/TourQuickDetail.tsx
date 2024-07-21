@@ -1,5 +1,5 @@
 'use client';
-import { CSSProperties, useMemo } from 'react';
+import { CSSProperties } from 'react';
 
 import { Icon } from '@/components';
 import { cn } from '@/lib';
@@ -68,16 +68,14 @@ const TourQuickDetail = ({
   return (
     <div
       className={cn(
-        'sticky top-24 p-[28px_20px] md:p-[24px_28px] flex flex-col gap-y-3 rounded-[20px] border-[1px] border-gray_300 bg-white',
+        'sticky top-24 py-[12px] px-4 flex flex-col rounded-[20px] border-[1px] border-gray_300 bg-white',
         className,
       )}
       style={style}
     >
-      <h4 className="text-[16px] leading-[24px] font-medium">
-        {tour ? tourName : 'Lịch trình du lịch'}
-      </h4>
+      <h4 className="text-[16px]  font-medium">{tour ? tourName : 'Lịch trình du lịch'}</h4>
 
-      <div className="gap-y-5 flex flex-col">
+      <div className="gap-y-[12px] flex flex-col mt-[8px]">
         <div className="flex flex-wrap items-center gap-4">
           {tour?.schedule.map((_, i) => (
             <div

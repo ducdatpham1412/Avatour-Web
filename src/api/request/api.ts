@@ -63,8 +63,6 @@ const api: API = async <T>(
   options ??= {};
   const method = (options.method ?? 'get').toLowerCase();
   const headers = new Headers(options.headers);
-  //   const fetcher = (method === 'get' ? fetch : nodeFetch) as typeof fetch;
-  const fetcher = fetch;
   let url = (options.baseUrl ?? API_ENDPOINT) + path;
   let body: BodyInit | undefined;
 
@@ -98,7 +96,7 @@ const api: API = async <T>(
   const configs = { ...options, method, body, headers };
 
   const runAPI = async () => {
-    const response = await fetcher(url, configs);
+    const response = await fetch(url, configs);
     const data = parseData<T>(response);
 
     if (!response.ok) {
@@ -112,7 +110,7 @@ const api: API = async <T>(
               failedQueue.push({ resolve, reject });
             });
             configs.headers.set('Authorization', `Bearer ${newToken}`);
-            const res = await fetcher(url, configs);
+            const res = await fetch(url, configs);
             return parseData<T>(res);
           } catch (err) {
             throw error;
@@ -140,7 +138,7 @@ const api: API = async <T>(
             data: { access },
           } = await (res.json() as Promise<TypeApi<{ access: string }>>);
           configs.headers.set('Authorization', `Bearer ${access}`);
-          const resRetry = await fetcher(url, configs);
+          const resRetry = await fetch(url, configs);
           if (!resRetry.ok) {
             throw error;
           }

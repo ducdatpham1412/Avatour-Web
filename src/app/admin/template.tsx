@@ -1,17 +1,22 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Fragment } from 'react';
 
+import { deleteTokenCookies } from '@/api/auth';
 import { Icon, IconNames } from '@/components/icon';
 import { ADMIN_ROUTES } from '@/configs/routes';
 import { cn } from '@/lib';
+
+import { useAppContext } from '../provider';
 
 const excludePath = [ADMIN_ROUTES.login];
 
 const AdminTemplate = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
+  const router = useRouter();
+  const [, { setProfile }] = useAppContext();
 
   if (excludePath.some(e => pathname.includes(e))) {
     return <Fragment>{children}</Fragment>;
@@ -37,6 +42,15 @@ const AdminTemplate = ({ children }: { children: React.ReactNode }) => {
           name="question"
           active={pathname.includes('/admin/requests')}
         />
+        <button
+          onClick={() => {
+            deleteTokenCookies();
+            setProfile(undefined);
+            router.replace(ADMIN_ROUTES.login);
+          }}
+        >
+          <p className="text-[10px]">Log out</p>
+        </button>
       </div>
       {children}
     </div>
