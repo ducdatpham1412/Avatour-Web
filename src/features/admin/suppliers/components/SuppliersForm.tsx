@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UseFormReturn, useController, useForm, useWatch } from 'react-hook-form';
 
 import { SupplierData } from '@/api/admin';
@@ -19,6 +19,7 @@ export type OnSubmitSupplierForm = 'create-success' | 'error' | 'update-success'
 
 interface Props {
   defaultValues?: SupplierData;
+  values?: SupplierData;
   onSubmit: (data: SupplierData) => Promise<OnSubmitSupplierForm>;
   onDeleteOrActive?: () => void;
   titleButton: string;
@@ -70,7 +71,13 @@ const DropdownField = ({
   );
 };
 
-const SuppliersForm = ({ defaultValues, onSubmit, onDeleteOrActive, titleButton }: Props) => {
+const SuppliersForm = ({
+  defaultValues,
+  values,
+  onSubmit,
+  onDeleteOrActive,
+  titleButton,
+}: Props) => {
   const [{ resource }] = useAppContext();
   const [submitting, setSubmitting] = useState(false);
 
@@ -83,6 +90,16 @@ const SuppliersForm = ({ defaultValues, onSubmit, onDeleteOrActive, titleButton 
     control: controller.control,
     name: 'status',
   });
+
+  useEffect(() => {
+    if (values) {
+      Object.entries(values).forEach(([k, v]) => {
+        controller.setValue(k as keyof SupplierData, v, {
+          shouldDirty: true,
+        });
+      });
+    }
+  }, []);
 
   if (!resource) {
     return;
