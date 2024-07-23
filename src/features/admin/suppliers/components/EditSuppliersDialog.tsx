@@ -24,19 +24,24 @@ import { validateIsNumber } from '@/lib/validate';
 
 import { useSuppliers } from '../../hooks';
 import SuppliersForm, { OnSubmitSupplierForm } from './SuppliersForm';
+import SupplierPrompt from './SupplierPrompt';
 
 type EditSuppliersDialogProps = {
   open?: boolean;
   onOpenChange?: (status: boolean) => void;
   children?: ReactElement;
-  data?: TypeProfile;
   type: 'update' | 'create';
+};
+
+type DialogOpen = {
+  data?: TypeProfile;
+  mode?: 'prompt' | 'form';
 };
 
 const EditSuppliersDialog = forwardRef(
   (
-    { children, onOpenChange, open, data, type }: EditSuppliersDialogProps,
-    ref: ForwardedRef<DialogRefs>,
+    { children, onOpenChange, open, type }: EditSuppliersDialogProps,
+    ref: ForwardedRef<DialogRefs<DialogOpen>>,
   ) => {
     const { toast } = useToast();
     const [{ resource }] = useAppContext();
@@ -44,11 +49,19 @@ const EditSuppliersDialog = forwardRef(
 
     const hasChangedStatus = useRef(false);
     const [dialogOpen, setDialogOpen] = useState(false);
+    const [data, setData] = useState<TypeProfile>();
+    const [jsonPrompt, setJsonPrompt] = useState<SupplierData>();
+    const [mode, setMode] = useState<DialogOpen['mode']>('form');
 
     useImperativeHandle(
       ref,
       () => ({
-        open: () => setDialogOpen(true),
+        open: v => {
+          setData(v?.data);
+          setMode(v?.mode ?? 'form');
+          setJsonPrompt(undefined);
+          setDialogOpen(true);
+        },
         close: () => setDialogOpen(false),
       }),
       [setDialogOpen],
@@ -141,7 +154,7 @@ const EditSuppliersDialog = forwardRef(
           toast({
             description: 'Chỉnh sửa thành công',
           });
-          mutate().catch(console.log);
+          mutate().catch(logger.log);
           return 'update-success';
         } catch (err) {
           logger.error(err);
@@ -206,15 +219,22 @@ const EditSuppliersDialog = forwardRef(
       return 'error';
     };
 
-    return (
-      <Dialog open={open ?? dialogOpen} onOpenChange={toggleDialog}>
-        <DialogTrigger asChild>{children}</DialogTrigger>
-        <DialogContent
-          closeButton={<ButtonClose />}
-          className="xl:w-[1305px] xl:h-min xl:max-h-[calc(100vh_-_40px)] xl:!rounded-[20px] !rounded-none xl w-full h-full max-w-full max-h-full bg-background overflow-hidden p-0"
-        >
-          <DialogHeader className="h-0" />
-          {(!data || data.account_type === 'location' || data.account_type === 'shop') && (
+    const renderContent = () => {
+      if (mode === 'form') {
+        if (jsonPrompt) {
+          return (
+            <SuppliersForm
+              defaultValues={{ link: [] }}
+              values={{ ...jsonPrompt, account_type: 'location' }}
+              onSubmit={onSubmit}
+              onDeleteOrActive={onDeleteOrActive}
+              titleButton={type === 'create' ? 'Thêm mới' : 'Cập nhật'}
+            />
+          );
+        }
+
+        if (!data || data.account_type === 'location' || data.account_type === 'shop') {
+          return (
             <SuppliersForm
               defaultValues={
                 data
@@ -262,7 +282,31 @@ const EditSuppliersDialog = forwardRef(
               onDeleteOrActive={onDeleteOrActive}
               titleButton={type === 'create' ? 'Thêm mới' : 'Cập nhật'}
             />
-          )}
+          );
+        }
+
+        return null;
+      }
+
+      return (
+        <SupplierPrompt
+          onSubmit={v => {
+            setJsonPrompt(v);
+            setMode('form');
+          }}
+        />
+      );
+    };
+
+    return (
+      <Dialog open={open ?? dialogOpen} onOpenChange={toggleDialog}>
+        <DialogTrigger asChild>{children}</DialogTrigger>
+        <DialogContent
+          closeButton={<ButtonClose />}
+          className="xl:w-[1305px] xl:h-min xl:max-h-[calc(100vh_-_40px)] xl:!rounded-[20px] !rounded-none xl w-full h-full max-w-full max-h-full bg-background overflow-hidden p-0"
+        >
+          <DialogHeader className="h-0" />
+          {renderContent()}
         </DialogContent>
       </Dialog>
     );

@@ -1,20 +1,19 @@
 'use client';
 import { redirect } from 'next/navigation';
-import { ElementRef, useEffect, useRef, useState } from 'react';
+import { ElementRef, useEffect, useRef } from 'react';
 
 import { useAppContext } from '@/app/provider';
 import { TourLoadingIcon } from '@/components/icon';
 import { ADMIN_ROUTES } from '@/configs/routes';
 import { useSuppliers } from '@/features/admin/hooks';
 
-import { SupplierTag, EditSuppliersDialog } from './components';
+import { EditSuppliersDialog, SupplierTag } from './components';
 
 const SuppliersScreen = () => {
   const [{ profile, initLoading }] = useAppContext();
   const [{ data, loading }] = useSuppliers();
 
   const dialogRef = useRef<ElementRef<typeof EditSuppliersDialog>>(null);
-  const [dataEdit, setDataEdit] = useState<TypeProfile>();
 
   useEffect(() => {
     if (!initLoading && !profile) {
@@ -64,15 +63,16 @@ const SuppliersScreen = () => {
               key={item.id}
               data={item}
               onEdit={() => {
-                setDataEdit(item);
-                dialogRef.current?.open();
+                dialogRef.current?.open({
+                  data: item,
+                });
               }}
             />
           ))}
         </tbody>
       </table>
 
-      <EditSuppliersDialog ref={dialogRef} data={dataEdit} type="update" />
+      <EditSuppliersDialog ref={dialogRef} type="update" />
     </>
   );
 };
