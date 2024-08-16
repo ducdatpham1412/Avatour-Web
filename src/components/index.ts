@@ -1,4 +1,6 @@
 export { default as AppModals } from './AppModals';
+export { default as Background } from './Background';
+export { default as BackgroundSun } from './BackgroundSun';
 export { default as ButtonAbsolute } from './ButtonAbsolute';
 export { default as DropDown } from './DropDown';
 export * from './icon';

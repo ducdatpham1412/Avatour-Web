@@ -28,3 +28,7 @@ export const PROFILE_ROUTES = {
 export const SEARCH_ROUTES = {
   searchResult: (result: string) => `/search/${result}`,
 };
+
+export const ORDER_ROUTES = {
+  buddy: (buddyId: number) => `/order/buddy/${buddyId}`,
+};

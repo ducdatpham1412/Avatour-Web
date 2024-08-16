@@ -17,7 +17,7 @@ const NameStars = ({ name, stars, className, nameClassName, onClickName }: Props
     <div className={cn('flex flex-row items-center gap-x-2', className)}>
       <h2
         className={cn(
-          'text-[16px] text-black leading-[24px] md:text-[18px] md:leading-[28px] font-medium text-left',
+          'text-[16px] text-black md:text-[18px] font-medium text-left',
           onClickName ? 'hover:underline' : '',
           nameClassName,
         )}

@@ -50,12 +50,14 @@ const SignIn = ({ onChangeMode, onLoginSuccess }: ChildrenProps) => {
       </p>
 
       <div className="">
+        <input type="text" autoFocus className="hidden" />
         <Input
           placeholder="Email"
           type="email"
           onChange={e => {
             form.current.username = e.target.value;
           }}
+          autoFocus={false}
         />
         <Input
           className="mt-[12px]"

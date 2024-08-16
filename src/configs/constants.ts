@@ -39,7 +39,7 @@ export const ACCOUNT_TYPE = {
   shop: 'shop',
   admin: 'admin',
   location: 'location',
-  shareTour: 'tour-guide',
+  buddy: 'buddy',
 };
 
 export type REQUEST_STATUS = (typeof REQUEST_STATUS)[keyof typeof REQUEST_STATUS];

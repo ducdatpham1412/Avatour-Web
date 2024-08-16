@@ -111,12 +111,12 @@ type TypeProfile = {
   status: number;
 } & (
   | {
-      account_type: 'location';
+      account_type: 'location' | 'buddy';
       info: ProfileInfo;
       setting: null;
     }
   | {
-      account_type: 'holder' | 'admin' | 'user' | 'tour-guide';
+      account_type: 'holder' | 'admin' | 'user';
       info: null;
       setting: ProfileSetting;
     }

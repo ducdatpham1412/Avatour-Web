@@ -4,9 +4,10 @@ import { useRef, type PropsWithChildren } from 'react';
 
 import { SEARCH_ROUTES } from '@/configs/routes';
 import { cn } from '@/lib';
+import { Navbar } from '@/components';
+import Container from '@/app/container';
 
 import { SearchInputBase } from '../components';
-import { Background } from './components';
 import { parseSearchData } from './utils';
 
 const SearchResultLayout = ({
@@ -17,8 +18,7 @@ const SearchResultLayout = ({
   const search = useRef(parseSearchData(params.search_text));
 
   return (
-    <div className="container sm:px-[15vw] lg:px-[3vw] xl:px-[120px] w-full flex flex-col gap-7">
-      <Background />
+    <Container background="sun">
       <div className="z-20 py-4 sticky top-0 left-0 right-0 bg-background">
         <SearchInputBase
           inputClassName="text-[15px] sm:text-[16px] leading-[24px]"
@@ -29,7 +29,7 @@ const SearchResultLayout = ({
         />
       </div>
       {children}
-    </div>
+    </Container>
   );
 };
 

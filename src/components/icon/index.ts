@@ -1,5 +1,6 @@
 export { default as BagIcon } from './BagIcon';
 export { default as BookMarkIcon } from './BookMarkIcon';
+export { default as BookUserIcon } from './BookUserIcon';
 export { default as CameraIcon } from './CameraIcon';
 export { default as CheckCircle } from './CheckCircle';
 export { default as ClockIcon } from './ClockIcon';
@@ -23,3 +24,4 @@ export { default as SuccessIcon } from './SuccessIcon';
 export { default as TourLoadingIcon } from './TourLoadingIcon';
 export { default as TrashCanIcon } from './TrashCanIcon';
 export { default as WalletIcon } from './WalletIcon';
+export { default as MapPinIcon } from './MapPinIcon';

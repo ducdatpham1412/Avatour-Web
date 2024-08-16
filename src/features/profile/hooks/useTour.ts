@@ -2,13 +2,17 @@ import useSWRMutation from 'swr/mutation';
 
 import { apiLikeTour } from '@/api/profile';
 import { useApi } from '@/hooks';
+import { useAppContext } from '@/app/provider';
 
 const useTour = (tourId: string | null) => {
+  const [{ profile }] = useAppContext();
+
   const { data, loading, validating, error, mutate } = useApi<TypeTour>(
     tourId ? `/common/tours/${tourId}` : null,
     {
       config: {
         revalidateAll: true,
+        authorize: !!profile,
       },
     },
   );

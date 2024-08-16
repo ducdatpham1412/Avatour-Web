@@ -1,6 +1,6 @@
-export default function Background() {
+function BackgroundSun() {
   return (
-    <div className="absolute top-0 sm:-top-24 left-0 right-0">
+    <div className="absolute top-0 sm:-top-16 left-0 right-0">
       <svg
         width="100%"
         height="100%"
@@ -37,3 +37,5 @@ export default function Background() {
     </div>
   );
 }
+
+export default BackgroundSun;

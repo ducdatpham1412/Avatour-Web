@@ -27,6 +27,10 @@ const filterSuppliersFields = {
         name: 'Location',
       },
       {
+        id: ACCOUNT_TYPE.buddy,
+        name: 'Buddy',
+      },
+      {
         id: 'del',
         name: 'Đã xoá',
       },

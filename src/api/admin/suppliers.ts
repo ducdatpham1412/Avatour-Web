@@ -27,7 +27,7 @@ export type SupplierData = Partial<
     | 'status'
     | 'parent'
   > & {
-    account_type: 'location' | 'shop';
+    account_type: 'location' | 'shop' | 'buddy';
   } & Omit<ProfileInfo, 'lat' | 'lng'> & {
       lat_lng: string;
     }

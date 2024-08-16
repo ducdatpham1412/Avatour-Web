@@ -8,10 +8,14 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 import { apiGetPassport, apiGetResource } from '@/api/common';
 import '@/configs/bootstrap';
 import { logger } from '@/lib';
+
+import 'dayjs/locale/vi';
 
 interface Props {
   children: ReactNode;
@@ -97,7 +101,9 @@ const Provider = ({ children }: Props) => {
         },
       ]}
     >
-      {children}
+      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="vi">
+        {children}
+      </LocalizationProvider>
     </Context.Provider>
   );
 };

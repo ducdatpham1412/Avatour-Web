@@ -1,23 +1,66 @@
 'use client';
+import { MenuIcon } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useMemo } from 'react';
 
+import { apiLogOut } from '@/api/auth';
 import { useAppContext } from '@/app/provider';
 import LogoIcon from '@/components/icon/LogoIcon';
-import { ACCOUNT_TYPE } from '@/configs/constants';
+import { ACCOUNT_TYPE, CONTAINER_WIDTH } from '@/configs/constants';
 import { ADMIN_ROUTES, PROFILE_ROUTES } from '@/configs/routes';
+import { toast, useWindowSize } from '@/hooks';
+import { logger, parseErrorMessage } from '@/lib';
 
 import { DialogAuth } from './dialogs';
-import { Icon, IconAvatour } from './icon';
+import DropDown from './DropDown';
+import { BookUserIcon, IconAvatour, MapPinIcon } from './icon';
 import { Image } from './ui';
 
 const Navbar = () => {
-  const [{ profile, initLoading }] = useAppContext();
+  const [{ profile, initLoading }, { setProfile }] = useAppContext();
+  const { width } = useWindowSize();
+  const router = useRouter();
+
+  const size = useMemo(() => {
+    if (!width) {
+      return {
+        icon: 0,
+        logo: 0,
+      };
+    }
+
+    if (width >= CONTAINER_WIDTH.lg) {
+      return {
+        icon: 20,
+        logo: 80,
+      };
+    }
+
+    return {
+      icon: 30,
+      logo: 60,
+    };
+  }, [width]);
+
+  const onLogOut = async () => {
+    try {
+      await apiLogOut();
+      setProfile(undefined);
+      router.replace('/');
+    } catch (err) {
+      toast({
+        variant: 'destructive',
+        description: parseErrorMessage(err),
+      });
+    }
+  };
 
   const renderAuth = () => {
     if (!profile) {
       return (
         <>
-          <div
+          {/* <div
             role="button"
             onClick={() => {
               DialogAuth.open({ mode: 'sign-up' });
@@ -25,10 +68,10 @@ const Navbar = () => {
             className="font-medium hidden md:block hover-scale"
           >
             Đăng ký
-          </div>
+          </div> */}
           <div
             role="button"
-            className="bg-p_600 px-[24px] py-[8px] rounded-full font-medium hidden md:block hover-scale"
+            className="bg-p_600 px-[24px] py-[8px] rounded-full font-medium hover-scale"
             onClick={() => {
               DialogAuth.open({ mode: 'sign-in' });
             }}
@@ -40,29 +83,69 @@ const Navbar = () => {
     }
 
     return (
-      <Link
-        className="px-[10px] py-[6px] border-[1px] border-gray_300 rounded-full flex gap-[10px] items-center hover-scale"
-        href={PROFILE_ROUTES.myProfile}
-      >
-        <Image
-          src={profile.avatar}
-          defaultSrc="https://vietflag.vn/ckfinder/userfiles/images/tin-tuc/quoc-ky-viet-nam-1.jpg"
-          className="w-[36px] h-[36px] rounded-full"
+      <div className="px-[10px] py-[6px] border-[1px] border-gray_300 rounded-full flex gap-[10px] items-center">
+        <Link href={PROFILE_ROUTES.myProfile}>
+          <Image
+            src={profile.avatar}
+            defaultSrc="https://vietflag.vn/ckfinder/userfiles/images/tin-tuc/quoc-ky-viet-nam-1.jpg"
+            className="w-[36px] h-[36px] rounded-full hover-scale"
+          />
+        </Link>
+        <DropDown
+          trigger={<MenuIcon size={18} className="hover-scale" />}
+          options={[
+            {
+              value: 'about-us',
+              label: 'Về chúng tôi',
+              type: 'menu-item',
+            },
+            {
+              value: 'log-out',
+              label: 'Đăng xuất',
+              type: 'menu-item',
+            },
+          ]}
+          onCheck={v => {
+            if (v === 'about-us') {
+              router.push('/about-us');
+            } else {
+              onLogOut().catch(logger.log);
+            }
+          }}
         />
-        <Icon name="bag" />
-      </Link>
+      </div>
     );
   };
 
   return (
-    <div className="relative inline-flex top-0 left-0 w-full items-center justify-between h-[68px] px-[20px] sm:px-[50px] z-20 flex-shrink-0">
+    <div className="relative inline-flex top-0 left-0 w-full items-center justify-between h-[68px] px-[10px] sm:px-[50px] z-20 flex-shrink-0">
       <Link href="/" className="hover-scale inline-flex flex-row items-center gap-[8px]">
-        <LogoIcon />
-        <IconAvatour />
+        {!!size.logo && (
+          <>
+            <LogoIcon size={size.logo} />
+            <IconAvatour className="hidden sm:block" />
+          </>
+        )}
       </Link>
       {!initLoading && (
-        <div className="flex items-center gap-7">
-          <Link href="/about-us" className="font-medium hidden md:block hover-scale">
+        <div className="flex items-center gap-8">
+          <Link
+            href="/"
+            className="hover-scale inline-flex gap-1 items-center"
+            title="Gợi ý lịch trình"
+          >
+            <MapPinIcon size={size.icon} />
+            <p className="hidden md:block font-medium">Gợi ý lịch trình</p>
+          </Link>
+          <Link
+            href="/buddy"
+            className="hover-scale inline-flex gap-1 items-center"
+            title="Buddy bản địa"
+          >
+            <BookUserIcon size={size.icon} />
+            <p className="hidden md:block font-medium">Buddy bản địa</p>
+          </Link>
+          <Link href="/about-us" className="hidden lg:block hover-scale">
             Về chúng tôi
           </Link>
           {(profile?.account_type === ACCOUNT_TYPE.admin ||

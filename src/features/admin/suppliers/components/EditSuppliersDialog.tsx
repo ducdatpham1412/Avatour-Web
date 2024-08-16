@@ -233,7 +233,12 @@ const EditSuppliersDialog = forwardRef(
           );
         }
 
-        if (!data || data.account_type === 'location' || data.account_type === 'shop') {
+        if (
+          !data ||
+          data.account_type === 'location' ||
+          data.account_type === 'shop' ||
+          data.account_type === 'buddy'
+        ) {
           return (
             <SuppliersForm
               defaultValues={
