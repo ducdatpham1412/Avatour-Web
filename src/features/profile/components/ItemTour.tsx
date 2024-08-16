@@ -1,19 +1,26 @@
+import { ClassValue } from 'clsx';
+
 import { ButtonAbsolute } from '@/components';
 import { Image } from '@/components/ui';
+import { cn } from '@/lib';
 import { formatTourDuration, formatTourName, formatTourPrice } from '@/lib/format';
 
 interface Props {
   item: TypeTour;
   onClick?: () => void;
   onLike?: () => void;
+  className?: ClassValue;
 }
 
-const ItemTour = ({ item, onClick, onLike }: Props) => {
+const ItemTour = ({ item, onClick, onLike, className }: Props) => {
   return (
     <div
       role="button"
       onClick={onClick}
-      className="w-full md:w-[48%] lg:w-full xl:w-[48%] hover:scale-[1.01] duration-500"
+      className={cn(
+        'w-full md:w-[48%] lg:w-full xl:w-[48%] hover:scale-[1.01] duration-500',
+        className,
+      )}
     >
       <div className="relative w-full">
         <Image

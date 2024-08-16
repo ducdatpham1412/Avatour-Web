@@ -33,7 +33,7 @@ export const getProfile = async (): Promise<ActionResponse<ProfileResponse['data
   try {
     const res: ProfileResponse = await request.get('/common/passport', undefined, {
       next: {
-        revalidate: 10,
+        revalidate: false,
       },
     });
 
