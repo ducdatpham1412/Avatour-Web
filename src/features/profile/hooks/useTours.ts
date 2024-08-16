@@ -31,7 +31,7 @@ const handleTourForm = (arg: CreateTourForm) => {
   };
 };
 
-const useTours = (userId?: number, type: 'list' | 'favorite' = 'list') => {
+const useTours = (userId?: number, type: 'list' | 'favorite' | 'home' = 'list') => {
   const [{ profile }] = useAppContext();
   userId = userId ?? profile?.id;
 

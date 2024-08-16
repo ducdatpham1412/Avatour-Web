@@ -93,7 +93,7 @@ const api: API = async <T>(
 
   logger.log(url, options.method, params);
 
-  const configs = { ...options, method, body, headers };
+  const configs: RequestInit = { ...options, method, body, headers, cache: 'no-cache' };
 
   const runAPI = async () => {
     const response = await fetch(url, configs);
@@ -109,7 +109,7 @@ const api: API = async <T>(
             const newToken = await new Promise<string>((resolve, reject) => {
               failedQueue.push({ resolve, reject });
             });
-            configs.headers.set('Authorization', `Bearer ${newToken}`);
+            (configs.headers as any).set('Authorization', `Bearer ${newToken}`);
             const res = await fetch(url, configs);
             return parseData<T>(res);
           } catch (err) {
@@ -137,7 +137,7 @@ const api: API = async <T>(
           const {
             data: { access },
           } = await (res.json() as Promise<TypeApi<{ access: string }>>);
-          configs.headers.set('Authorization', `Bearer ${access}`);
+          (configs.headers as any).set('Authorization', `Bearer ${access}`);
           const resRetry = await fetch(url, configs);
           if (!resRetry.ok) {
             throw error;

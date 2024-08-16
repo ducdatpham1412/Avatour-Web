@@ -2,31 +2,51 @@
 
 import { useRef } from 'react';
 
-import { useAppContext } from '@/app/provider';
-import { SEARCH_ROUTES } from '@/configs/routes';
+import { SEARCH_ROUTES, TOUR_ROUTES } from '@/configs/routes';
+import { ItemTour } from '@/features/profile/components';
+import { useTours } from '@/features/profile/hooks';
 import { useRouter } from '@/hooks';
 
-import { SearchInputBase, SuggestSearchItem } from '../../components';
-import AppStoreBadge from './AppStoreBadge';
-import GooglePlayBadge from './GooglePlayBadge';
+import { SearchInputBase } from '../../components';
 
 const Body = () => {
   const router = useRouter();
-  const [{ resource }] = useAppContext();
   const text = useRef('');
+  const [{ data: tours }] = useTours(undefined, 'home');
 
   return (
-    <div className="absolute top-0 bottom-0 left-0 right-0 flex flex-col items-center justify-center min-h-[100vh] gap-y-7">
+    <div className="relative inline-flex flex-col items-center w-full gap-y-6">
       <div className="flex flex-col items-center">
-        <span className="text-p_600 text-[26px] sm:text-[36px] sm:leading-[44px] font-medium">
-          Avatour xin chào,
-        </span>
-        <span className="text-black text-[20px] sm:text-[30px] sm:leading-[38px] font-normal text-center w-3/5 sm:w-auto">
-          Bạn muốn khám phá địa điểm nào?
-        </span>
+        <p>
+          <span className="text-p_600 text-[16px] md:text-[26px] sm:leading-[44px] font-medium">
+            Avatour xin chào,
+          </span>
+          <span className="text-black text-[14px] md:text-[22px] sm:leading-[38px] font-normal text-center w-3/5 sm:w-auto">
+            {' '}
+            Bạn đã có lịch trình cho chuyến đi sắp tới chưa?
+          </span>
+        </p>
       </div>
 
-      <div className="min-h-[200px] w-full flex flex-col items-center gap-y-7">
+      <SearchInputBase
+        onChangeValue={v => (text.current = v)}
+        onSearch={() => router.push(SEARCH_ROUTES.searchResult(text.current))}
+      />
+
+      <div className="w-[min(90%,_1000px)] inline-flex justify-between flex-wrap mt-2 gap-y-8 pb-[200px]">
+        {tours?.map(item => {
+          return (
+            <ItemTour
+              key={item.id}
+              item={item}
+              onClick={() => router.push(TOUR_ROUTES.tourDetail(item.id))}
+              className="lg:w-[48%]"
+            />
+          );
+        })}
+      </div>
+
+      {/* <div className="min-h-[200px] w-full flex flex-col items-center gap-y-7">
         {!!resource && (
           <>
             <SearchInputBase
@@ -40,9 +60,9 @@ const Body = () => {
             </div>
           </>
         )}
-      </div>
+      </div> */}
 
-      <div className="flex justify-center gap-x-4 absolute bottom-[128px] left-0 right-0 px-5">
+      {/* <div className="flex justify-center gap-x-4 absolute bottom-[128px] left-0 right-0 px-5">
         <a
           target="_blank"
           rel="noopener noreferrer"
@@ -60,7 +80,7 @@ const Body = () => {
         >
           <AppStoreBadge />
         </a>
-      </div>
+      </div> */}
     </div>
   );
 };
