@@ -2,14 +2,14 @@
 
 import { useRef } from 'react';
 
+import { useAppContext } from '@/app/provider';
+import { DialogAuth } from '@/components/dialogs';
 import { SEARCH_ROUTES, TOUR_ROUTES } from '@/configs/routes';
 import { ItemTour } from '@/features/profile/components';
 import { useTours } from '@/features/profile/hooks';
 import { toast, useRouter } from '@/hooks';
-import { parseErrorMessage } from '@/lib/utils';
 import { logger } from '@/lib';
-import { useAppContext } from '@/app/provider';
-import { DialogAuth } from '@/components/dialogs';
+import { parseErrorMessage } from '@/lib/utils';
 
 import { SearchInputBase } from '../../components';
 
@@ -93,7 +93,7 @@ const Body = () => {
         className="w-[min(100%,_1000px)]"
       />
 
-      <div className="w-[min(100%,_1000px)] inline-flex justify-between flex-wrap mt-4 gap-y-8 pb-[200px]">
+      <div className="w-[min(100%,_1000px)] inline-flex justify-between flex-wrap mt-4 gap-y-8">
         {tours?.map(item => {
           return (
             <ItemTour

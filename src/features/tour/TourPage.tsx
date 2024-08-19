@@ -1,19 +1,22 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 
 import { useAppContext } from '@/app/provider';
+import { DialogAuth } from '@/components/dialogs';
 import { ErrorIcon, TourLoadingIcon } from '@/components/icon';
 import { Button } from '@/components/ui';
 import { toast } from '@/hooks';
 import { parseErrorMessage } from '@/lib';
 import { getTourOpenState, setTourOpenState } from '@/lib/storage';
-import { DialogAuth } from '@/components/dialogs';
+import { PROFILE_ROUTES } from '@/configs/routes';
 
+import { ItemBuddy } from '../buddy/components';
+import { useBuddies } from '../buddy/hooks';
 import { useTour, useTours } from '../profile/hooks';
 import { TourQuickDetail, TourQuickDetailFocusing } from '../search/components';
-import { DayItem, RelatedPlaces, TourHeader, getElementLocId } from './components';
+import { DayItem, TourHeader, getElementLocId } from './components';
 
 type Params = {
   tour_id: string;
@@ -21,6 +24,39 @@ type Params = {
 
 type SearchParams = {
   index?: string;
+};
+
+const RelatedBuddy = () => {
+  const router = useRouter();
+  const [{ data }] = useBuddies();
+
+  if (!data) {
+    return null;
+  }
+
+  return (
+    <div className="flex flex-col gap-2 w-full">
+      <div className="flex flex-col gap-y-4">
+        <h3 className="text-black text-[18px] leading-[28px] md:text-[24px] md:leading-[36px] font-medium">
+          Một số buddy bạn có thể tham khảo tại đây
+        </h3>
+      </div>
+
+      <div className="w-full inline-flex flex-wrap justify-between gap-y-7 sm:gap-y-12 mt-8">
+        {data.map(buddy => {
+          return (
+            <ItemBuddy
+              key={buddy.id}
+              item={buddy}
+              onClick={() => {
+                router.push(PROFILE_ROUTES.profileId(buddy.id));
+              }}
+            />
+          );
+        })}
+      </div>
+    </div>
+  );
 };
 
 const TourPage = ({ params, searchParams }: PageProps<Params, SearchParams>) => {
@@ -81,31 +117,6 @@ const TourPage = ({ params, searchParams }: PageProps<Params, SearchParams>) => 
       </div>
     );
   }
-
-  let previewProfile: TypeProfile | undefined = undefined;
-  const profiles = data.schedule.reduce((pre, cur) => {
-    if (pre.length >= 3) {
-      if (!previewProfile) {
-        previewProfile = cur[0];
-      }
-      return pre;
-    }
-    cur.every(p => {
-      if (pre.length >= 3) {
-        if (!previewProfile) {
-          previewProfile = p;
-        }
-        return false;
-      }
-      if (p.link.length) {
-        pre.push(p);
-      } else if (!previewProfile) {
-        previewProfile = p;
-      }
-      return true;
-    });
-    return pre;
-  }, [] as TypeProfile[]);
 
   const onChangeValue = (v: string[], dayIndex: number) => {
     if (!openState.current) {
@@ -266,7 +277,7 @@ const TourPage = ({ params, searchParams }: PageProps<Params, SearchParams>) => 
   };
 
   return (
-    <main className="relative inline-flex container flex-col gap-y-12 md:gap-y-[124px] mt-4 pb-[100px]">
+    <main className="relative inline-flex container flex-col gap-y-12 md:gap-y-[124px] mt-4 bg-transparent">
       <article className="flex flex-col gap-y-[56px]">
         <TourHeader tour={data} onLike={onLike} onDelete={onDelete} />
 
@@ -299,11 +310,11 @@ const TourPage = ({ params, searchParams }: PageProps<Params, SearchParams>) => 
         </div>
       </article>
 
-      {!!previewProfile && (
-        <section className="flex flex-1">
+      {/* <section className="flex flex-1">
           <RelatedPlaces profiles={profiles} previewProfile={previewProfile} />
-        </section>
-      )}
+        </section> */}
+
+      <RelatedBuddy />
     </main>
   );
 };

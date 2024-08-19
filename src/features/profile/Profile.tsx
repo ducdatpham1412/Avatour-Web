@@ -64,7 +64,7 @@ const Profile = () => {
   };
 
   return (
-    <Container showHeader={false} contentContainer="flex flex-col lg:flex-row pt-6 pb-[100px]">
+    <Container showHeader={false} contentContainer="flex flex-col lg:flex-row pt-6">
       <div className="w-full self-start lg:w-[460px] lg:sticky lg:top-6">
         <div className="w-[200px] mx-auto lg:w-full shadow-all p-[8px] pb-[14px] lg:p-[16px] lg:pb-[28px]">
           <Image

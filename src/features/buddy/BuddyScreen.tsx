@@ -2,38 +2,48 @@
 import { useRouter } from 'next/navigation';
 
 import Container from '@/app/container';
+import { TourLoadingIcon } from '@/components';
 import { PROFILE_ROUTES } from '@/configs/routes';
 
 import { ItemBuddy } from './components';
+import { useBuddies } from './hooks';
 
 const BuddyScreen = () => {
   const router = useRouter();
-  //   const [] = useBuddies();
+  const [{ data, loading }] = useBuddies();
 
-  const onGotoBuddy = () => {
-    router.push(PROFILE_ROUTES.profileId(509));
+  const content = () => {
+    if (loading || !data) {
+      return <TourLoadingIcon className="w-[200px] h-[200px] mx-auto mt-[10vh]" />;
+    }
+
+    return (
+      <div className="w-full inline-flex flex-wrap justify-between gap-y-7 sm:gap-y-12 mt-8">
+        {data.map(buddy => {
+          return (
+            <ItemBuddy
+              item={buddy}
+              onClick={() => {
+                router.push(PROFILE_ROUTES.profileId(buddy.id));
+              }}
+            />
+          );
+        })}
+      </div>
+    );
   };
 
   return (
     <Container showHeader={false}>
-      <div className="relative pb-[200px]">
-        <div className="inline-flex flex-col items-start mt-[12px]">
-          <p className="text-black text-[22px] font-medium">Buddy là gì nhỉ?</p>
-          <p>
-            Buddy là một người dân bản địa, đồng hành cùng bạn trên một chặng đường, giúp bạn trải
-            nghiệm đậm nét văn hoá địa phương.
-          </p>
-        </div>
-
-        <div className="w-full inline-flex flex-wrap justify-between gap-y-7 sm:gap-y-12 mt-8">
-          <ItemBuddy onClick={onGotoBuddy} />
-          <ItemBuddy />
-          <ItemBuddy />
-          <ItemBuddy />
-          <ItemBuddy />
-          <ItemBuddy isEmpty />
-        </div>
+      <div className="inline-flex flex-col items-start mt-[12px]">
+        <p className="text-black text-[22px] font-medium">Buddy là gì nhỉ?</p>
+        <p>
+          Buddy là một người dân bản địa, đồng hành cùng bạn trên một chặng đường, giúp bạn trải
+          nghiệm đậm nét văn hoá địa phương.
+        </p>
       </div>
+
+      {content()}
     </Container>
   );
 };

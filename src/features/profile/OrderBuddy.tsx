@@ -37,6 +37,14 @@ const OrderBuddy = ({ params }: Props) => {
   const isValid = people && date && hour && phone;
 
   const onOrder = async () => {
+    // if (1 === 1) {
+    //   const element = document.getElementById('scrollTop');
+    //   if (element) {
+    //     element.scrollTo({ top: 0, behavior: 'instant' });
+    //   }
+    //   return;
+    // }
+
     if (isValid && data) {
       try {
         await orderBuddy({
@@ -57,6 +65,10 @@ const OrderBuddy = ({ params }: Props) => {
               };
             }
           });
+        }
+        const element = document.getElementById('scrollTop');
+        if (element) {
+          element.scrollTo({ top: 0 });
         }
         setSuccess(true);
       } catch (err) {
@@ -194,7 +206,9 @@ const OrderBuddy = ({ params }: Props) => {
     }
   };
 
-  return <Container background="sun">{content()}</Container>;
+  return <Container background="sun"
+    showFooter={false}
+  >{content()}</Container>;
 };
 
 export default OrderBuddy;

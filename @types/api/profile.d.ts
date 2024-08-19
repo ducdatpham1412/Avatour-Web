@@ -81,6 +81,7 @@ type ProfileInfo = {
   activities: string[];
   // Contributed by users
   total_ratings: number;
+  total_orders: number;
   average_stars: number;
   rank: number;
 };

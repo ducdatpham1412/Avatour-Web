@@ -2,33 +2,29 @@
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
-import { apiEditProfile } from '@/api/profile';
+import { apiEditProfile, EditProfileParams } from '@/api/profile';
+import Container from '@/app/container';
 import { useAppContext } from '@/app/provider';
 import { TitleHeader } from '@/components';
-import { ButtonBack } from '@/components/buttons';
 import { Button, Form, Input, Textarea } from '@/components/ui';
 import { toast } from '@/hooks';
 import { parseErrorMessage } from '@/lib';
-
-type EditProfile = {
-  name?: string;
-  description?: string;
-};
 
 const EditProfile = () => {
   const [{ profile }, { setProfile }] = useAppContext();
   const router = useRouter();
 
-  const form = useForm<EditProfile>({
+  const form = useForm<EditProfileParams>({
     defaultValues: {
       name: profile?.name,
       description: profile?.description,
+      location: profile?.location,
     },
     mode: 'onChange',
   });
   const { errors, isValid, isDirty, isSubmitting } = form.formState;
 
-  const onSubmit = async (e: EditProfile) => {
+  const onSubmit = async (e: EditProfileParams) => {
     if (profile) {
       try {
         await apiEditProfile(profile.id, e);
@@ -39,6 +35,9 @@ const EditProfile = () => {
             }
             if (e.description) {
               pre.description = e.description;
+            }
+            if (e.location) {
+              pre.location = e.location;
             }
             return { ...pre };
           }
@@ -57,9 +56,7 @@ const EditProfile = () => {
   };
 
   return (
-    <div className="w-full container">
-      <ButtonBack onClick={() => router.back()} className="self-start mt-2" />
-
+    <Container>
       <div className="mx-auto w-full md:w-[80%] lg:w-[60%]">
         <TitleHeader title="Chỉnh sửa thông tin của bạn chút nhé" className="mt-[50px]" />
         <Form {...form} onSubmit={onSubmit} className="w-full inline-flex flex-col mt-[20px]">
@@ -74,6 +71,14 @@ const EditProfile = () => {
               },
             })}
             errorMessage={errors.name?.message}
+          />
+          <Input
+            useForm
+            defaultValue={profile?.location}
+            placeholder="Hiện bạn đang ở đâu?"
+            className="border-gray_400 h-12 rounded-[20px] mt-[20px]"
+            {...form.register('location')}
+            errorMessage={errors.location?.message}
           />
           <Textarea
             defaultValue={profile?.description}
@@ -90,7 +95,7 @@ const EditProfile = () => {
           />
         </Form>
       </div>
-    </div>
+    </Container>
   );
 };
 

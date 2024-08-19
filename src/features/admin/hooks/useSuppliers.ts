@@ -4,7 +4,7 @@ import { useAppContext } from '@/app/provider';
 import { useApi } from '@/hooks';
 
 type Params = {
-  at?: string;
+  at?: TypeProfile['account_type'];
   dt?: string;
 };
 

@@ -2,9 +2,10 @@
 
 import request from './request';
 
-type EditProfile = {
+export type EditProfileParams = {
   name?: string;
   description?: string;
+  location?: string;
 };
 
 export type OrderBuddyParams = {
@@ -16,7 +17,7 @@ export type OrderBuddyParams = {
   supplier: number;
 };
 
-export const apiEditProfile = async (userId: number, data: EditProfile) => {
+export const apiEditProfile = async (userId: number, data: EditProfileParams) => {
   await request.put(`/admin/suppliers/${userId}`, data);
 };
 
@@ -33,7 +34,7 @@ export const apiLikeTour = async (tourId: string) => {
   return res;
 };
 
-export const apiOrderBuddy = async (params: OrderBuddyParams) => {
+export const apiOrderBuddy = async (params: OrderBuddyParams, authorize: boolean) => {
   await request.post(
     '/profile/order',
     {
@@ -41,7 +42,7 @@ export const apiOrderBuddy = async (params: OrderBuddyParams) => {
       ...params,
     },
     {
-      authorize: false,
+      authorize,
     },
   );
 };
