@@ -1,11 +1,12 @@
-import { Background, Body } from './components';
+import Container from '@/app/container';
+
+import { Body } from './components';
 
 const SearchPage = () => {
   return (
-    <>
-      <Background />
+    <Container showHeader={false}>
       <Body />
-    </>
+    </Container>
   );
 };
 

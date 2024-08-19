@@ -136,6 +136,7 @@ const editSupplierFields = (cats: Resource['cats']) => {
       options: [
         { id: ACCOUNT_TYPE.shop, name: 'Shop' },
         { id: ACCOUNT_TYPE.location, name: 'Location' },
+        { id: ACCOUNT_TYPE.buddy, name: 'Buddy' },
       ],
     },
     description: {

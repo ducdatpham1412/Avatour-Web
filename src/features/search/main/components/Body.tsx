@@ -5,35 +5,95 @@ import { useRef } from 'react';
 import { SEARCH_ROUTES, TOUR_ROUTES } from '@/configs/routes';
 import { ItemTour } from '@/features/profile/components';
 import { useTours } from '@/features/profile/hooks';
-import { useRouter } from '@/hooks';
+import { toast, useRouter } from '@/hooks';
+import { parseErrorMessage } from '@/lib/utils';
+import { logger } from '@/lib';
+import { useAppContext } from '@/app/provider';
+import { DialogAuth } from '@/components/dialogs';
 
 import { SearchInputBase } from '../../components';
 
 const Body = () => {
   const router = useRouter();
   const text = useRef('');
-  const [{ data: tours }] = useTours(undefined, 'home');
+  const [{ profile }] = useAppContext();
+  const [{ data: tours }, { likeTour, mutate }] = useTours(undefined, 'home');
+  const [, { mutate: mutateList }] = useTours(undefined, 'list');
+  const [, { mutate: mutateFavorite }] = useTours(undefined, 'favorite');
+
+  const onLikeTour = async (tourId: string) => {
+    if (!profile) {
+      DialogAuth.open({
+        mode: 'sign-in',
+      });
+      return;
+    }
+
+    try {
+      const res = await likeTour(tourId);
+      const isLiked = res.status === 'like';
+      await mutate(
+        pre => {
+          if (pre) {
+            return pre.map(item => {
+              if (item.id !== tourId) {
+                return item;
+              }
+
+              return {
+                ...item,
+                is_liked: isLiked,
+              };
+            });
+          }
+        },
+        { revalidate: false },
+      );
+      mutateList(
+        pre => {
+          if (pre) {
+            return pre.map(item => {
+              if (item.id !== tourId) {
+                return item;
+              }
+
+              return {
+                ...item,
+                is_liked: isLiked,
+              };
+            });
+          }
+        },
+        { revalidate: false },
+      ).catch(logger.log);
+      mutateFavorite().catch(logger.log);
+    } catch (err) {
+      toast({
+        variant: 'destructive',
+        description: parseErrorMessage(err),
+      });
+    }
+  };
 
   return (
-    <div className="relative inline-flex flex-col items-center w-full gap-y-6">
-      <div className="flex flex-col items-center">
-        <p>
-          <span className="text-p_600 text-[16px] md:text-[26px] sm:leading-[44px] font-medium">
-            Avatour xin chào,
-          </span>
-          <span className="text-black text-[14px] md:text-[22px] sm:leading-[38px] font-normal text-center w-3/5 sm:w-auto">
-            {' '}
-            Bạn đã có lịch trình cho chuyến đi sắp tới chưa?
-          </span>
-        </p>
-      </div>
+    <div className="relative w-full inline-flex flex-col gap-y-6 items-center">
+      <p className="mt-[12px]">
+        <span className="text-p_600 text-[20px] md:text-[26px] sm:leading-[44px] font-medium">
+          Avatour xin chào,
+        </span>
+        <span className="text-black text-[18px] md:text-[22px] sm:leading-[38px] font-normal text-center w-3/5 sm:w-auto">
+          {' '}
+          Bạn đã có lịch trình cho chuyến đi sắp tới chưa?
+        </span>
+      </p>
 
       <SearchInputBase
         onChangeValue={v => (text.current = v)}
         onSearch={() => router.push(SEARCH_ROUTES.searchResult(text.current))}
+        className="w-[min(100%,_1000px)]"
       />
 
-      <div className="w-[min(90%,_1000px)] inline-flex justify-between flex-wrap mt-2 gap-y-8 pb-[200px]">
+      <div className="w-[min(100%,_1000px)] inline-flex justify-between flex-wrap mt-4 gap-y-8 pb-[200px]">
         {tours?.map(item => {
           return (
             <ItemTour
@@ -41,6 +101,7 @@ const Body = () => {
               item={item}
               onClick={() => router.push(TOUR_ROUTES.tourDetail(item.id))}
               className="lg:w-[48%]"
+              onLike={() => onLikeTour(item.id ?? '')}
             />
           );
         })}

@@ -36,7 +36,11 @@ const DropDown = ({ trigger, label, options, onCheck }: Props) => {
         {options.map(ot => {
           if (ot.type === 'menu-item') {
             return (
-              <DropdownMenuItem onClick={() => onCheck?.(ot.value)} className="cursor-pointer">
+              <DropdownMenuItem
+                key={ot.value}
+                onClick={() => onCheck?.(ot.value)}
+                className="cursor-pointer"
+              >
                 {ot.label}
               </DropdownMenuItem>
             );

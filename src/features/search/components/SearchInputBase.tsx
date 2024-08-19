@@ -43,10 +43,11 @@ const SearchInputBase = ({
             }
           }}
           className={cn(
-            'w-full focus:outline-none outline-none duration-200 bg-transparent text-ellipsis text-[16px] sm:text-[18px] sm:leading-[28px] font-normal',
+            'w-full focus:outline-none outline-none duration-200 bg-transparent text-ellipsis text-[16px] font-normal',
             inputClassName,
           )}
           onChange={e => onChangeValue?.(e.target.value)}
+          type="search"
         />
       </div>
     </div>

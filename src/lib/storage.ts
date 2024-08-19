@@ -20,3 +20,8 @@ export const getTourCreate = () => {
 export const removeTourCreate = () => {
   localStorage.removeItem('tour-create');
 };
+
+export const setPhone = (phone: string) => {
+  localStorage.setItem('phone', phone);
+};
+export const getPhone = () => localStorage.getItem('phone');

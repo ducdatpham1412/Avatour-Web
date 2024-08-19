@@ -205,18 +205,21 @@ const SuppliersForm = ({
           value="facilities"
           controller={controller}
           options={[]}
+          freeText
         />
         <DropdownField
           label={fields.take_away.label ?? ''}
           value="take_away"
           controller={controller}
           options={[]}
+          freeText
         />
         <DropdownField
           label={fields.dresses.label ?? ''}
           value="dresses"
           controller={controller}
           options={[]}
+          freeText
         />
       </div>
 

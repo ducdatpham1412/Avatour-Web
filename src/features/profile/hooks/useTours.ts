@@ -34,13 +34,20 @@ const handleTourForm = (arg: CreateTourForm) => {
 const useTours = (userId?: number, type: 'list' | 'favorite' | 'home' = 'list') => {
   const [{ profile }] = useAppContext();
   userId = userId ?? profile?.id;
+  const isHome = type === 'home';
 
-  const { data, error, loading, mutate } = useApi<TypeTour[]>(userId ? '/common/tours' : null, {
-    params: {
-      type,
-      user_id: userId,
+  const { data, error, loading, mutate } = useApi<TypeTour[]>(
+    userId || isHome ? '/common/tours' : null,
+    {
+      params: {
+        type,
+        user_id: userId,
+      },
+      config: {
+        authorize: isHome ? !!profile : true,
+      },
     },
-  });
+  );
 
   const { trigger: createTour, isMutating: loadingCreateTour } = useSWRMutation(
     'api.createTour',

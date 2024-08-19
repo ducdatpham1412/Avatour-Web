@@ -1,17 +1,15 @@
 'use client';
 
-import { ChevronRight, LogOutIcon } from 'lucide-react';
-import { ElementRef, useRef } from 'react';
+import { ChevronRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { ElementRef, useRef } from 'react';
 
 import { useAppContext } from '@/app/provider';
 import { TabView } from '@/components';
 import { BagIcon, BookMarkIcon, CameraIcon, LocationIcon, PencilIcon } from '@/components/icon';
 import { Image } from '@/components/ui';
-import { parseErrorMessage, twConfigs } from '@/lib';
-import { apiLogOut } from '@/api/auth';
-import { toast } from '@/hooks';
 import { PROFILE_ROUTES } from '@/configs/routes';
+import Container from '@/app/container';
 
 import { serviceDataDetail } from '../search/constants';
 import { CheckIn, FavoriteTours, MyTours } from './screens';
@@ -32,25 +30,12 @@ const getLocalTab = () => {
 
 const Profile = () => {
   const route = useRouter();
-  const [{ profile }, { setProfile }] = useAppContext();
+  const [{ profile }] = useAppContext();
   const tabRef = useRef<ElementRef<typeof TabView>>(null);
 
   if (!profile) {
     return null;
   }
-
-  const onLogOut = async () => {
-    try {
-      await apiLogOut();
-      setProfile(undefined);
-      route.replace('/');
-    } catch (err) {
-      toast({
-        variant: 'destructive',
-        description: parseErrorMessage(err),
-      });
-    }
-  };
 
   const renderServices = () => {
     if (profile.services.length) {
@@ -79,7 +64,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="container flex flex-col lg:flex-row pt-4">
+    <Container showHeader={false} contentContainer="flex flex-col lg:flex-row pt-6 pb-[100px]">
       <div className="w-full self-start lg:w-[460px] lg:sticky lg:top-6">
         <div className="w-[200px] mx-auto lg:w-full shadow-all p-[8px] pb-[14px] lg:p-[16px] lg:pb-[28px]">
           <Image
@@ -123,14 +108,6 @@ const Profile = () => {
 
           {renderServices()}
         </div>
-
-        <button
-          className="inline-flex items-center self-start gap-[4px] mt-[24px]"
-          onClick={onLogOut}
-        >
-          <LogOutIcon size={13} color={twConfigs.theme?.colors?.gray_500 as string} />
-          <p className="text-[12px] text-gray_500">Đăng xuất</p>
-        </button>
       </div>
 
       <div className="w-[180px] h-[24px] md:h-[40px]" />
@@ -160,7 +137,7 @@ const Profile = () => {
           },
         ]}
       />
-    </div>
+    </Container>
   );
 };
 

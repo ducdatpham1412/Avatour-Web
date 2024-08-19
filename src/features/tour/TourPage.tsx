@@ -9,6 +9,7 @@ import { Button } from '@/components/ui';
 import { toast } from '@/hooks';
 import { parseErrorMessage } from '@/lib';
 import { getTourOpenState, setTourOpenState } from '@/lib/storage';
+import { DialogAuth } from '@/components/dialogs';
 
 import { useTour, useTours } from '../profile/hooks';
 import { TourQuickDetail, TourQuickDetailFocusing } from '../search/components';
@@ -27,13 +28,14 @@ const TourPage = ({ params, searchParams }: PageProps<Params, SearchParams>) => 
   const isTourNull = tourId === '0';
   const router = useRouter();
 
-  const [{ tourSearches }, { setTourSearches }] = useAppContext();
+  const [{ tourSearches, profile }, { setTourSearches }] = useAppContext();
 
   const [, { createTour, mutate: mutateFavoriteTour, deleteTour }] = useTours(
     undefined,
     'favorite',
   );
   const [, { mutate: mutateMyTours }] = useTours(undefined, 'list');
+  const [, { mutate: mutateHome }] = useTours(undefined, 'home');
   const [{ data: dataApi, loading, validating, error }, { mutate, likeTour }] = useTour(
     isTourNull ? null : tourId,
   );
@@ -124,6 +126,13 @@ const TourPage = ({ params, searchParams }: PageProps<Params, SearchParams>) => 
   };
 
   const onLike = async () => {
+    if (!profile) {
+      DialogAuth.open({
+        mode: 'sign-in',
+      });
+      return;
+    }
+
     try {
       let res: TypeTour;
 
@@ -198,6 +207,22 @@ const TourPage = ({ params, searchParams }: PageProps<Params, SearchParams>) => 
           revalidate: false,
         },
       );
+      await mutateHome(
+        pre => {
+          const find = pre?.find(item => item.id === res.id);
+          if (find) {
+            return pre?.map(item => {
+              if (item.id !== res.id) {
+                return item;
+              }
+              return res;
+            });
+          }
+        },
+        {
+          revalidate: false,
+        },
+      );
     } catch (err) {
       toast({
         variant: 'destructive',
@@ -247,10 +272,10 @@ const TourPage = ({ params, searchParams }: PageProps<Params, SearchParams>) => 
 
         <div className="flex flex-row gap-x-[78px]">
           <section className="flex flex-col gap-y-12 w-full">
-            {data.schedule.map((profile, i) => (
+            {data.schedule.map((day, i) => (
               <DayItem
                 day={i + 1}
-                profiles={profile}
+                profiles={day}
                 onItemClick={index => setFocusing({ day: i, index })}
                 defaultValue={openState.current?.[i]}
                 onChangeValue={v => onChangeValue(v, i)}

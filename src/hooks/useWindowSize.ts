@@ -7,8 +7,9 @@ type Size = {
 
 const useWindowSize = () => {
   const [windowSize, setWindowSize] = useState<Size>({
-    width: window.innerWidth,
-    height: window.innerHeight,
+    // We have to set global?.window to avoid build prod error, when building, window is undefined
+    width: (global as any)?.window ? window.innerWidth : 0,
+    height: (global as any)?.window ? window.innerHeight : 0,
   });
 
   useEffect(() => {
@@ -19,7 +20,7 @@ const useWindowSize = () => {
       });
     };
 
-    window.addEventListener('resize', e => {
+    window.addEventListener('resize', () => {
       setWindowSize({
         width: window.innerWidth,
         height: window.innerHeight,

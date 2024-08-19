@@ -1,3 +1,10 @@
+import dayjs, { extend, locale } from 'dayjs';
+import vi from 'dayjs/locale/vi';
+import utc from 'dayjs/plugin/utc';
+
+locale(vi);
+extend(utc);
+
 export const formatTourDuration = (
   days: number,
   options?: {
@@ -43,4 +50,8 @@ export const formatDuration = (hours: number) => {
 
 export const formatTourName = (tour: TypeTour) => {
   return tour.name || `${tour.schedule[0]?.[0].name} -> ${tour.schedule.at(-1)?.at(-1)?.name}`;
+};
+
+export const formatUTCTime = (time: dayjs.Dayjs) => {
+  return time.utc().format();
 };

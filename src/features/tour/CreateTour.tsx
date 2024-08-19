@@ -1,20 +1,20 @@
 'use client';
-import { ElementRef, useEffect, useMemo, useRef, useState } from 'react';
+import { ElementRef, useMemo, useRef, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 
+import { useAppContext } from '@/app/provider';
 import { TabTrigger, TabView } from '@/components';
+import { DialogAuth } from '@/components/dialogs';
 import { Button, Form } from '@/components/ui';
 import { toast } from '@/hooks';
 import { cn, getTourName, parseErrorMessage } from '@/lib';
-import { useAppContext } from '@/app/provider';
-import { DialogAuth } from '@/components/dialogs';
 import { getTourCreate, removeTourCreate } from '@/lib/storage';
 
 import { CreateTourForm, useTours } from '../profile/hooks';
 import { CreateSuccess, TourDescription, TourName, TourSchedule } from './screens';
 
 const CreateTour = () => {
-  const [{ initLoading, profile }] = useAppContext();
+  const [{ profile }] = useAppContext();
   const [, { createTour, mutate, editTour, makeTourBeMine }] = useTours();
   const [, { mutate: mutateFavorite }] = useTours(undefined, 'favorite');
 
@@ -92,22 +92,18 @@ const CreateTour = () => {
     errorDirty || !!errors.name || !schedule?.length || !!errors.description || isEditing;
   const isCreateNew = defaultValues.mode === 'create';
 
-  useEffect(() => {
-    if (!profile && !initLoading) {
-      DialogAuth.open({
-        mode: 'sign-in',
-        canClose: false,
-      });
-    } else if (profile) {
-      DialogAuth.close();
-    }
-  }, [profile, initLoading]);
-
   const navigate = (t: typeof tab) => {
     tabRef.current?.navigate(t);
   };
 
   const onSubmit = async (e: Partial<CreateTourForm>) => {
+    if (!profile) {
+      DialogAuth.open({
+        mode: 'sign-in',
+      });
+      return;
+    }
+
     if (!e.name || !e.schedule?.length) {
       return;
     }

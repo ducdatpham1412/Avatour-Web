@@ -1,5 +1,12 @@
-const Background = () => (
-  <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+import { cn } from '@/lib';
+
+const Background = ({ className }: PropsWithClassName) => (
+  <div
+    className={cn(
+      'absolute top-[40px] left-0 w-full h-full min-h-[100vh] overflow-hidden pointer-events-none',
+      className,
+    )}
+  >
     <div className="w-[160%] sm:w-[100%] absolute right-0 top-[60px] sm:top-0">{lineIcon}</div>
 
     <div className="absolute top-[50vh] left-0 h-9 w-[20%] sm:w-auto">{centerLeftIcon}</div>
