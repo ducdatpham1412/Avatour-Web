@@ -1,18 +1,29 @@
+import { ClassValue } from 'clsx';
+
 import { cn } from '@/lib';
 
-const Background = ({ className }: PropsWithClassName) => (
+interface Props extends PropsWithClassName {
+  bottomClassName?: ClassValue;
+}
+
+const Background = ({ className, bottomClassName }: Props) => (
   <div
     className={cn(
-      'absolute top-[40px] left-0 w-full h-full min-h-[100vh] overflow-hidden pointer-events-none',
+      'absolute top-0 left-0 w-full h-full min-h-[100vh] overflow-hidden pointer-events-none',
       className,
     )}
   >
-    <div className="w-[160%] sm:w-[100%] absolute right-0 top-[60px] sm:top-0">{lineIcon}</div>
+    <div className="w-[160%] sm:w-[100%] absolute right-0 top-[60px] sm:top-[40px]">{lineIcon}</div>
 
     <div className="absolute top-[50vh] left-0 h-9 w-[20%] sm:w-auto">{centerLeftIcon}</div>
     <div className="absolute top-[25vh] right-0 h-9 w-[20%] sm:w-auto">{centerRightIcon}</div>
 
-    <div className="absolute bottom-0 min-w-[600px] sm:min-w-fit left-[calc((100vw_-_600px)/2)] sm:left-0 sm:right-0">
+    <div
+      className={cn(
+        'absolute min-w-[600px] sm:min-w-fit left-[calc((100vw_-_600px)/2)] sm:left-0 sm:right-0',
+        bottomClassName,
+      )}
+    >
       <div className="absolute left-1/2 bottom-0 -translate-x-1/2 w-[min(40%,_604px)]">
         {centerBottomIcon}
       </div>

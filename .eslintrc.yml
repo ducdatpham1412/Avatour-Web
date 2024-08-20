@@ -49,3 +49,4 @@ overrides:
       '@typescript-eslint/restrict-template-expressions': off
       '@typescript-eslint/no-explicit-any': off
       '@typescript-eslint/no-unnecessary-condition': warn
+      '@typescript-eslint/no-unnecessary-type-constraint': off

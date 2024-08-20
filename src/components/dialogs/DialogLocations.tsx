@@ -1,8 +1,9 @@
 'use client';
+import { SlidersHorizontal } from 'lucide-react';
 import {
   ForwardedRef,
   forwardRef,
-  useCallback,
+  PropsWithChildren,
   useEffect,
   useImperativeHandle,
   useMemo,
@@ -35,6 +36,11 @@ interface ItemLocationProps {
   onClick: () => void;
 }
 
+type ButtonFilterProps = PropsWithChildren & {
+  isActive: boolean;
+  onClick: () => void;
+};
+
 const ItemLocation = ({ item, status, onClick }: ItemLocationProps) => {
   return (
     <div
@@ -63,24 +69,58 @@ const ItemLocation = ({ item, status, onClick }: ItemLocationProps) => {
   );
 };
 
+const ButtonFilter = ({ children, isActive, onClick }: ButtonFilterProps) => {
+  return (
+    <button
+      className="px-[12px] py-[4px] rounded-full border-[1px] text-[12px]"
+      onClick={onClick}
+      style={{
+        backgroundColor: isActive ? (twConfigs.theme?.colors?.p_100 as string) : 'transparent',
+        borderColor: isActive
+          ? (twConfigs.theme?.colors?.p_300 as string)
+          : (twConfigs.theme?.colors?.gray_500 as string),
+      }}
+    >
+      {children}
+    </button>
+  );
+};
+
 const Content = ({ currentLocs, onSave }: ContentProps) => {
   const [{ data, loading, error }] = useLocations();
   const timeOut = useRef<NodeJS.Timeout>();
   const [displayLocs, setDisplayLocs] = useState<TypeProfile[]>([]);
   const [chosenLocs, setChosenLocs] = useState<TypeProfile[]>(currentLocs);
+  const [accType, setAccType] = useState<TypeProfile['account_type']>();
+
+  const dataFollowAccType = useMemo(() => {
+    if (!accType) {
+      return data ?? [];
+    }
+
+    if (!data) {
+      return [];
+    }
+
+    return data.filter(p => p.account_type === accType);
+  }, [data, accType]);
 
   const isNull = loading || !data || error;
   const dataSearch = useMemo(() => {
-    return data
-      ? data.map(loc => removeVietnameseTones(`${loc.name} ${loc.location}`.toLowerCase()))
-      : [];
-  }, [data]);
+    return dataFollowAccType.map(loc =>
+      removeVietnameseTones(`${loc.name} ${loc.location}`.toLowerCase()),
+    );
+  }, [dataFollowAccType]);
 
   useEffect(() => {
-    if (data && !displayLocs.length) {
-      setDisplayLocs(data);
+    if (!displayLocs.length) {
+      setDisplayLocs(dataFollowAccType);
+    } else if (!accType) {
+      setDisplayLocs(dataFollowAccType);
+    } else {
+      setDisplayLocs(dataFollowAccType.filter(item => item.account_type === accType));
     }
-  }, [data, setDisplayLocs]);
+  }, [dataFollowAccType, accType, setDisplayLocs]);
 
   const renderContent = () => {
     if (isNull) {
@@ -110,21 +150,18 @@ const Content = ({ currentLocs, onSave }: ContentProps) => {
     );
   };
 
-  const onSearch = useCallback(
-    (text: string) => {
-      if (data) {
-        if (!text) {
-          setDisplayLocs(data);
-          return;
-        }
-
-        const indices = search(dataSearch, text);
-        const temp = data.filter((_, idx) => indices.includes(idx));
-        setDisplayLocs(temp);
+  const onSearch = (text: string) => {
+    if (dataFollowAccType.length) {
+      if (!text) {
+        setDisplayLocs(dataFollowAccType);
+        return;
       }
-    },
-    [data, setDisplayLocs],
-  );
+
+      const indices = search(dataSearch, text);
+      const temp = dataFollowAccType.filter((_, idx) => indices.includes(idx));
+      setDisplayLocs(temp);
+    }
+  };
 
   return (
     <>
@@ -140,12 +177,25 @@ const Content = ({ currentLocs, onSave }: ContentProps) => {
         }}
       />
 
+      <div className="w-full inline-flex flex-row items-center gap-x-[12px] px-[12px]">
+        <SlidersHorizontal size={16} />
+        <ButtonFilter isActive={accType === undefined} onClick={() => setAccType(undefined)}>
+          Tất cả
+        </ButtonFilter>
+        <ButtonFilter isActive={accType === 'location'} onClick={() => setAccType('location')}>
+          Địa điểm
+        </ButtonFilter>
+        <ButtonFilter isActive={accType === 'buddy'} onClick={() => setAccType('buddy')}>
+          Buddy
+        </ButtonFilter>
+      </div>
+
       {!!chosenLocs.length && (
         <div className="w-full inline-flex flex-wrap gap-[12px] max-h-[10vh] overflow-y-auto beautiful-scrollbar">
           {chosenLocs.map(loc => {
             return (
               <div className="pl-[8px] py-[4px] rounded-full bg-p_100 border-p_300 border-[1px] inline-flex items-center">
-                <p>{loc.name}</p>
+                <p className="text-[12px]"> {loc.name}</p>
                 <div
                   className="px-[8px]"
                   role="button"
@@ -159,7 +209,7 @@ const Content = ({ currentLocs, onSave }: ContentProps) => {
         </div>
       )}
 
-      <div className="w-full h-[52vh] overflow-y-auto beautiful-scrollbar inline-flex flex-col gap-[20px] px-[4px]">
+      <div className="w-full h-[60vh] overflow-y-auto beautiful-scrollbar inline-flex flex-col gap-[20px] px-[4px]">
         {renderContent()}
       </div>
 
@@ -201,7 +251,7 @@ const DialogLocations = forwardRef((_: any, ref: Refs) => {
         closeButton={<ButtonClose onClick={() => setOpen(false)} />}
         className="w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] max-w-full"
       >
-        <p className="text-[20px]">Thêm địa điểm</p>
+        <p className="text-[20px]">Thêm địa điểm, buddy</p>
         <Content
           onSave={locs => {
             content.current?.onSave(locs);

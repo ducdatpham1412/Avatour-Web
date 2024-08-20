@@ -17,6 +17,7 @@ import { serviceDataDetail } from '@/features/search/constants';
 import { NameStars } from '@/features/tour/components';
 import { checkOpenTime, cn, convertDecimalToTime, navigateNewTab, twConfigs } from '@/lib';
 import { formatPrice, formatTourPrice } from '@/lib/format';
+import { Carousel } from '@/components';
 
 import { LocationTag } from '../components';
 import { useProfile } from '../hooks';
@@ -145,6 +146,10 @@ const ProfileLoc = ({ userId }: Props) => {
   const isOpen =
     checkOpenTime({ startTime: data.info.start_time, endTime: data.info.end_time }) === 'open';
   const isBuddy = data.account_type === 'buddy';
+  const displayTag = !!data.parent || !!data.info.tag || !!data.info.value;
+  const images = data.avatar
+    ? [data.avatar, ...data.link.map(l => l.img)]
+    : data.link.map(l => l.img);
 
   const renderContentTag = () => {
     return (
@@ -175,43 +180,54 @@ const ProfileLoc = ({ userId }: Props) => {
   };
 
   return (
-    <main className="w-full pb-[100px] inline-flex flex-col gap-[20px] md:gap-[48px]">
+    <main className="w-full inline-flex flex-col">
       <NameStars
         name={data.name}
         stars={5}
         ratings={0}
-        className="mt-[24px]"
+        className="mt-[8px]"
         nameClassName="text-[18px] md:text-[30px]"
       />
 
-      <div className="w-full inline-flex gap-x-[16px] px-[2px] h-[40vw]">
-        <Image
-          src={data.link[0]?.img ?? data.avatar}
-          className="w-[70%] rounded-[16px] hover-slow"
+      <div className="w-full gap-x-[16px] px-[2px] h-[40vw] hidden md:inline-flex mt-[12px]">
+        <Carousel
+          className="w-[70%] h-full"
+          data={images}
+          renderItem={item => {
+            return <Image src={item} className="w-full h-[40vw] rounded-[14px]" />;
+          }}
         />
         <div className="flex flex-1 flex-col gap-y-[16px]">
           <Image
+            src={data.link[0]?.img ?? data.avatar}
+            className="flex-1 rounded-[16px] hover-slow"
+          />
+          <Image
             src={data.link[1]?.img ?? data.avatar}
-            className="w-full rounded-[16px] hover-slow"
+            className="flex-1 rounded-[16px] hover-slow"
           />
           <Image
             src={data.link[2]?.img ?? data.avatar}
-            className="w-full rounded-[16px] hover-slow"
-          />
-          <Image
-            src={data.link[3]?.img ?? data.avatar}
-            className="w-full rounded-[16px] hover-slow"
+            className="flex-1 rounded-[16px] hover-slow"
           />
         </div>
       </div>
 
-      <div className="w-full flex-col md:flex-row gap-x-[100px] gap-[48px] md:gap-[48px] inline-flex">
-        <div className="w-full md:hidden inline-flex flex-col gap-y-[20px] mt-[28px]">
-          {renderContentTag()}
-        </div>
+      <Carousel
+        className="block md:hidden mt-[12px]"
+        data={images}
+        renderItem={item => <Image src={item} className="w-full aspect-[4/2.5] rounded-[14px]" />}
+      />
+
+      <div className="w-full flex-col md:flex-row gap-x-[100px] gap-[36px] md:gap-[48px] inline-flex mt-[0px] md:mt-[60px]">
+        {displayTag && (
+          <div className="w-full md:hidden inline-flex flex-col gap-y-[20px] mt-[28px]">
+            {renderContentTag()}
+          </div>
+        )}
 
         <div className="w-full md:w-[62%] inline-flex flex-col gap-[24px]">
-          <p style={{ fontSize: isBuddy ? 14 : 16 }}>{data.description}</p>
+          <p>{data.description}</p>
 
           <Line />
 
@@ -373,12 +389,12 @@ const ProfileLoc = ({ userId }: Props) => {
         <div className="flex-1 flex-col gap-[40px] hidden md:flex">{renderContentTag()}</div>
       </div>
 
-      <div className="w-full">
+      <div className="w-full mt-[24px]">
         <Title title="Các lịch trình bao gồm địa điểm này" />
         <ToursHaveProfile userId={userId} />
       </div>
 
-      <div className="w-full">
+      <div className="w-full mt-[24px]">
         <Title title="Các địa điểm gần đó" />
         <NearLocs userId={userId} />
       </div>

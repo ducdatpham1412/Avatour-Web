@@ -3,7 +3,7 @@ import { ElementRef, useMemo, useRef, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 
 import { useAppContext } from '@/app/provider';
-import { TabTrigger, TabView } from '@/components';
+import { Navbar, TabTrigger, TabView } from '@/components';
 import { DialogAuth } from '@/components/dialogs';
 import { Button, Form } from '@/components/ui';
 import { toast } from '@/hooks';
@@ -198,106 +198,109 @@ const CreateTour = () => {
   };
 
   return (
-    <Form
-      {...controller}
-      onSubmit={onSubmit}
-      onlyDirty
-      className="flex flex-col flex-1 pt-8 container"
-    >
-      <TabView
-        ref={tabRef}
-        // defaultTab="success"
-        tabs={[
-          {
-            id: 'name',
-            children: (
-              <TourName
-                onNext={() => tabRef.current?.navigate('schedule')}
-                register={controller.register('name', {
-                  validate: v => {
-                    return !!v || 'Bạn cần nhập tên tour nhé';
-                  },
-                })}
-                errorMessage={errors.name?.message}
-              />
-            ),
-          },
-          {
-            id: 'schedule',
-            children: (
-              <TourSchedule
-                schedule={schedule ?? [[]]}
-                onChangeSchedule={sd => {
-                  controller.setValue('schedule', sd, {
-                    shouldDirty: true,
-                  });
-                }}
-                isEditing={isEditing}
-                onChangeEditing={() => setIsEditing(!isEditing)}
-              />
-            ),
-          },
-          {
-            id: 'description',
-            children: <TourDescription register={controller.register('description')} />,
-          },
-          {
-            id: 'success',
-            children: <CreateSuccess isEdit={!isCreateNew} />,
-          },
-        ]}
-        showTabList={false}
-        onChangeTabId={id => setTab(id as typeof tab)}
-        className="flex flex-1"
-      />
+    <div className="inline-flex flex-col w-full h-screen bg-white">
+      <Navbar />
+      <Form
+        {...controller}
+        onSubmit={onSubmit}
+        onlyDirty
+        className="flex flex-col flex-1 pt-8 container"
+      >
+        <TabView
+          ref={tabRef}
+          // defaultTab="success"
+          tabs={[
+            {
+              id: 'name',
+              children: (
+                <TourName
+                  onNext={() => tabRef.current?.navigate('schedule')}
+                  register={controller.register('name', {
+                    validate: v => {
+                      return !!v || 'Bạn cần nhập tên tour nhé';
+                    },
+                  })}
+                  errorMessage={errors.name?.message}
+                />
+              ),
+            },
+            {
+              id: 'schedule',
+              children: (
+                <TourSchedule
+                  schedule={schedule ?? [[]]}
+                  onChangeSchedule={sd => {
+                    controller.setValue('schedule', sd, {
+                      shouldDirty: true,
+                    });
+                  }}
+                  isEditing={isEditing}
+                  onChangeEditing={() => setIsEditing(!isEditing)}
+                />
+              ),
+            },
+            {
+              id: 'description',
+              children: <TourDescription register={controller.register('description')} />,
+            },
+            {
+              id: 'success',
+              children: <CreateSuccess isEdit={!isCreateNew} />,
+            },
+          ]}
+          showTabList={false}
+          onChangeTabId={id => setTab(id as typeof tab)}
+          className="flex flex-1"
+        />
 
-      {tab !== 'success' && (
-        <div className="py-[24px] inline-flex items-center justify-end sm:justify-between border-t-[1px]">
-          <div className="gap-[30px] hidden sm:inline-flex">
-            <TabTrigger
-              number={1}
-              title="Tiêu đề"
-              status={tab === 'name' ? 'open' : 'close'}
-              onClick={() => navigate('name')}
-              disable={isEditing}
-            />
-            <TabTrigger
-              number={2}
-              title="Lịch trình"
-              status={tab === 'schedule' ? 'open' : 'close'}
-              onClick={() => navigate('schedule')}
-              disable={disableSchedule}
-            />
-            <TabTrigger
-              number={3}
-              title="Mô tả"
-              status={tab === 'description' ? 'open' : 'close'}
-              onClick={() => navigate('description')}
-              disable={disableDescription}
-            />
+        {tab !== 'success' && (
+          <div className="py-[24px] inline-flex items-center justify-end sm:justify-between border-t-[1px]">
+            <div className="gap-[30px] hidden sm:inline-flex">
+              <TabTrigger
+                number={1}
+                title="Tiêu đề"
+                status={tab === 'name' ? 'open' : 'close'}
+                onClick={() => navigate('name')}
+                disable={isEditing}
+              />
+              <TabTrigger
+                number={2}
+                title="Lịch trình"
+                status={tab === 'schedule' ? 'open' : 'close'}
+                onClick={() => navigate('schedule')}
+                disable={disableSchedule}
+              />
+              <TabTrigger
+                number={3}
+                title="Mô tả"
+                status={tab === 'description' ? 'open' : 'close'}
+                onClick={() => navigate('description')}
+                disable={disableDescription}
+              />
+            </div>
+            <div className="inline-flex items-center gap-[28px]">
+              <p
+                className={cn('font-medium', tab === 'name' || isEditing ? 'text-gray_500' : '')}
+                role="button"
+                onClick={() => {
+                  if (isEditing) {
+                    return;
+                  }
+                  if (tab === 'schedule') {
+                    navigate('name');
+                  } else if (tab === 'description') {
+                    navigate('schedule');
+                  }
+                }}
+              >
+                Quay lại
+              </p>
+              {renderButton()}
+            </div>
           </div>
-          <div className="inline-flex items-center gap-[28px]">
-            <p
-              className={cn('font-medium', tab === 'name' || isEditing ? 'text-gray_500' : '')}
-              role="button"
-              onClick={() => {
-                if (isEditing) {
-                  return;
-                }
-                if (tab === 'schedule') {
-                  navigate('name');
-                } else if (tab === 'description') {
-                  navigate('schedule');
-                }
-              }}
-            >
-              Quay lại
-            </p>
-            {renderButton()}
-          </div>
-        </div>
-      )}
-    </Form>
+        )}
+      </Form>
+    </div>
   );
 };
 

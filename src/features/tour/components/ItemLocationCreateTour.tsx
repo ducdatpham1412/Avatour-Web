@@ -2,7 +2,7 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { CSSProperties } from 'react';
 
-import { NumberStars } from '@/components';
+import { NumberStars, TagBuddy } from '@/components';
 import { MenuIcon, TrashCanIcon } from '@/components/icon';
 import { Image } from '@/components/ui';
 import { serviceDataDetail } from '@/features/search/constants';
@@ -76,10 +76,10 @@ const ItemLocationCreateTour = ({
         )}
       </div>
 
-      <div className="flex flex-1 flex-col justify-center sm:justify-start gap-[6px] sm:gap-[2px]">
+      <div className="flex flex-1 flex-col justify-center sm:justify-start gap-[6px] sm:gap-[8px]">
         <div className="w-full inline-flex gap-[6px] items-center">
           <p
-            className="text-[14px] sm:text-[12px] md:text-[14px] lg:text-[16px] max-w-[80%] line-clamp-2"
+            className="text-[14px] max-w-[80%] line-clamp-2"
             // role="button"
           >
             {item.name}
@@ -88,13 +88,13 @@ const ItemLocationCreateTour = ({
         </div>
 
         <div className="w-full inline-flex gap-[6px] items-center">
-          <Icon color={twConfigs.theme?.colors?.gray_500 as string} size={20} />
+          <Icon color={twConfigs.theme?.colors?.gray_500 as string} size={16} />
           <div className="flex flex-1 items-center flex-wrap">
             {item.services.map((s, i) => {
               const isLast = i === item.services.length - 1;
 
               return (
-                <p key={s} className="text-gray_500 text-[12px] md:text-[13px] lg:text-[14px]">
+                <p key={s} className="text-gray_500 text-[14px]">
                   {serviceDataDetail[s].name || ''}
                   {isLast ? '' : '・'}
                 </p>
@@ -102,6 +102,8 @@ const ItemLocationCreateTour = ({
             })}
           </div>
         </div>
+
+        {item.account_type === 'buddy' && <TagBuddy className="self-start px-[20px]" />}
       </div>
     </div>
   );

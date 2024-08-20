@@ -8,7 +8,8 @@ import { Image } from '@/components/ui';
 import { PROFILE_ROUTES } from '@/configs/routes';
 import { serviceDataDetail } from '@/features/search/constants';
 import { formatTourPrice } from '@/lib/format';
-import { cn, convertDecimalToTime } from '@/lib/utils';
+import { cn, convertDecimalToTime, twConfigs } from '@/lib/utils';
+import { TagBuddy } from '@/components';
 
 import NameStars from './NameStars';
 import TruncatedText from './TruncatedText';
@@ -42,7 +43,11 @@ const DayItem = ({ day, profiles, onItemClick, defaultValue, onChangeValue }: Da
         onValueChange={onChangeValue}
       >
         {profiles?.map((profile, i) => {
-          if (profile.account_type !== 'location' && profile.account_type !== 'shop') {
+          if (
+            profile.account_type !== 'location' &&
+            profile.account_type !== 'shop' &&
+            profile.account_type !== 'buddy'
+          ) {
             return null;
           }
 
@@ -72,7 +77,7 @@ const DayItem = ({ day, profiles, onItemClick, defaultValue, onChangeValue }: Da
                 <Accordion.Header className="">
                   <div className="w-full inline-flex">
                     <div className="inline-flex items-start md:items-center justify-between">
-                      <div className="flex flex-row items-center gap-x-2 gap-y-[6px]">
+                      <div className="flex flex-row items-center gap-x-2 gap-y-[6px] pr-2">
                         <ServiceIcon
                           width="24px"
                           height="24px"
@@ -89,7 +94,8 @@ const DayItem = ({ day, profiles, onItemClick, defaultValue, onChangeValue }: Da
                       </div>
                     </div>
 
-                    <Accordion.Trigger className="group flex flex-1 justify-end">
+                    <Accordion.Trigger className="group flex flex-1 items-center justify-end gap-x-2">
+                      {profile.account_type === 'buddy' && <TagBuddy />}
                       <div className="rotate-180 group-data-[state=open]:rotate-0 duration-200">
                         <Icon name="arrow-up" size={24} />
                       </div>
@@ -111,6 +117,7 @@ const DayItem = ({ day, profiles, onItemClick, defaultValue, onChangeValue }: Da
                           height="20px"
                           className="min-w-[24px] min-h-[24px]"
                           strokeWidth={1.2}
+                          color={twConfigs.theme?.colors?.gray_500 as string}
                         />
 
                         <div className="text-gray_500 text-[14px] leading-[24px] font-light">
