@@ -11,6 +11,9 @@ const useBuddies = () => {
     params: {
       at: 'buddy',
     },
+    config: {
+      authorize: !!profile,
+    },
   });
 
   const { trigger: orderBuddy, isMutating: loadingOrderBuddy } = useSWRMutation(
