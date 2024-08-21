@@ -4,7 +4,7 @@ import * as Accordion from '@radix-ui/react-accordion';
 import { useRouter } from 'next/navigation';
 
 import { Icon } from '@/components/icon';
-import { Image } from '@/components/ui';
+import { Button, Image } from '@/components/ui';
 import { PROFILE_ROUTES } from '@/configs/routes';
 import { serviceDataDetail } from '@/features/search/constants';
 import { formatTourPrice } from '@/lib/format';
@@ -52,12 +52,11 @@ const DayItem = ({ day, profiles, onItemClick, defaultValue, onChangeValue }: Da
           }
 
           const isLast = i === profiles.length - 1;
+          const isBuddy = profile.account_type === 'buddy';
 
           const ServiceIcon =
             serviceDataDetail[profile.services.length ? profile.services[0] : 'other-service'].icon;
-
           const services = profile.services.map(s => serviceDataDetail[s].name || '').join(' • ');
-
           const time = (() => {
             const startTime = convertDecimalToTime(profile.info.start_time);
             const endTime = convertDecimalToTime(profile.info.end_time);
@@ -95,7 +94,7 @@ const DayItem = ({ day, profiles, onItemClick, defaultValue, onChangeValue }: Da
                     </div>
 
                     <Accordion.Trigger className="group flex flex-1 items-center justify-end gap-x-2">
-                      {profile.account_type === 'buddy' && <TagBuddy />}
+                      {isBuddy && <TagBuddy />}
                       <div className="rotate-180 group-data-[state=open]:rotate-0 duration-200">
                         <Icon name="arrow-up" size={24} />
                       </div>
@@ -144,6 +143,15 @@ const DayItem = ({ day, profiles, onItemClick, defaultValue, onChangeValue }: Da
                         {formatTourPrice(profile.info.min_cost, profile.info.max_cost)}
                       </span>
                     </div>
+
+                    {isBuddy && (
+                      <Button
+                        className="self-start min-w-[50%]"
+                        onClick={() => router.push(PROFILE_ROUTES.profileId(profile.id))}
+                      >
+                        Đi tới xem buddy
+                      </Button>
+                    )}
                   </div>
                 </Accordion.Content>
               </Accordion.Item>
