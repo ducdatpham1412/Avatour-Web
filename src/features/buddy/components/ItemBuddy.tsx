@@ -47,7 +47,7 @@ const ItemBuddy = ({ isEmpty, onClick, item }: Props) => {
             <p className="text-start">{name}</p>
             <div className="w-full inline-flex items-center gap-1">
               <LocationIcon size={16} />
-              <p className="text-gray-500 text-[14px] text-left line-clamp-2">{item.location}</p>
+              <p className="text-gray-500 text-[12px] text-left line-clamp-2">{item.location}</p>
             </div>
           </div>
         </div>

@@ -89,7 +89,7 @@ const TourHeader = ({ tour, onLike, onDelete }: TourHeaderProps) => {
       <section className="flex flex-col md:flex-row items-start gap-y-6 md:gap-x-[min(20%,_80px)] justify-between mt-[20px]">
         <div className="flex flex-col gap-y-5">
           <div>
-            <h1 className="text-[24px] leading-[36px] md:text-[32px] md:leading-[44px] font-normal text-black">
+            <h1 className="text-[24px] md:text-[32px] font-normal text-black">
               {getTourName(tour)}
             </h1>
             <p className="text-gray_500">{categories.join(' | ')}</p>

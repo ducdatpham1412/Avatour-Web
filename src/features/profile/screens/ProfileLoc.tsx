@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { PropsWithChildren, ReactElement } from 'react';
 
+import { Carousel } from '@/components';
 import {
   BookUserIcon,
   ClockIcon,
@@ -16,13 +17,11 @@ import { ORDER_ROUTES, PROFILE_ROUTES } from '@/configs/routes';
 import { serviceDataDetail } from '@/features/search/constants';
 import { NameStars } from '@/features/tour/components';
 import { checkOpenTime, cn, convertDecimalToTime, navigateNewTab, twConfigs } from '@/lib';
-import { formatPrice, formatTourPrice } from '@/lib/format';
-import { Carousel } from '@/components';
+import { formatTourPrice } from '@/lib/format';
 
 import { LocationTag } from '../components';
 import { useProfile } from '../hooks';
 import ChildrenLocs from './ChildrenLocs';
-import NearLocs from './NearLocs';
 import ToursHaveProfile from './ToursHaveProfile';
 
 interface Props {
@@ -297,11 +296,7 @@ const ProfileLoc = ({ userId }: Props) => {
 
             <div className="relative inline-flex gap-[16px] flex-col md:flex-row">
               <InfoBlock
-                desc={`${
-                  isBuddy
-                    ? `${formatPrice(data.info.min_cost)} - ${formatPrice(data.info.max_cost)}vnd`
-                    : formatTourPrice(data.info.min_cost, data.info.max_cost)
-                }`}
+                desc={formatTourPrice(data.info.min_cost, data.info.max_cost)}
                 descClassName="font-medium text-p_700"
                 moreDesc={data.info.info_cost}
                 className="w-auto"
@@ -394,10 +389,10 @@ const ProfileLoc = ({ userId }: Props) => {
         <ToursHaveProfile userId={userId} />
       </div>
 
-      <div className="w-full mt-[24px]">
+      {/* <div className="w-full mt-[24px]">
         <Title title="Các địa điểm gần đó" />
         <NearLocs userId={userId} />
-      </div>
+      </div> */}
     </main>
   );
 };

@@ -35,9 +35,9 @@ const RelatedBuddy = () => {
   }
 
   return (
-    <div className="flex flex-col gap-2 w-full">
+    <div className="w-full">
       <div className="flex flex-col gap-y-4">
-        <h3 className="text-black text-[18px] leading-[28px] md:text-[24px] md:leading-[36px] font-medium">
+        <h3 className="text-[18px] md:text-[24px] font-normal text-black">
           Một số buddy bạn có thể tham khảo tại đây
         </h3>
       </div>

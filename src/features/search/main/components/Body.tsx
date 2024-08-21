@@ -102,6 +102,7 @@ const Body = () => {
               onClick={() => router.push(TOUR_ROUTES.tourDetail(item.id))}
               className="lg:w-[48%]"
               onLike={() => onLikeTour(item.id ?? '')}
+              showAvatar
             />
           );
         })}

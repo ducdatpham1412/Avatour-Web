@@ -14,6 +14,10 @@ export type CreateTourForm = {
   tourId?: string | null;
 };
 
+type Options = {
+  revalidateAll?: boolean;
+};
+
 const handleTourForm = (arg: CreateTourForm) => {
   let duration = 0;
   arg.schedule.forEach(day => {
@@ -31,20 +35,25 @@ const handleTourForm = (arg: CreateTourForm) => {
   };
 };
 
-const useTours = (userId?: number, type: 'list' | 'favorite' | 'home' = 'list') => {
+const useTours = (
+  userId?: number,
+  type: 'list' | 'favorite' | 'home' | 'of-location' = 'list',
+  options?: Options,
+) => {
   const [{ profile }] = useAppContext();
   userId = userId ?? profile?.id;
-  const isHome = type === 'home';
+  const canUnauthorize = type === 'home' || type === 'of-location';
 
   const { data, error, loading, mutate } = useApi<TypeTour[]>(
-    userId || isHome ? '/common/tours' : null,
+    userId || canUnauthorize ? '/common/tours' : null,
     {
       params: {
         type,
         user_id: userId,
       },
       config: {
-        authorize: isHome ? !!profile : true,
+        authorize: canUnauthorize ? !!profile : true,
+        revalidateAll: !!options?.revalidateAll,
       },
     },
   );
