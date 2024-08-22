@@ -7,7 +7,7 @@ import { useAppContext } from '@/app/provider';
 import { DialogAuth } from '@/components/dialogs';
 import { ErrorIcon, TourLoadingIcon } from '@/components/icon';
 import { Button } from '@/components/ui';
-import { toast } from '@/hooks';
+import { toast, useAllTours } from '@/hooks';
 import { parseErrorMessage } from '@/lib';
 import { getTourOpenState, setTourOpenState } from '@/lib/storage';
 import { PROFILE_ROUTES } from '@/configs/routes';
@@ -63,16 +63,15 @@ const TourPage = ({ params, searchParams }: PageProps<Params, SearchParams>) => 
   const tourId = params.tour_id;
   const isTourNull = tourId === '0';
   const router = useRouter();
-
   const [{ tourSearches, profile }, { setTourSearches }] = useAppContext();
+  const { mutateLikeTour } = useAllTours();
 
-  const [, { createTour, mutate: mutateFavoriteTour, deleteTour }] = useTours(
+  const [, { createTour, mutate: mutateFavoriteTour, deleteTour, likeTour }] = useTours(
     undefined,
     'favorite',
   );
   const [, { mutate: mutateMyTours }] = useTours(undefined, 'list');
-  const [, { mutate: mutateHome }] = useTours(undefined, 'home');
-  const [{ data: dataApi, loading, validating, error }, { mutate, likeTour }] = useTour(
+  const [{ data: dataApi, loading, validating, error }, { mutate }] = useTour(
     isTourNull ? null : tourId,
   );
 
@@ -155,7 +154,7 @@ const TourPage = ({ params, searchParams }: PageProps<Params, SearchParams>) => 
           type: 'favorite',
         });
       } else {
-        const resLike = await likeTour();
+        const resLike = await likeTour(data.id);
         res = {
           ...data,
           is_liked: resLike.status === 'like',
@@ -185,55 +184,9 @@ const TourPage = ({ params, searchParams }: PageProps<Params, SearchParams>) => 
         });
       }
 
-      await mutateFavoriteTour(
-        pre => {
-          if (!pre) {
-            if (res.is_liked) {
-              return [res];
-            }
-            return pre;
-          }
-
-          if (res.is_liked) {
-            return [res, ...pre];
-          }
-
-          return pre.filter(t => t.id !== res.id);
-        },
-        { revalidate: false },
-      );
-      await mutateMyTours(
-        pre => {
-          const find = pre?.find(item => item.id === res.id);
-          if (find) {
-            return pre?.map(item => {
-              if (item.id !== res.id) {
-                return item;
-              }
-              return res;
-            });
-          }
-        },
-        {
-          revalidate: false,
-        },
-      );
-      await mutateHome(
-        pre => {
-          const find = pre?.find(item => item.id === res.id);
-          if (find) {
-            return pre?.map(item => {
-              if (item.id !== res.id) {
-                return item;
-              }
-              return res;
-            });
-          }
-        },
-        {
-          revalidate: false,
-        },
-      );
+      if (res.id && res.is_liked !== undefined) {
+        await mutateLikeTour(res.id, res.is_liked);
+      }
     } catch (err) {
       toast({
         variant: 'destructive',

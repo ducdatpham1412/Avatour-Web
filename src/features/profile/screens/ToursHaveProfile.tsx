@@ -1,52 +1,24 @@
-import { KeyedMutator } from 'swr';
 import { useRouter } from 'next/navigation';
 
 import { useAppContext } from '@/app/provider';
 import { DialogAuth } from '@/components/dialogs';
-import { toast } from '@/hooks';
-import { logger, parseErrorMessage } from '@/lib';
 import { TOUR_ROUTES } from '@/configs/routes';
+import { toast, useAllTours } from '@/hooks';
+import { parseErrorMessage } from '@/lib';
 
-import { useTours } from '../hooks';
 import { ItemTour } from '../components';
+import { useTours } from '../hooks';
 
 interface Props {
   userId: number;
 }
 
-const mutateHook = async (
-  mutateFunc: KeyedMutator<TypeTour[]>,
-  tourId: string,
-  isLiked: boolean,
-) => {
-  await mutateFunc(
-    pre => {
-      if (pre) {
-        return pre.map(item => {
-          if (item.id !== tourId) {
-            return item;
-          }
-
-          return {
-            ...item,
-            is_liked: isLiked,
-          };
-        });
-      }
-    },
-    { revalidate: false },
-  );
-};
-
 const ToursHaveProfile = ({ userId }: Props) => {
   const router = useRouter();
   const [{ profile }] = useAppContext();
+  const { mutateLikeTour } = useAllTours();
 
   const [{ data }, { likeTour, mutate }] = useTours(userId, 'of-location', { revalidateAll: true });
-
-  const [, { mutate: mutateHome }] = useTours(undefined, 'home');
-  const [, { mutate: mutateList }] = useTours(undefined, 'list');
-  const [, { mutate: mutateFavorite }] = useTours(undefined, 'favorite');
 
   if (!data?.length) {
     return null;
@@ -62,10 +34,24 @@ const ToursHaveProfile = ({ userId }: Props) => {
     try {
       const res = await likeTour(tourId);
       const isLiked = res.status === 'like';
-      await mutateHook(mutate, tourId, isLiked);
-      await mutateHook(mutateHome, tourId, isLiked);
-      await mutateHook(mutateList, tourId, isLiked);
-      mutateFavorite().catch(logger.log);
+      await mutate(
+        pre => {
+          if (pre) {
+            return pre.map(item => {
+              if (item.id !== tourId) {
+                return item;
+              }
+
+              return {
+                ...item,
+                is_liked: isLiked,
+              };
+            });
+          }
+        },
+        { revalidate: false },
+      );
+      await mutateLikeTour(tourId, isLiked);
     } catch (err) {
       toast({
         variant: 'destructive',

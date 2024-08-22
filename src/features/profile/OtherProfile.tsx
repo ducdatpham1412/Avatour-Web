@@ -17,6 +17,9 @@ interface Props {
 const OtherProfile = ({ userId }: Props) => {
   const router = useRouter();
   const [{ data, loading }] = useProfile(userId);
+  const isLocation =
+    data?.account_type &&
+    [ACCOUNT_TYPE.location, ACCOUNT_TYPE.shop, ACCOUNT_TYPE.buddy].includes(data.account_type);
   const isBuddy = data?.account_type === 'buddy';
 
   const content = () => {
@@ -24,11 +27,11 @@ const OtherProfile = ({ userId }: Props) => {
       return <TourLoadingIcon className="w-[300px] mt-[10vh] self-center" />;
     }
 
-    if (data.account_type === ACCOUNT_TYPE.location || data.account_type === ACCOUNT_TYPE.buddy) {
+    if (isLocation) {
       return <ProfileLoc userId={data.id} />;
     }
 
-    return <ProfileUser />;
+    return <ProfileUser profile={data} />;
   };
 
   return (

@@ -40,19 +40,19 @@ const useTours = (
   type: 'list' | 'favorite' | 'home' | 'of-location' = 'list',
   options?: Options,
 ) => {
-  const [{ profile }] = useAppContext();
+  const [{ profile, initLoading }] = useAppContext();
   userId = userId ?? profile?.id;
-  const canUnauthorize = type === 'home' || type === 'of-location';
+  const shouldAuthorize = type === 'favorite';
 
   const { data, error, loading, mutate } = useApi<TypeTour[]>(
-    userId || canUnauthorize ? '/common/tours' : null,
+    (userId || !shouldAuthorize) && !initLoading ? '/common/tours' : null,
     {
       params: {
         type,
         user_id: userId,
       },
       config: {
-        authorize: canUnauthorize ? !!profile : true,
+        authorize: shouldAuthorize ? true : !!profile,
         revalidateAll: !!options?.revalidateAll,
       },
     },

@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 
 import { SuccessIcon, TourLoadingIcon } from '@/components';
 import { TOUR_ROUTES } from '@/configs/routes';
-import { toast } from '@/hooks';
+import { toast, useAllTours } from '@/hooks';
 import { logger, parseErrorMessage } from '@/lib';
 
 import { ItemTour } from '../components';
@@ -17,6 +17,7 @@ const deletedTourIds: string[] = [];
 
 const FavoriteTours = ({ userId }: Props) => {
   const router = useRouter();
+  const { mutateLikeTour } = useAllTours();
   const [{ data, error, loading }, { mutate, likeTour }] = useTours(userId, 'favorite');
 
   useEffect(() => {
@@ -57,7 +58,9 @@ const FavoriteTours = ({ userId }: Props) => {
   const onLikeTour = async (tourId: string) => {
     try {
       const res = await likeTour(tourId);
-      if (res.status === 'like') {
+      const isLiked = res.status === 'like';
+
+      if (isLiked) {
         const index = deletedTourIds.indexOf(tourId);
         if (index >= 0) {
           deletedTourIds.splice(index, 1);
@@ -68,6 +71,7 @@ const FavoriteTours = ({ userId }: Props) => {
           deletedTourIds.push(tourId);
         }
       }
+
       await mutate(
         pre => {
           if (pre) {
@@ -78,13 +82,15 @@ const FavoriteTours = ({ userId }: Props) => {
 
               return {
                 ...item,
-                is_liked: res.status === 'like',
+                is_liked: isLiked,
               };
             });
           }
         },
         { revalidate: false },
       );
+
+      await mutateLikeTour(tourId, isLiked, { shouldFavorite: false });
     } catch (err) {
       toast({
         variant: 'destructive',
@@ -106,6 +112,7 @@ const FavoriteTours = ({ userId }: Props) => {
               item={tour}
               onClick={() => router.push(TOUR_ROUTES.tourDetail(tour.id))}
               onLike={() => onLikeTour(tour.id ?? '')}
+              showAvatar
             />
           );
         })}
