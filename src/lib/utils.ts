@@ -3,12 +3,15 @@ import { omit as om } from 'lodash';
 import { twMerge } from 'tailwind-merge';
 import resolveConfig from 'tailwindcss/resolveConfig';
 import dayjs from 'dayjs';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 import { PARSE_ERROR_MESSAGE } from '@/api/request/constants';
+import { PROFILE_ROUTES } from '@/configs/routes';
 
 import tailwindConfig from '../../tailwind.config';
 
 export const twConfigs = resolveConfig(tailwindConfig);
+export const twColors = twConfigs.theme?.colors as Record<string, string>;
 
 const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
@@ -277,4 +280,16 @@ export const getTourName = (tour: TypeTour) => {
   return !tour.name
     ? `${tour.schedule[0]?.[0].name} -> ${tour.schedule.at(-1)?.at(-1)?.name}`
     : tour.name;
+};
+
+type OptionProfile = {
+  router: AppRouterInstance;
+  myId?: number;
+};
+export const goToProfile = (userId: number, { router, myId }: OptionProfile) => {
+  if (userId === myId && !!myId) {
+    router.push(PROFILE_ROUTES.myProfile);
+  } else {
+    router.push(PROFILE_ROUTES.profileId(userId));
+  }
 };
