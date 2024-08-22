@@ -51,7 +51,9 @@ const Navbar = () => {
     try {
       await apiLogOut();
       setProfile(undefined);
-      router.replace('/');
+      if (pathname === PROFILE_ROUTES.myProfile) {
+        router.replace('/');
+      }
     } catch (err) {
       toast({
         variant: 'destructive',

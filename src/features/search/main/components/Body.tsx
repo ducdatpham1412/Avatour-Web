@@ -7,8 +7,7 @@ import { DialogAuth } from '@/components/dialogs';
 import { SEARCH_ROUTES, TOUR_ROUTES } from '@/configs/routes';
 import { ItemTour } from '@/features/profile/components';
 import { useTours } from '@/features/profile/hooks';
-import { toast, useRouter } from '@/hooks';
-import { logger } from '@/lib';
+import { toast, useAllTours, useRouter } from '@/hooks';
 import { parseErrorMessage } from '@/lib/utils';
 
 import { SearchInputBase } from '../../components';
@@ -17,9 +16,8 @@ const Body = () => {
   const router = useRouter();
   const text = useRef('');
   const [{ profile }] = useAppContext();
-  const [{ data: tours }, { likeTour, mutate }] = useTours(undefined, 'home');
-  const [, { mutate: mutateList }] = useTours(undefined, 'list');
-  const [, { mutate: mutateFavorite }] = useTours(undefined, 'favorite');
+  const { mutateLikeTour } = useAllTours();
+  const [{ data: tours }, { likeTour }] = useTours(undefined, 'home');
 
   const onLikeTour = async (tourId: string) => {
     if (!profile) {
@@ -32,41 +30,7 @@ const Body = () => {
     try {
       const res = await likeTour(tourId);
       const isLiked = res.status === 'like';
-      await mutate(
-        pre => {
-          if (pre) {
-            return pre.map(item => {
-              if (item.id !== tourId) {
-                return item;
-              }
-
-              return {
-                ...item,
-                is_liked: isLiked,
-              };
-            });
-          }
-        },
-        { revalidate: false },
-      );
-      mutateList(
-        pre => {
-          if (pre) {
-            return pre.map(item => {
-              if (item.id !== tourId) {
-                return item;
-              }
-
-              return {
-                ...item,
-                is_liked: isLiked,
-              };
-            });
-          }
-        },
-        { revalidate: false },
-      ).catch(logger.log);
-      mutateFavorite().catch(logger.log);
+      await mutateLikeTour(tourId, isLiked);
     } catch (err) {
       toast({
         variant: 'destructive',

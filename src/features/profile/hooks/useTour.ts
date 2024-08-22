@@ -1,8 +1,5 @@
-import useSWRMutation from 'swr/mutation';
-
-import { apiLikeTour } from '@/api/profile';
-import { useApi } from '@/hooks';
 import { useAppContext } from '@/app/provider';
+import { useApi } from '@/hooks';
 
 const useTour = (tourId: string | null) => {
   const [{ profile }] = useAppContext();
@@ -17,18 +14,7 @@ const useTour = (tourId: string | null) => {
     },
   );
 
-  const { trigger: likeTour, isMutating: loadingLikeTour } = useSWRMutation(
-    tourId ? 'api.likeATour' : null,
-    async () => {
-      const res = await apiLikeTour(tourId ?? '');
-      return res.data;
-    },
-  );
-
-  return [
-    { data, loading, validating, error, loadingLikeTour },
-    { mutate, likeTour },
-  ] as const;
+  return [{ data, loading, validating, error }, { mutate }] as const;
 };
 
 export default useTour;
