@@ -1,7 +1,7 @@
 'use client';
 import { MenuIcon } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 
 import { apiLogOut } from '@/api/auth';
@@ -10,7 +10,7 @@ import LogoIcon from '@/components/icon/LogoIcon';
 import { ACCOUNT_TYPE, CONTAINER_WIDTH } from '@/configs/constants';
 import { ADMIN_ROUTES, PROFILE_ROUTES } from '@/configs/routes';
 import { toast, useWindowSize } from '@/hooks';
-import { logger, parseErrorMessage } from '@/lib';
+import { logger, parseErrorMessage, twColors } from '@/lib';
 
 import { DialogAuth } from './dialogs';
 import DropDown from './DropDown';
@@ -19,8 +19,12 @@ import { Image } from './ui';
 
 const Navbar = () => {
   const [{ profile, initLoading }, { setProfile }] = useAppContext();
+  const pathname = usePathname();
   const { width } = useWindowSize();
   const router = useRouter();
+
+  const colorSuggest = pathname === '/' ? twColors.p_700 : twColors.black;
+  const colorBuddy = pathname === '/buddy' ? twColors.p_700 : twColors.black;
 
   const size = useMemo(() => {
     if (!width) {
@@ -134,16 +138,20 @@ const Navbar = () => {
             className="hover-scale inline-flex gap-1 items-center"
             title="Gợi ý lịch trình"
           >
-            <MapPinIcon size={size.icon} />
-            <p className="hidden md:block font-medium">Gợi ý lịch trình</p>
+            <MapPinIcon size={size.icon} color={colorSuggest} />
+            <p className="hidden md:block font-medium" style={{ color: colorSuggest }}>
+              Gợi ý lịch trình
+            </p>
           </Link>
           <Link
             href="/buddy"
             className="hover-scale inline-flex gap-1 items-center"
             title="Buddy bản địa"
           >
-            <BookUserIcon size={size.icon} />
-            <p className="hidden md:block font-medium">Buddy bản địa</p>
+            <BookUserIcon size={size.icon} color={colorBuddy} />
+            <p className="hidden md:block font-medium" style={{ color: colorBuddy }}>
+              Buddy bản địa
+            </p>
           </Link>
           <Link href="/about-us" className="hidden lg:block hover-scale">
             Về chúng tôi

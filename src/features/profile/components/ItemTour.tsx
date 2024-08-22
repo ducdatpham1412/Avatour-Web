@@ -1,8 +1,10 @@
 import { ClassValue } from 'clsx';
+import { useRouter } from 'next/navigation';
 
+import { useAppContext } from '@/app/provider';
 import { ButtonAbsolute } from '@/components';
 import { Avatar, Image } from '@/components/ui';
-import { cn } from '@/lib';
+import { cn, goToProfile } from '@/lib';
 import { formatTourDuration, formatTourName, formatTourPrice } from '@/lib/format';
 
 interface Props {
@@ -12,6 +14,32 @@ interface Props {
   className?: ClassValue;
   showAvatar?: boolean;
 }
+
+interface ButtonCreatorProps {
+  tour: TypeTour;
+}
+
+const ButtonCreator = ({ tour }: ButtonCreatorProps) => {
+  const [{ profile }] = useAppContext();
+  const router = useRouter();
+
+  return (
+    <button
+      className="absolute bottom-2 left-2 inline-flex items-center gap-[8px] backdrop-blur-[2px] rounded-full pl-[2px] pr-[12px] py-[2px] max-w-[70%] hover-scale"
+      style={{ backgroundColor: 'rgba(255, 255, 255, 0.70)' }}
+      onClick={e => {
+        e.stopPropagation();
+        goToProfile(tour.creator as number, {
+          router,
+          myId: profile?.id,
+        });
+      }}
+    >
+      <Avatar src={tour.creator_avatar} size={30} />
+      <p className="text-[12px] line-clamp-1">{tour.creator_name}</p>
+    </button>
+  );
+};
 
 const ItemTour = ({ item, onClick, onLike, className, showAvatar = false }: Props) => {
   return (
@@ -29,15 +57,7 @@ const ItemTour = ({ item, onClick, onLike, className, showAvatar = false }: Prop
           className="w-full aspect-[306/204] rounded-[14px] hover:shadow-all"
         />
         <ButtonAbsolute isLiked={item.is_liked} onClick={onLike} />
-        {!!item.creator && showAvatar && (
-          <div
-            className="absolute bottom-2 left-2 inline-flex items-center gap-[8px] backdrop-blur-[2px] rounded-full pl-[2px] pr-[12px] py-[2px] max-w-[70%]"
-            style={{ backgroundColor: 'rgba(255, 255, 255, 0.70)' }}
-          >
-            <Avatar src={item.creator_avatar} size={30} />
-            <p className="text-[12px] line-clamp-1">{item.creator_name}</p>
-          </div>
-        )}
+        {!!item.creator && showAvatar && <ButtonCreator tour={item} />}
       </div>
 
       <p className="text-[16px] line-clamp-2 font-medium mt-[8px]">{formatTourName(item)}</p>

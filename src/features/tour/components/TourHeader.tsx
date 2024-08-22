@@ -3,14 +3,14 @@ import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 
 import { useAppContext } from '@/app/provider';
+import { DropDown } from '@/components';
 import { ButtonBack } from '@/components/buttons';
 import { HeartFillIcon, HeartIcon, PencilIcon } from '@/components/icon';
 import { Avatar } from '@/components/ui';
-import { PROFILE_ROUTES, TOUR_ROUTES } from '@/configs/routes';
-import { getCategoriesByServices, getTourName, twConfigs } from '@/lib';
+import { TOUR_ROUTES } from '@/configs/routes';
+import { getCategoriesByServices, getTourName, goToProfile, twConfigs } from '@/lib';
 import { formatTourDuration, formatTourPrice } from '@/lib/format';
 import { setTourCreate } from '@/lib/storage';
-import { DropDown } from '@/components';
 
 import TruncatedText from './TruncatedText';
 
@@ -96,8 +96,13 @@ const TourHeader = ({ tour, onLike, onDelete }: TourHeaderProps) => {
           </div>
           {!!tour.creator && (
             <button
-              className="inline-flex items-center self-start gap-2"
-              onClick={() => router.push(PROFILE_ROUTES.profileId(tour.creator ?? 0))}
+              className="inline-flex items-center self-start gap-2 hover-scale"
+              onClick={() => {
+                goToProfile(tour.creator as number, {
+                  router,
+                  myId: myProfile?.id,
+                });
+              }}
             >
               <Avatar src={tour.creator_avatar} size={32} />
               <p>{tour.creator_name}</p>
