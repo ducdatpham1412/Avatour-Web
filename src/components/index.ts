@@ -4,6 +4,7 @@ export { default as BackgroundSun } from './BackgroundSun';
 export { default as ButtonAbsolute } from './ButtonAbsolute';
 export { default as Carousel } from './Carousel';
 export { default as DropDown } from './DropDown';
+export { default as Header } from './Header';
 export * from './icon';
 export { default as Navbar } from './Navbar';
 export { default as NumberStars } from './NumberStars';

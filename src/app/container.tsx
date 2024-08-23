@@ -1,10 +1,10 @@
 'use client';
-import { useRouter } from 'next/navigation';
-import React, { PropsWithChildren, ReactElement } from 'react';
 import { ClassValue } from 'clsx';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { PropsWithChildren, ReactElement } from 'react';
 
-import { Navbar, Background, BackgroundSun } from '@/components';
+import { Background, BackgroundSun, Navbar } from '@/components';
 import { ButtonBack } from '@/components/buttons';
 import { cn } from '@/lib';
 

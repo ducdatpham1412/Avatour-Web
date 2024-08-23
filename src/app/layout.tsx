@@ -21,6 +21,16 @@ const lexendFont = Lexend({
 
 export const metadata: Metadata = {
   title: 'Avatour',
+  keywords: [
+    'Avatour',
+    'Gợi ý lịch trình',
+    'Du lịch bản địa',
+    'Buddy',
+    'Du lịch bản địa',
+    'Buddy bản địa',
+  ],
+  description:
+    'Avatour là ứng dụng gợi ý lịch trình, giúp bạn kết nối với người dân bản địa để trải nghiệm đậm nét các văn hoá địa phương',
 };
 
 const RootLayout = ({ children }: Props) => {
