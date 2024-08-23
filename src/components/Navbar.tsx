@@ -23,8 +23,8 @@ const Navbar = () => {
   const { width } = useWindowSize();
   const router = useRouter();
 
-  const colorSuggest = pathname === '/' ? twColors.p_700 : twColors.black;
-  const colorBuddy = pathname === '/buddy' ? twColors.p_700 : twColors.black;
+  const colorSuggest = pathname === '/search' ? twColors.p_700 : twColors.black;
+  const colorBuddy = pathname === '/' ? twColors.p_700 : twColors.black;
 
   const size = useMemo(() => {
     if (!width) {
@@ -138,16 +138,6 @@ const Navbar = () => {
           <Link
             href="/"
             className="hover-scale inline-flex gap-1 items-center"
-            title="Gợi ý lịch trình"
-          >
-            <MapPinIcon size={size.icon} color={colorSuggest} />
-            <p className="hidden md:block font-medium" style={{ color: colorSuggest }}>
-              Gợi ý lịch trình
-            </p>
-          </Link>
-          <Link
-            href="/buddy"
-            className="hover-scale inline-flex gap-1 items-center"
             title="Buddy bản địa"
           >
             <BookUserIcon size={size.icon} color={colorBuddy} />
@@ -155,9 +145,22 @@ const Navbar = () => {
               Buddy bản địa
             </p>
           </Link>
+
+          <Link
+            href="/search"
+            className="hover-scale inline-flex gap-1 items-center"
+            title="Gợi ý lịch trình"
+          >
+            <MapPinIcon size={size.icon} color={colorSuggest} />
+            <p className="hidden md:block font-medium" style={{ color: colorSuggest }}>
+              Gợi ý lịch trình
+            </p>
+          </Link>
+
           <Link href="/about-us" className="hidden lg:block hover-scale">
             Về chúng tôi
           </Link>
+
           {(profile?.account_type === ACCOUNT_TYPE.admin ||
             profile?.account_type === ACCOUNT_TYPE.superAdmin) && (
             <Link href={ADMIN_ROUTES.suppliers} className="font-medium hidden md:block hover-scale">

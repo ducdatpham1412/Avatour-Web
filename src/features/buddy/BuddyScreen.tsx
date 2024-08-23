@@ -2,7 +2,7 @@
 import { useRouter } from 'next/navigation';
 
 import Container from '@/app/container';
-import { TourLoadingIcon } from '@/components';
+import { Header, TourLoadingIcon } from '@/components';
 import { PROFILE_ROUTES } from '@/configs/routes';
 
 import { ItemBuddy } from './components';
@@ -35,6 +35,7 @@ const BuddyScreen = () => {
 
   return (
     <Container showHeader={false}>
+      <Header title="Check" descriptions="Hello check mo ta" />
       <div className="inline-flex flex-col items-start mt-[12px]">
         <p className="text-black text-[22px] font-medium">Buddy là gì nhỉ?</p>
         <p>
