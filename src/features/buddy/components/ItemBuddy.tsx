@@ -21,7 +21,7 @@ const Container = ({
     <button
       className={cn(
         'w-full sm:w-[48%] lg:w-[31%] inline-flex flex-col gap-[8px] rounded-[14px] pb-[20px]',
-        isEmpty ? '' : 'hover-slow border-gray_200 border-[1px] ',
+        isEmpty ? '' : 'hover-slow border-gray_200 border-[1px]',
       )}
       disabled={isEmpty}
       onClick={onClick}

@@ -55,6 +55,13 @@ type Service =
   | 'spa'
   | 'other-service'; // Dịch vụ khác
 
+type TypeProduct = {
+  id: string;
+  name: string;
+  images: string[];
+  price: number;
+};
+
 type ProfileInfo = {
   // Location
   lat: number;
@@ -79,6 +86,7 @@ type ProfileInfo = {
   take_away: string[];
   dresses: string[];
   activities: string[];
+  products: TypeProduct[];
   // Contributed by users
   total_ratings: number;
   total_orders: number;
