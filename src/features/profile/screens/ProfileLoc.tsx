@@ -19,7 +19,7 @@ import { NameStars } from '@/features/tour/components';
 import { checkOpenTime, cn, convertDecimalToTime, navigateNewTab, twConfigs } from '@/lib';
 import { formatTourPrice } from '@/lib/format';
 
-import { LocationTag } from '../components';
+import { ItemProduct, LocationTag } from '../components';
 import { useProfile } from '../hooks';
 import ChildrenLocs from './ChildrenLocs';
 import ToursHaveProfile from './ToursHaveProfile';
@@ -190,7 +190,7 @@ const ProfileLoc = ({ userId }: Props) => {
 
       <div className="w-full gap-x-[16px] px-[2px] h-[40vw] hidden md:inline-flex mt-[12px]">
         <Carousel
-          className="w-[70%] h-full"
+          className="w-[70%] h-full rounded-[14px] hover-slow"
           data={images}
           renderItem={item => {
             return <Image src={item} className="w-full h-[40vw] rounded-[14px]" />;
@@ -383,6 +383,25 @@ const ProfileLoc = ({ userId }: Props) => {
 
         <div className="flex-1 flex-col gap-[40px] hidden md:flex">{renderContentTag()}</div>
       </div>
+
+      {!!data.info.products.length && (
+        <>
+          <div className="w-full my-[24px]">
+            <Title title="Một số đồ bạn có thể tham khảo" />
+            <div className="w-full inline-flex flex-wrap gap-[4%] md:gap-6 mt-[24px]">
+              {data.info.products.map(product => (
+                <ItemProduct
+                  key={product.name}
+                  item={product}
+                  className="w-[48%] md:w-[32%] lg:w-[20%]"
+                />
+              ))}
+            </div>
+          </div>
+
+          <Line />
+        </>
+      )}
 
       <div className="w-full mt-[24px]">
         <Title title="Các lịch trình bao gồm địa điểm này" />

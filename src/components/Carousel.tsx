@@ -10,30 +10,46 @@ interface Props<T> {
   data: Array<T>;
   renderItem: (item: T) => ReactElement;
   className?: ClassValue;
+  showIndicator?: boolean;
+  showArrow?: boolean;
 }
 
-const Carousel = <T extends any>({ className, data, renderItem }: Props<T>) => {
+const Carousel = <T extends any>({
+  className,
+  data,
+  renderItem,
+  showIndicator = true,
+  showArrow = true,
+}: Props<T>) => {
   return (
     <div className={cn('slide-container w-full', className)}>
       <Slide
         transitionDuration={450}
-        indicators
+        indicators={showIndicator}
         pauseOnHover
         prevArrow={
-          <div
-            className="rounded-full ml-[10px] p-2"
-            style={{ backgroundColor: 'rgba(0, 0, 0, 0.20)' }}
-          >
-            <ArrowLeftIcon color="white" size={20} className="opacity-80" />
-          </div>
+          showArrow ? (
+            <div
+              className="rounded-full ml-[10px] p-2"
+              style={{ backgroundColor: 'rgba(0, 0, 0, 0.20)' }}
+            >
+              <ArrowLeftIcon color="white" size={20} className="opacity-80" />
+            </div>
+          ) : (
+            <div />
+          )
         }
         nextArrow={
-          <div
-            className="rounded-full mr-[10px] p-2"
-            style={{ backgroundColor: 'rgba(0, 0, 0, 0.20)' }}
-          >
-            <ArrowRightIcon color="white" size={20} className="opacity-80" />
-          </div>
+          showArrow ? (
+            <div
+              className="rounded-full mr-[10px] p-2"
+              style={{ backgroundColor: 'rgba(0, 0, 0, 0.20)' }}
+            >
+              <ArrowRightIcon color="white" size={20} className="opacity-80" />
+            </div>
+          ) : (
+            <div />
+          )
         }
       >
         {data.map((d, index) => (
