@@ -1,9 +1,10 @@
-import { DialogAuth } from './dialogs';
+import { DialogAuth, DialogConfirm } from './dialogs';
 
 const AppModals = () => {
   return (
     <>
       <DialogAuth />
+      <DialogConfirm />
     </>
   );
 };

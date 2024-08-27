@@ -2,18 +2,18 @@
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import dayjs from 'dayjs';
-import { useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { isNumber } from 'lodash';
+import { useRouter } from 'next/navigation';
+import { useRef, useState } from 'react';
 
 import Container from '@/app/container';
 import { useAppContext } from '@/app/provider';
+import { SuccessScreen } from '@/components';
 import { Button, Checkbox, Input, Textarea } from '@/components/ui';
 import { toast } from '@/hooks';
 import { parseErrorMessage } from '@/lib';
 import { formatUTCTime } from '@/lib/format';
 import { getPhone, setPhone as setPhoneStorage } from '@/lib/storage';
-import { SuccessIcon } from '@/components';
 
 import { useBuddies } from '../buddy/hooks';
 import { useProfile } from './hooks';
@@ -84,17 +84,11 @@ const OrderBuddy = ({ params }: Props) => {
     if (data) {
       if (success) {
         return (
-          <div className="w-full inline-flex flex-col items-center">
-            <SuccessIcon size={300} />
-            <h1 className="text-[20px] font-medium">Đặt lịch thành công</h1>
-            <p className="text-center">
-              Chúng tôi sẽ liên hệ lại với bạn qua số {phone}, Avatour xin chân thành cảm ơn bạn đã
-              quan tâm đến dịch vụ của chúng tôi
-            </p>
-            <Button onClick={() => router.back()} className="w-full md:w-[50%] lg:w-[30%] mt-8">
-              Ok
-            </Button>
-          </div>
+          <SuccessScreen
+            title="Đặt lịch thành công"
+            description={`Chúng tôi sẽ liên hệ lại với bạn qua số ${phone}, Avatour xin chân thành cảm ơn bạn đã quan tâm đến dịch vụ của chúng tôi`}
+            onOk={() => router.back()}
+          />
         );
       }
 
@@ -206,9 +200,11 @@ const OrderBuddy = ({ params }: Props) => {
     }
   };
 
-  return <Container background="sun"
-    showFooter={false}
-  >{content()}</Container>;
+  return (
+    <Container background="sun" showFooter={false}>
+      {content()}
+    </Container>
+  );
 };
 
 export default OrderBuddy;

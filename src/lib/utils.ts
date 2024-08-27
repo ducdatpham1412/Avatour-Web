@@ -293,3 +293,17 @@ export const goToProfile = (userId: number, { router, myId }: OptionProfile) => 
     router.push(PROFILE_ROUTES.profileId(userId));
   }
 };
+
+export const getMarginContentMagazine = (content: TypeMagazine['content'][number]) => {
+  if (content.type === 'title') {
+    return {
+      top: 32,
+      bottom: 16,
+    };
+  }
+
+  return {
+    top: 16,
+    bottom: 16,
+  };
+};
