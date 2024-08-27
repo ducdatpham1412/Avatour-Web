@@ -4,7 +4,12 @@ import { Body } from './components';
 
 const SearchPage = () => {
   return (
-    <Container showHeader={false}>
+    <Container
+      showHeader={false}
+      metaData={{
+        title: 'Avatour Gợi ý lịch trình',
+      }}
+    >
       <Body />
     </Container>
   );
