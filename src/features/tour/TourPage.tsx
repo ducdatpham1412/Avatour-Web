@@ -11,6 +11,7 @@ import { toast, useAllTours } from '@/hooks';
 import { parseErrorMessage } from '@/lib';
 import { getTourOpenState, setTourOpenState } from '@/lib/storage';
 import { PROFILE_ROUTES } from '@/configs/routes';
+import Metadata from '@/app/metadata';
 
 import { ItemBuddy } from '../buddy/components';
 import { useBuddies } from '../buddy/hooks';
@@ -231,6 +232,7 @@ const TourPage = ({ params, searchParams }: PageProps<Params, SearchParams>) => 
 
   return (
     <main className="relative inline-flex container flex-col gap-y-12 md:gap-y-[124px] mt-4 bg-transparent">
+      <Metadata title={data.name} descriptions={data.description} />
       <article className="flex flex-col gap-y-[56px]">
         <TourHeader tour={data} onLike={onLike} onDelete={onDelete} />
 

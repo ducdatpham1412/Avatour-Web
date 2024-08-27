@@ -52,6 +52,10 @@ const OtherProfile = ({ userId }: Props) => {
         )
       }
       background="sun"
+      metaData={{
+        title: data?.name,
+        descriptions: data?.description,
+      }}
     >
       {content()}
     </Container>

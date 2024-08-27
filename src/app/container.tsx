@@ -8,12 +8,15 @@ import { Background, BackgroundSun, Navbar } from '@/components';
 import { ButtonBack } from '@/components/buttons';
 import { cn } from '@/lib';
 
+import Metadata, { MetadataProps } from './metadata';
+
 type Props = PropsWithChildren & {
   showHeader?: boolean;
   HeaderRight?: ReactElement;
   background?: 'mountain' | 'sun' | null;
   contentContainer?: ClassValue;
   showFooter?: boolean;
+  metaData?: MetadataProps;
 };
 
 export const Footer = () => {
@@ -37,6 +40,24 @@ export const Footer = () => {
   );
 };
 
+const renderBackground = (background: Props['background'], showFooter: boolean) => {
+  if (background === 'mountain') {
+    return (
+      <Background bottomClassName={showFooter ? 'bottom-[160px] md:bottom-[65px]' : 'bottom-0'} />
+    );
+  }
+
+  if (background === 'sun') {
+    return (
+      <BackgroundSun
+        bottomClassName={showFooter ? 'bottom-[160px] md:bottom-[65px]' : 'bottom-0'}
+      />
+    );
+  }
+
+  return null;
+};
+
 const Container = ({
   children,
   HeaderRight,
@@ -44,31 +65,18 @@ const Container = ({
   background = 'mountain',
   contentContainer,
   showFooter = true,
+  metaData = {},
 }: Props) => {
   const router = useRouter();
 
-  const renderBackground = () => {
-    if (background === 'mountain') {
-      return (
-        <Background bottomClassName={showFooter ? 'bottom-[160px] md:bottom-[65px]' : 'bottom-0'} />
-      );
-    }
-
-    if (background === 'sun') {
-      return (
-        <BackgroundSun
-          bottomClassName={showFooter ? 'bottom-[160px] md:bottom-[65px]' : 'bottom-0'}
-        />
-      );
-    }
-
-    return null;
-  };
-
   return (
     <div className="relative w-full h-full min-h-[100vh] bg-white px-0">
-      {renderBackground()}
+      <Metadata {...metaData} />
+
+      {renderBackground(background, showFooter)}
+
       <Navbar />
+
       <div className={cn('relative container pb-[250px] md:pb-[300px]', contentContainer)}>
         {showHeader && (
           <div className="w-full inline-flex justify-between items-center mt-[20px]">
@@ -80,6 +88,7 @@ const Container = ({
             {HeaderRight ?? <div />}
           </div>
         )}
+
         {children}
       </div>
 
