@@ -12,6 +12,7 @@ interface Props<T> {
   className?: ClassValue;
   showIndicator?: boolean;
   showArrow?: boolean;
+  duration?: number;
 }
 
 const Carousel = <T extends any>({
@@ -20,12 +21,14 @@ const Carousel = <T extends any>({
   renderItem,
   showIndicator = true,
   showArrow = true,
+  duration = 2000,
 }: Props<T>) => {
   return (
     <div className={cn('slide-container w-full', className)}>
       <Slide
         transitionDuration={450}
         indicators={showIndicator}
+        duration={duration}
         pauseOnHover
         prevArrow={
           showArrow ? (

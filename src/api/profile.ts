@@ -46,3 +46,29 @@ export const apiOrderBuddy = async (params: OrderBuddyParams, authorize: boolean
     },
   );
 };
+
+export const apiCreateMagazine = async (
+  body: Pick<TypeMagazine, 'title' | 'content' | 'description' | 'keywords'>,
+) => {
+  const res: TypeApi<{ magazine_id: string }> = await request.post('/profile/magazines', body);
+  return res.data;
+};
+
+export const apiEditMagazine = async (
+  magazineId: string,
+  body: Pick<TypeMagazine, 'title' | 'content' | 'description' | 'keywords'>,
+) => {
+  await request.put('/profile/magazines', body, {
+    params: {
+      magazine_id: magazineId,
+    },
+  });
+};
+
+export const apiDeleteMagazine = async (magazineId: string) => {
+  await request.delete('/profile/magazines', undefined, {
+    params: {
+      magazine_id: magazineId,
+    },
+  });
+};

@@ -8,6 +8,7 @@ import { TOUR_ROUTES } from '@/configs/routes';
 import { toast, useAllTours } from '@/hooks';
 import { parseErrorMessage } from '@/lib/utils';
 import { useAppContext } from '@/app/provider';
+import { DialogAuth } from '@/components/dialogs';
 
 import { ItemTour } from '../components';
 import { useTours } from '../hooks';
@@ -56,6 +57,13 @@ const MyTours = ({ userId }: Props) => {
     }
 
     const onLikeTour = async (tourId: string) => {
+      if (!profile) {
+        DialogAuth.open({
+          mode: 'sign-in',
+        });
+        return;
+      }
+
       try {
         const res = await likeTour(tourId);
         const isLiked = res.status === 'like';

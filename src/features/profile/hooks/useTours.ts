@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import useSWRMutation from 'swr/mutation';
 
 import { apiCreateTour, apiDeleteTour, apiEditTour, apiMakeTourBeMine } from '@/api/common';
@@ -42,17 +43,34 @@ const useTours = (
 ) => {
   const [{ profile, initLoading }] = useAppContext();
   userId = userId ?? profile?.id;
-  const shouldAuthorize = type === 'favorite';
+  const isFavorite = type === 'favorite';
+
+  const shouldGetList = useMemo(() => {
+    if (initLoading) {
+      return false;
+    }
+
+    if (isFavorite) {
+      return !!profile;
+    }
+
+    if (type === 'home' || type === 'of-location') {
+      return true;
+    }
+
+    // type = list
+    return !!userId;
+  }, [initLoading, isFavorite, type, userId]);
 
   const { data, error, loading, mutate } = useApi<TypeTour[]>(
-    (userId || !shouldAuthorize) && !initLoading ? '/common/tours' : null,
+    shouldGetList ? '/common/tours' : null,
     {
       params: {
         type,
         user_id: userId,
       },
       config: {
-        authorize: shouldAuthorize ? true : !!profile,
+        authorize: isFavorite ? true : !!profile,
         revalidateAll: !!options?.revalidateAll,
       },
     },

@@ -22,7 +22,12 @@ interface TourHeaderProps {
 
 const TourHeader = ({ tour, onLike, onDelete }: TourHeaderProps) => {
   const router = useRouter();
-  const [{ profile: myProfile }] = useAppContext();
+  const [
+    {
+      profile: myProfile,
+      router: { canGoBack },
+    },
+  ] = useAppContext();
 
   const categories = useMemo(() => {
     const services = tour.schedule.flatMap(profile => profile.flatMap(p => p.services));
@@ -34,8 +39,17 @@ const TourHeader = ({ tour, onLike, onDelete }: TourHeaderProps) => {
   return (
     <header className="flex flex-col">
       <div className="w-full inline-flex justify-between">
-        {window.history.length > 1 && (
-          <ButtonBack onClick={() => router.back()} className="self-start" />
+        {canGoBack ? (
+          <ButtonBack
+            onClick={() => {
+              router.back();
+            }}
+            className="self-start"
+          />
+        ) : (
+          <button className="underline text-blue" onClick={() => router.push('/search')}>
+            Khám phá thêm tour
+          </button>
         )}
         <div className="inline-flex items-center gap-x-[20px]">
           <button className="hover-scale" title="Thêm vào tour yêu thích" onClick={onLike}>

@@ -10,6 +10,7 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 import { apiGetPassport, apiGetResource } from '@/api/common';
 import '@/configs/bootstrap';
@@ -31,6 +32,10 @@ type ContextValue = {
   profile: TypeProfile | undefined;
   resource: Resource | undefined;
   tourSearches: TourSearches | undefined;
+  router: {
+    history: string[];
+    canGoBack: boolean;
+  };
 };
 
 type TypeContext = [
@@ -38,6 +43,7 @@ type TypeContext = [
   {
     setProfile: Dispatch<SetStateAction<TypeProfile | undefined>>;
     setTourSearches: Dispatch<SetStateAction<TourSearches | undefined>>;
+    setHistory: Dispatch<SetStateAction<string[]>>;
   },
 ];
 
@@ -46,16 +52,23 @@ const Context = createContext<TypeContext>({} as TypeContext);
 export const useAppContext = () => useContext(Context);
 
 const Provider = ({ children }: Props) => {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [initLoading, setInitLoading] = useState(true);
   const [profile, setProfile] = useState<TypeProfile>();
   const [resource, setResource] = useState<Resource>();
   const [tourSearches, setTourSearches] = useState<TourSearches>();
+  const [history, setHistory] = useState<string[]>([]);
 
   const contextValue: ContextValue = {
     initLoading,
     profile,
     resource,
     tourSearches,
+    router: {
+      history,
+      canGoBack: history.length > 1,
+    },
   };
 
   useEffect(() => {
@@ -87,6 +100,17 @@ const Provider = ({ children }: Props) => {
     init().catch(() => null);
   }, [setProfile, setResource, setInitLoading]);
 
+  useEffect(() => {
+    const url = `${pathname}?${searchParams}`;
+    setHistory(pre => {
+      pre.push(url);
+      if (pre.length > 5) {
+        pre.splice(0, 1);
+      }
+      return [...pre];
+    });
+  }, [pathname, searchParams, setHistory]);
+
   //   useEffect(() => {
   //     localStorage.setItem('context', JSON.stringify(contextValue));
   //   }, [contextValue]);
@@ -98,6 +122,7 @@ const Provider = ({ children }: Props) => {
         {
           setProfile,
           setTourSearches,
+          setHistory,
         },
       ]}
     >

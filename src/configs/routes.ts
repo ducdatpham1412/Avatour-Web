@@ -32,3 +32,8 @@ export const SEARCH_ROUTES = {
 export const ORDER_ROUTES = {
   buddy: (buddyId: number) => `/order/buddy/${buddyId}`,
 };
+
+export const MAGAZINE_ROUTES = {
+  createMagazine: '/magazine',
+  magazineDetail: (magazineId: string) => `/magazine/${magazineId}`,
+};

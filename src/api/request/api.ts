@@ -66,7 +66,7 @@ const api: API = async <T>(
   let url = (options.baseUrl ?? API_ENDPOINT) + path;
   let body: BodyInit | undefined;
 
-  if (method === 'post' || method === 'put' || method === 'patch') {
+  if (method === 'post' || method === 'put' || method === 'patch' || method === 'delete') {
     if (params instanceof FormData) {
       body = params;
     } else {

@@ -60,7 +60,7 @@ const Profile = () => {
             id: 'check_in',
             title: 'Check-in',
             icon: <CameraIcon size={16} />,
-            children: <CheckIn />,
+            children: <CheckIn userId={profile.id} />,
           },
         ]}
       />

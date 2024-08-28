@@ -9,6 +9,7 @@ import { ButtonBack } from '@/components/buttons';
 import { cn } from '@/lib';
 
 import Metadata, { MetadataProps } from './metadata';
+import { useAppContext } from './provider';
 
 type Props = PropsWithChildren & {
   showHeader?: boolean;
@@ -68,6 +69,11 @@ const Container = ({
   metaData = {},
 }: Props) => {
   const router = useRouter();
+  const [
+    {
+      router: { canGoBack },
+    },
+  ] = useAppContext();
 
   return (
     <div className="relative w-full h-full min-h-[100vh] bg-white px-0">
@@ -80,7 +86,7 @@ const Container = ({
       <div className={cn('relative container pb-[250px] md:pb-[300px]', contentContainer)}>
         {showHeader && (
           <div className="w-full inline-flex justify-between items-center mt-[20px]">
-            {window.history.length > 1 ? (
+            {canGoBack ? (
               <ButtonBack className="self-start" onClick={() => router.back()} />
             ) : (
               <div />

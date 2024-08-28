@@ -55,6 +55,24 @@ type Service =
   | 'spa'
   | 'other-service'; // Dịch vụ khác
 
+type MagazineContent = {
+  type: 'title' | 'content' | 'image';
+  content: string;
+  description?: string;
+};
+
+type TypeMagazine = {
+  id: string;
+  title: string;
+  description: string;
+  keywords: string;
+  content: Array<MagazineContent>;
+  creator: number;
+  creator_name: string;
+  creator_avatar: string;
+  created: string;
+};
+
 type TypeProduct = {
   id: string;
   name: string;

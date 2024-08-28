@@ -21,7 +21,24 @@ export const removeTourCreate = () => {
   localStorage.removeItem('tour-create');
 };
 
+/**
+ * Phone order buddy
+ */
 export const setPhone = (phone: string) => {
   localStorage.setItem('phone', phone);
 };
 export const getPhone = () => localStorage.getItem('phone');
+
+/**
+ * Edit magazine
+ */
+export const setMagazine = (magazine: TypeMagazine) => {
+  localStorage.setItem('magazine', JSON.stringify(magazine));
+};
+export const getMagazine = () => {
+  const storage = localStorage.getItem('magazine');
+  return storage ? (JSON.parse(storage) as TypeMagazine) : undefined;
+};
+export const deleteMagazine = () => {
+  localStorage.removeItem('magazine');
+};

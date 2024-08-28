@@ -5,6 +5,8 @@ import { SuccessIcon, TourLoadingIcon } from '@/components';
 import { TOUR_ROUTES } from '@/configs/routes';
 import { toast, useAllTours } from '@/hooks';
 import { logger, parseErrorMessage } from '@/lib';
+import { useAppContext } from '@/app/provider';
+import { DialogAuth } from '@/components/dialogs';
 
 import { ItemTour } from '../components';
 import { useTours } from '../hooks';
@@ -17,6 +19,7 @@ const deletedTourIds: string[] = [];
 
 const FavoriteTours = ({ userId }: Props) => {
   const router = useRouter();
+  const [{ profile }] = useAppContext();
   const { mutateLikeTour } = useAllTours();
   const [{ data, error, loading }, { mutate, likeTour }] = useTours(userId, 'favorite');
 
@@ -56,6 +59,13 @@ const FavoriteTours = ({ userId }: Props) => {
   }
 
   const onLikeTour = async (tourId: string) => {
+    if (!profile) {
+      DialogAuth.open({
+        mode: 'sign-in',
+      });
+      return;
+    }
+
     try {
       const res = await likeTour(tourId);
       const isLiked = res.status === 'like';
