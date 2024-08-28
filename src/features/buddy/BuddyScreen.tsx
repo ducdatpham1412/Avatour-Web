@@ -77,34 +77,39 @@ const BuddyScreen = () => {
       {content()}
 
       <p className="text-black text-[26px] font-medium mt-[60px]">Tạp chí du lịch</p>
-      <div className="w-full mt-8 inline-flex gap-[7vw] mb-[100px]">
-        <div className="flex flex-1 gap-y-10 flex-col">
-          {magazines?.map(m => {
-            return <ItemMagazine key={m.id} item={m} />;
-          })}
-        </div>
+      {!!magazines?.length && (
+        <div className="w-full mt-8 inline-flex gap-[7vw] mb-[100px]">
+          <div className="flex flex-1 gap-y-10 flex-col">
+            {magazines.map(m => {
+              return <ItemMagazine key={m.id} item={m} />;
+            })}
+          </div>
 
-        {images?.length ? (
-          <Carousel
-            className="hidden md:block w-[25vw] h-[25vw]"
-            data={images}
-            renderItem={img => {
-              return (
-                <Link
-                  key={img.img}
-                  className="w-full"
-                  href={MAGAZINE_ROUTES.magazineDetail(img.magazineId)}
-                  target="_blank"
-                >
-                  <Image src={img.img} className="w-full aspect-[1/1] rounded-[14px] hover-slow" />
-                </Link>
-              );
-            }}
-          />
-        ) : (
-          <div className="hidden md:block w-[25vw] h-[25vw]" />
-        )}
-      </div>
+          {images?.length ? (
+            <Carousel
+              className="hidden md:block w-[25vw] h-[25vw]"
+              data={images}
+              renderItem={img => {
+                return (
+                  <Link
+                    key={img.img}
+                    className="w-full"
+                    href={MAGAZINE_ROUTES.magazineDetail(img.magazineId)}
+                    target="_blank"
+                  >
+                    <Image
+                      src={img.img}
+                      className="w-full aspect-[1/1] rounded-[14px] hover-slow"
+                    />
+                  </Link>
+                );
+              }}
+            />
+          ) : (
+            <div className="hidden md:block w-[25vw] h-[25vw]" />
+          )}
+        </div>
+      )}
     </Container>
   );
 };
