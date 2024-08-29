@@ -20,8 +20,6 @@ const TransactionsPage: React.FC<TransactionsProps> = ({ query }) => {
     async () => {
       const { data: d, error } = await getDeposits(query);
       if (error) {
-        console.log('error', error);
-
         throw makeError(error.message);
       }
       return d;

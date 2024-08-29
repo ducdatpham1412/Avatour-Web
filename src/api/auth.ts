@@ -1,15 +1,10 @@
 'use server';
-import { cookies as getCookies } from 'next/headers';
-
+import { deleteTokenCookies, getTokenCookies, setTokenCookies } from './cookies';
 import { request } from './request/api';
 
 interface Login {
   username: string;
   password: string;
-}
-interface LoginResponse {
-  token?: string;
-  refreshToken?: string;
 }
 
 interface Register {
@@ -23,28 +18,6 @@ type RequestOTP = {
   type_otp: 'register';
   username: string;
   password: string;
-};
-
-export const setTokenCookies = (data: LoginResponse) => {
-  const cookies = getCookies();
-  if (data.token) {
-    cookies.set('token', data.token, {
-      httpOnly: true,
-      // secure: process.env.NODE_ENV === 'production', // Uncomment this when having https
-    });
-  }
-  if (data.refreshToken) {
-    cookies.set('refresh_token', data.refreshToken, {
-      httpOnly: true,
-      // secure: process.env.NODE_ENV === 'production', // Uncomment this when having https
-    });
-  }
-};
-
-export const deleteTokenCookies = () => {
-  const cookies = getCookies();
-  cookies.delete('token');
-  cookies.delete('refresh_token');
 };
 
 export const apiLogin = async (p: Login) => {
@@ -70,9 +43,9 @@ export const apiRequestOTP = async (p: RequestOTP) => {
 };
 
 export const apiLogOut = async () => {
-  const cookies = getCookies();
+  const { refresh_token } = getTokenCookies();
   await request.post('/auth/log-out', {
-    refreshToken: cookies.get('refresh_token')?.value,
+    refreshToken: refresh_token,
   });
   deleteTokenCookies();
 };

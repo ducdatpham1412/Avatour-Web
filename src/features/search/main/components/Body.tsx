@@ -74,14 +74,16 @@ const Body = () => {
         })}
       </div>
 
-      <div className="w-[min(100%,_1000px)] inline-flex flex-col items-start mt-[60px]">
+      {!!magazines?.length && (
+        <div className="w-[min(100%,_1000px)] inline-flex flex-col items-start mt-[60px]">
         <p className="text-black text-[26px] font-medium">Tạp chí du lịch</p>
         <div className="flex flex-1 gap-y-10 flex-col mt-8">
-          {magazines?.map(m => {
+          {magazines.map(m => {
             return <ItemMagazine key={m.id} item={m} />;
           })}
         </div>
       </div>
+      )}
 
       {/* <div className="min-h-[200px] w-full flex flex-col items-center gap-y-7">
         {!!resource && (

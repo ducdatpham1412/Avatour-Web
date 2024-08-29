@@ -4,7 +4,7 @@ import request from '@/api/request';
 import { ACCOUNT_TYPE } from '@/configs/constants';
 import { logger } from '@/lib';
 
-import { setTokenCookies } from '../auth';
+import { setTokenCookies } from '../cookies';
 
 interface LoginResponse {
   token: string;
