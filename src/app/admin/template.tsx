@@ -4,10 +4,10 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Fragment } from 'react';
 
-import { deleteTokenCookies } from '@/api/auth';
 import { Icon, IconNames } from '@/components/icon';
 import { ADMIN_ROUTES } from '@/configs/routes';
 import { cn } from '@/lib';
+import { deleteTokenCookies } from '@/api/cookies';
 
 import { useAppContext } from '../provider';
 

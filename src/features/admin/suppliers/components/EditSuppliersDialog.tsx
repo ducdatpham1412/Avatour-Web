@@ -75,7 +75,7 @@ const EditSuppliersDialog = forwardRef(
         hasChangedStatus.current = false;
       } else {
         if (hasChangedStatus.current) {
-          mutate().catch(console.log);
+          mutate().catch(logger.log);
         }
       }
     };
@@ -201,7 +201,7 @@ const EditSuppliersDialog = forwardRef(
         toast({
           description: 'Thêm địa điểm thành công',
         });
-        mutate().catch(console.log);
+        mutate().catch(logger.log);
 
         return 'create-success';
       } catch (err) {

@@ -1,10 +1,8 @@
 'use server';
-import { cookies as getCookies } from 'next/headers';
-
 import { API_ENDPOINT } from '@/configs';
 import { logger, omitEmpty, paramsToUrl } from '@/lib';
 
-import { deleteTokenCookies, setTokenCookies } from '../auth';
+import { deleteTokenCookies, getTokenCookies, setTokenCookies } from '../cookies';
 import { ERROR_MESSAGE } from './constants';
 
 type DataError = {
@@ -82,13 +80,12 @@ const api: API = async <T>(
   }
 
   if (authorize && !headers.get('Authorization')) {
-    const cookies = getCookies();
-    const token = cookies.get('token');
+    const { token } = getTokenCookies();
     if (!token) {
       throw new Error('Unauthorized');
     }
 
-    headers.set('Authorization', `Bearer ${token.value}`);
+    headers.set('Authorization', `Bearer ${token}`);
   }
 
   logger.log(url, options.method, params);
@@ -119,12 +116,11 @@ const api: API = async <T>(
 
         isRefreshing = true;
         try {
-          const cookies = getCookies();
-          const refreshToken = cookies.get('refresh_token')?.value;
+          const { refresh_token } = getTokenCookies();
           const res = await fetch(`${options.baseUrl ?? API_ENDPOINT}/auth/refresh-token`, {
             method: 'post',
             body: JSON.stringify({
-              refresh: refreshToken,
+              refresh: refresh_token,
             }),
             headers: {
               'Content-Type': 'application/json',
