@@ -43,7 +43,7 @@ const BuddyScreen = () => {
     }
 
     return (
-      <div className="w-full inline-flex flex-wrap justify-between gap-y-7 sm:gap-y-12 mt-8">
+      <div className="w-full inline-flex flex-wrap sm:gap-x-[4%] lg:gap-x-[3.5%] gap-y-7 sm:gap-y-12 mt-8">
         {data.map(buddy => {
           return (
             <ItemBuddy

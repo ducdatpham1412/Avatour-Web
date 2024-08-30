@@ -42,3 +42,22 @@ export const getMagazine = () => {
 export const deleteMagazine = () => {
   localStorage.removeItem('magazine');
 };
+
+/**
+ * See list images
+ */
+type Album = {
+  name: string;
+  images: string[];
+};
+
+export const setAlbum = (album: Album) => {
+  localStorage.setItem('album', JSON.stringify(album));
+};
+export const getAlbum = () => {
+  const storage = localStorage.getItem('album');
+  return storage ? (JSON.parse(storage) as Album) : undefined;
+};
+export const deleteAlbum = () => {
+  localStorage.removeItem('album');
+};

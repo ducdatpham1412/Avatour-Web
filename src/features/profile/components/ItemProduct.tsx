@@ -22,7 +22,7 @@ const ItemProduct = ({ item, className }: Props) => {
           );
         }}
         className="w-full"
-        showIndicator={false}
+        showIndicator={item.images.length > 1}
         showArrow={item.images.length > 1}
       />
       <div className="w-full inline-flex flex-col items-start px-[4px] mt-[8px]">

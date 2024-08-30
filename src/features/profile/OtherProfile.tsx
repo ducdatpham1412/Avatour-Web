@@ -24,7 +24,11 @@ const OtherProfile = ({ userId }: Props) => {
 
   const content = () => {
     if (loading || !data) {
-      return <TourLoadingIcon className="w-[300px] mt-[10vh] self-center" />;
+      return (
+        <div className="w-full inline-flex mt-[10vh] justify-center">
+          <TourLoadingIcon className="w-[300px] mt-[10vh] self-center" />
+        </div>
+      );
     }
 
     if (isLocation) {
