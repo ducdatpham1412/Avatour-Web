@@ -1,6 +1,7 @@
+'use client';
 import { ClassValue } from 'clsx';
 import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react';
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
 
@@ -12,6 +13,8 @@ interface Props<T> {
   className?: ClassValue;
   showIndicator?: boolean;
   showArrow?: boolean;
+  showTotalImages?: boolean;
+  onClickTotalImages?: () => void;
   duration?: number;
 }
 
@@ -21,13 +24,17 @@ const Carousel = <T extends any>({
   renderItem,
   showIndicator = true,
   showArrow = true,
+  showTotalImages = false,
+  onClickTotalImages,
   duration = 2000,
 }: Props<T>) => {
+  const [index, setIndex] = useState(0);
+
   return (
-    <div className={cn('slide-container w-full', className)}>
+    <div className={cn('slide-container relative w-full', className)}>
       <Slide
         transitionDuration={450}
-        indicators={showIndicator}
+        // indicators={showIndicator}
         duration={duration}
         pauseOnHover
         prevArrow={
@@ -54,13 +61,43 @@ const Carousel = <T extends any>({
             <div />
           )
         }
+        onChange={(_, to) => {
+          setIndex(to);
+        }}
       >
-        {data.map((d, index) => (
-          <div key={index} className="w-full">
+        {data.map((d, i) => (
+          <div key={i} className="w-full">
             {renderItem(d)}
           </div>
         ))}
       </Slide>
+
+      {showIndicator && (
+        <div className="absolute bottom-[10px] inline-flex justify-center gap-1 left-0 right-0">
+          {data.map((_, i) => {
+            return (
+              <div
+                key={i}
+                className="w-[7px] h-[7px] rounded-full"
+                style={{ backgroundColor: i === index ? 'white' : 'rgba(255, 255, 255, 0.30)' }}
+              />
+            );
+          })}
+        </div>
+      )}
+
+      {showTotalImages && (
+        <button
+          className="px-[20px] py-[10px] absolute right-[10px] bottom-[10px] md:right-[20px] md:bottom-[20px] rounded-full hover-scale font-medium"
+          style={{ backgroundColor: 'rgba(255, 255, 255, 0.80)' }}
+          onClick={e => {
+            e.stopPropagation();
+            onClickTotalImages?.();
+          }}
+        >
+          {data.length} ảnh
+        </button>
+      )}
     </div>
   );
 };

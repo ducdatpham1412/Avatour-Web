@@ -13,11 +13,12 @@ import {
   RewardIcon,
 } from '@/components/icon';
 import { Button, Image } from '@/components/ui';
-import { ORDER_ROUTES, PROFILE_ROUTES } from '@/configs/routes';
+import { ALBUM_ROUTES, ORDER_ROUTES, PROFILE_ROUTES } from '@/configs/routes';
 import { serviceDataDetail } from '@/features/search/constants';
 import { NameStars } from '@/features/tour/components';
 import { checkOpenTime, cn, convertDecimalToTime, navigateNewTab, twConfigs } from '@/lib';
 import { formatTourPrice } from '@/lib/format';
+import { setAlbum } from '@/lib/storage';
 
 import { ItemProduct, LocationTag } from '../components';
 import { useProfile } from '../hooks';
@@ -178,6 +179,15 @@ const ProfileLoc = ({ userId }: Props) => {
     );
   };
 
+  const onSeeImages = () => {
+    const [service] = data.name.split(', ');
+    setAlbum({
+      name: service,
+      images,
+    });
+    router.push(ALBUM_ROUTES.album);
+  };
+
   return (
     <main className="w-full inline-flex flex-col">
       <NameStars
@@ -190,11 +200,13 @@ const ProfileLoc = ({ userId }: Props) => {
 
       <div className="w-full gap-x-[16px] px-[2px] h-[40vw] hidden md:inline-flex mt-[12px]">
         <Carousel
-          className="w-[70%] h-full rounded-[14px] hover-slow"
+          className="w-[70%] hover-slow rounded-[14px]"
           data={images}
           renderItem={item => {
             return <Image src={item} className="w-full h-[40vw] rounded-[14px]" />;
           }}
+          showTotalImages
+          onClickTotalImages={onSeeImages}
         />
         <div className="flex flex-1 flex-col gap-y-[16px]">
           <Image
@@ -216,6 +228,8 @@ const ProfileLoc = ({ userId }: Props) => {
         className="block md:hidden mt-[12px]"
         data={images}
         renderItem={item => <Image src={item} className="w-full aspect-[4/2.5] rounded-[14px]" />}
+        showTotalImages
+        onClickTotalImages={onSeeImages}
       />
 
       <div className="w-full flex-col md:flex-row gap-x-[100px] gap-[36px] md:gap-[48px] inline-flex mt-[0px] md:mt-[60px]">

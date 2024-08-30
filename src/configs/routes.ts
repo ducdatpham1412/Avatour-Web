@@ -37,3 +37,7 @@ export const MAGAZINE_ROUTES = {
   createMagazine: '/magazine',
   magazineDetail: (magazineId: string) => `/magazine/${magazineId}`,
 };
+
+export const ALBUM_ROUTES = {
+  album: '/album',
+};

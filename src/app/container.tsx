@@ -13,6 +13,7 @@ import { useAppContext } from './provider';
 
 type Props = PropsWithChildren & {
   showHeader?: boolean;
+  headerTitle?: string;
   HeaderRight?: ReactElement;
   background?: 'mountain' | 'sun' | null;
   contentContainer?: ClassValue;
@@ -62,6 +63,7 @@ const renderBackground = (background: Props['background'], showFooter: boolean) 
 const Container = ({
   children,
   HeaderRight,
+  headerTitle,
   showHeader = true,
   background = 'mountain',
   contentContainer,
@@ -87,7 +89,14 @@ const Container = ({
         {showHeader && (
           <div className="w-full inline-flex justify-between items-center mt-[20px]">
             {canGoBack ? (
-              <ButtonBack className="self-start" onClick={() => router.back()} />
+              <div className="inline-flex items-center">
+                <ButtonBack onClick={() => router.back()} />
+                {headerTitle && (
+                  <h2 className="font-medium text-[18px] md:text-[30px] ml-2 md:ml-4">
+                    {headerTitle}
+                  </h2>
+                )}
+              </div>
             ) : (
               <div />
             )}
