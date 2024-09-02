@@ -14,6 +14,7 @@ import AvatarPreview from './AvatarPreview';
 import InputField from './InputField';
 import ListField from './ListField';
 import SupplierChecklistField from './SupplierChecklistField';
+import { EditProduct } from '../screens';
 
 export type OnSubmitSupplierForm = 'create-success' | 'error' | 'update-success';
 
@@ -243,6 +244,12 @@ const SuppliersForm = ({
       <div>
         <ListField {...fields.link} className="flex-grow" control={controller.control} />
       </div>
+
+      {!!defaultValues?.id && (
+        <div className="flex mt-5">
+          <EditProduct userId={defaultValues.id} />
+        </div>
+      )}
 
       <div className="flex justify-center mt-10">
         <Button

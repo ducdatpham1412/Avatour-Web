@@ -34,6 +34,7 @@ const Container = ({
 const ItemBuddy = ({ isEmpty, onClick, item }: Props) => {
   const [activity, name] = item.name.split(', ');
   const ServiceIcon = serviceDataDetail[item.services[0]].icon;
+  const textServices = item.services.map(s => serviceDataDetail[s].name).join(', ');
 
   return (
     <Container isEmpty={isEmpty} onClick={onClick}>
@@ -53,17 +54,8 @@ const ItemBuddy = ({ isEmpty, onClick, item }: Props) => {
         </div>
 
         <div className="w-full inline-flex items-center gap-[8px]">
-          <ServiceIcon size={16} />
-          {item.services.map((s, i) => {
-            const isLast = i === item.services.length - 1;
-            const sName = serviceDataDetail[s].name;
-            return (
-              <p key={i} className="text-gray-500 text-[12px]">
-                {sName}
-                {isLast ? '' : ', '}
-              </p>
-            );
-          })}
+          <ServiceIcon size={16} className="shrink-0" />
+          <p className="text-gray_500 text-[12px] text-start">{textServices}</p>
         </div>
 
         <p className="text-gray-500 text-[12px]">Thời gian: {item.info?.duration ?? ''}h</p>

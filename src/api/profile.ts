@@ -17,6 +17,12 @@ export type OrderBuddyParams = {
   supplier: number;
 };
 
+export type CreateProductParams = Omit<TypeProduct, 'id'> & {
+  creator?: number;
+};
+
+export type EditProductParams = Omit<TypeProduct, 'creator'>;
+
 export const apiEditProfile = async (userId: number, data: EditProfileParams) => {
   await request.put(`/admin/suppliers/${userId}`, data);
 };
@@ -69,6 +75,26 @@ export const apiDeleteMagazine = async (magazineId: string) => {
   await request.delete('/profile/magazines', undefined, {
     params: {
       magazine_id: magazineId,
+    },
+  });
+};
+
+export const apiCreateProduct = async (body: CreateProductParams) => {
+  const res: TypeApi<{ product_id: string }> = await request.post('/profile/products', body);
+  return res;
+};
+export const apiEditProduct = async (body: EditProductParams) => {
+  const { id, ...rest } = body;
+  await request.put('/profile/products', rest, {
+    params: {
+      product_id: id,
+    },
+  });
+};
+export const apiDeleteProduct = async (productId: string) => {
+  await request.delete('/profile/products', undefined, {
+    params: {
+      product_id: productId,
     },
   });
 };

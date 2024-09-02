@@ -14,17 +14,17 @@ interface Props {
 const ItemProduct = ({ item, className }: Props) => {
   return (
     <div className={cn('inline-flex flex-col hover-scale', className)}>
-      <Carousel
-        data={item.images}
-        renderItem={img => {
-          return (
-            <Image src={img} className="w-full aspect-[1/1] rounded-[14px] hover:shadow-all" />
-          );
-        }}
-        className="w-full"
-        showIndicator={item.images.length > 1}
-        showArrow={item.images.length > 1}
-      />
+      <div className="w-full rounded-[14px] hover:shadow-all">
+        <Carousel
+          data={item.images}
+          renderItem={img => {
+            return <Image src={img} className="w-full aspect-[1/1] rounded-[14px]" />;
+          }}
+          className="w-full"
+          showIndicator={item.images.length > 1}
+          showArrow={false}
+        />
+      </div>
       <div className="w-full inline-flex flex-col items-start px-[4px] mt-[8px]">
         <p className="font-medium">{item.name}</p>
         <p className="text-p_700">{formatPrice(item.price)}đ</p>
