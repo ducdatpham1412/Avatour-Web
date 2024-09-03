@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { PropsWithChildren, ReactElement } from 'react';
 
-import { Carousel } from '@/components';
+import { Carousel, VideoImage } from '@/components';
 import {
   BookUserIcon,
   ClockIcon,
@@ -207,15 +207,15 @@ const ProfileLoc = ({ userId }: Props) => {
           className="w-[70%] hover-slow rounded-[14px]"
           data={images}
           renderItem={item => {
-            return <Image src={item} className="w-full h-[40vw] rounded-[14px]" />;
+            return <VideoImage src={item} className="w-full h-[40vw] rounded-[14px]" />;
           }}
           showTotalImages
           onClickTotalImages={onSeeImages}
         />
         <div className="flex flex-1 flex-col gap-y-[16px]">
-          <Image src={images[1] ?? images[0]} className="flex-1 rounded-[16px] hover-slow" />
-          <Image src={images[2] ?? images[0]} className="flex-1 rounded-[16px] hover-slow" />
-          <Image src={images[3] ?? images[0]} className="flex-1 rounded-[16px] hover-slow" />
+          <VideoImage src={images[1] ?? images[0]} className="flex-1 rounded-[16px] hover-slow" />
+          <VideoImage src={images[2] ?? images[0]} className="flex-1 rounded-[16px] hover-slow" />
+          <VideoImage src={images[3] ?? images[0]} className="flex-1 rounded-[16px] hover-slow" />
         </div>
       </div>
 

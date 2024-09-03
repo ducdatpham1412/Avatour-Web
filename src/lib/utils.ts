@@ -307,3 +307,13 @@ export const getMarginContentMagazine = (content: TypeMagazine['content'][number
     bottom: 16,
   };
 };
+
+export const isVideo = (fileName: string) => {
+  const listElements = fileName.toLowerCase().split('.');
+  for (let i = listElements.length - 1; i >= 0; i--) {
+    if (listElements[i].includes('mp4') || listElements[i].includes('mov')) {
+      return true;
+    }
+  }
+  return false;
+};

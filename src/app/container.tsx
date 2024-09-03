@@ -27,6 +27,9 @@ export const Footer = () => {
       <Link href="/about-us" target="_blank" className="text-[12px] hover-scale">
         Về chúng tôi
       </Link>
+      <Link href="/tuyen-dung.pdf" target="_blank" className="text-[12px] hover-scale">
+        Tuyển dụng
+      </Link>
       <Link href="/policy" target="_blank" className="text-[12px] hover-scale">
         Chính sách bảo mật
       </Link>

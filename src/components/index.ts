@@ -14,3 +14,4 @@ export { default as TabTrigger } from './TabTrigger';
 export { default as TabView } from './TabView';
 export { default as TagBuddy } from './TagBuddy';
 export { default as TitleHeader } from './TitleHeader';
+export { default as VideoImage } from './VideoImage';
