@@ -9,7 +9,7 @@ import { cn } from '@/lib';
 
 interface Props<T> {
   data: Array<T>;
-  renderItem: (item: T) => ReactElement;
+  renderItem: (item: T, index: number) => ReactElement;
   className?: ClassValue;
   showIndicator?: boolean;
   showArrow?: boolean;
@@ -67,7 +67,7 @@ const Carousel = <T extends any>({
       >
         {data.map((d, i) => (
           <div key={i} className="w-full">
-            {renderItem(d)}
+            {renderItem(d, i)}
           </div>
         ))}
       </Slide>

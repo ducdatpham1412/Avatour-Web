@@ -5,3 +5,4 @@ export * from './SupplierChecklistField';
 export * from './SupplierTag';
 export { default as SupplierFrom } from './SuppliersForm';
 export { default as SupplierTag } from './SupplierTag';
+export { default as ItemProductAdmin } from './ItemProductAdmin';

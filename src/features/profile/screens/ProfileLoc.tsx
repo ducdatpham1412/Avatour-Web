@@ -147,9 +147,13 @@ const ProfileLoc = ({ userId }: Props) => {
     checkOpenTime({ startTime: data.info.start_time, endTime: data.info.end_time }) === 'open';
   const isBuddy = data.account_type === 'buddy';
   const displayTag = !!data.parent || !!data.info.tag || !!data.info.value;
+  const imagesProduct = data.info.products.reduce((pre: string[], cur) => {
+    pre.push(...cur.images);
+    return pre;
+  }, [] as string[]);
   const images = data.avatar
-    ? [data.avatar, ...data.link.map(l => l.img)]
-    : data.link.map(l => l.img);
+    ? [data.avatar, ...data.link.map(l => l.img), ...imagesProduct]
+    : [...data.link.map(l => l.img), ...imagesProduct];
 
   const renderContentTag = () => {
     return (
@@ -209,18 +213,9 @@ const ProfileLoc = ({ userId }: Props) => {
           onClickTotalImages={onSeeImages}
         />
         <div className="flex flex-1 flex-col gap-y-[16px]">
-          <Image
-            src={data.link[0]?.img ?? data.avatar}
-            className="flex-1 rounded-[16px] hover-slow"
-          />
-          <Image
-            src={data.link[1]?.img ?? data.avatar}
-            className="flex-1 rounded-[16px] hover-slow"
-          />
-          <Image
-            src={data.link[2]?.img ?? data.avatar}
-            className="flex-1 rounded-[16px] hover-slow"
-          />
+          <Image src={images[1] ?? images[0]} className="flex-1 rounded-[16px] hover-slow" />
+          <Image src={images[2] ?? images[0]} className="flex-1 rounded-[16px] hover-slow" />
+          <Image src={images[3] ?? images[0]} className="flex-1 rounded-[16px] hover-slow" />
         </div>
       </div>
 
@@ -240,14 +235,18 @@ const ProfileLoc = ({ userId }: Props) => {
         )}
 
         <div className="w-full md:w-[62%] inline-flex flex-col gap-[24px]">
-          <p>{data.description}</p>
+          <div className="w-full inline-flex flex-col gap-2">
+            {data.description.split('\n').map((text, index) => {
+              return <p key={index}>{text}</p>;
+            })}
+          </div>
 
           <Line />
 
           <BlockCard
             title="Loại hình du lịch"
             data={data.services}
-            className="flex-row flex-wrap"
+            className="flex-row flex-wrap gap-y-2"
             renderItem={s => {
               const dataService = serviceDataDetail[s as Service];
               return (
@@ -402,7 +401,7 @@ const ProfileLoc = ({ userId }: Props) => {
         <>
           <div className="w-full my-[24px]">
             <Title title="Một số đồ bạn có thể tham khảo" />
-            <div className="w-full inline-flex flex-wrap gap-[4%] md:gap-6 mt-[24px]">
+            <div className="w-full inline-flex flex-wrap gap-[4%] gap-y-4 md:gap-6 mt-[24px]">
               {data.info.products.map(product => (
                 <ItemProduct
                   key={product.name}
