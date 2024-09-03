@@ -157,8 +157,8 @@ const Navbar = () => {
             </p>
           </Link>
 
-          <Link href="/about-us" className="hidden lg:block hover-scale">
-            Về chúng tôi
+          <Link href="/tuyen-dung.pdf" className="hidden lg:block hover-scale">
+            Tuyển dụng
           </Link>
 
           {(profile?.account_type === ACCOUNT_TYPE.admin ||
