@@ -14,7 +14,7 @@ import {
 
 import { apiGetPassport, apiGetResource } from '@/api/common';
 import '@/configs/bootstrap';
-import { logger } from '@/lib';
+import { isDev, logger } from '@/lib';
 import 'dayjs/locale/vi';
 
 interface Props {
@@ -73,10 +73,12 @@ const Provider = ({ children }: Props) => {
   useEffect(() => {
     const params = searchParams.toString();
     const tail = `${pathname}${params ? `?${searchParams}` : ''}`;
-    const host = window.location.href.replace(tail, '');
 
-    if (!host.includes('localhost') && !host.includes('www.avatour.life')) {
-      redirect(`http://www.avatour.life${tail}`);
+    if (!isDev) {
+      const host = window.location.href.replace(tail, '');
+      if (!host.includes('www.avatour.life')) {
+        redirect(`http://www.avatour.life${tail}`);
+      }
     }
 
     setHistory(pre => {

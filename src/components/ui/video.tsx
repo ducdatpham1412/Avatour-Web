@@ -1,4 +1,5 @@
 'use client';
+import { VideoIcon } from 'lucide-react';
 import {
   CSSProperties,
   ForwardedRef,
@@ -12,44 +13,41 @@ import {
 
 import { cn } from '@/lib';
 
-import { Icon } from '../icon';
+import { loadUrl } from './image';
 import { Show } from './show';
 import { Skeleton } from './skeleton';
 
-export type ImageProps = {
+type VideoProps = React.DetailedHTMLProps<
+  React.VideoHTMLAttributes<HTMLVideoElement>,
+  HTMLVideoElement
+>;
+
+type VideoComponentProps = VideoProps & {
   src: string;
   defaultSrc?: string;
-  className?: string;
-  imgClassName?: string;
+  videoClassName?: string;
   onClick?: (e: React.MouseEvent) => void;
   style?: React.CSSProperties;
-  width?: number;
-  height?: number;
   children?: React.ReactElement | React.ReactElement[];
   fit?: CSSProperties['objectFit'];
 };
 
-export function loadUrl(element: HTMLImageElement | HTMLVideoElement, url: string) {
-  return new Promise<void>((resolve, reject) => {
-    element.onload = () => resolve();
-    element.onerror = e => reject(e);
-    element.src = url;
-  });
-}
-
-const Image = memo(
-  forwardRef((props: ImageProps, imageRef: ForwardedRef<HTMLDivElement>) => {
+const Video = memo(
+  forwardRef((props: VideoComponentProps, imageRef: ForwardedRef<HTMLVideoElement>) => {
     const {
       src,
       defaultSrc,
       className,
-      imgClassName,
+      videoClassName,
       onClick,
       style,
       children,
       fit = 'cover',
+      autoPlay = false,
+      controls = true,
     } = props;
-    const ref = useRef<HTMLImageElement | null>(null);
+
+    const ref = useRef<HTMLVideoElement | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
 
@@ -58,15 +56,17 @@ const Image = memo(
       setLoading(true);
       if (ref.current) {
         loadUrl(ref.current, src)
-          .then(() => setLoading(false))
           .catch(() => {
             setError(true);
+            setLoading(false);
+          })
+          .finally(() => {
             setLoading(false);
           });
       }
     }, [src]);
 
-    useImperativeHandle(imageRef, () => ref.current as HTMLImageElement);
+    useImperativeHandle(imageRef, () => ref.current as HTMLVideoElement);
 
     return (
       <div
@@ -74,26 +74,30 @@ const Image = memo(
         onClick={onClick}
         style={style}
       >
-        <img
+        <video
           ref={ref}
-          className={cn(`w-full h-full`, imgClassName)}
+          src={src}
+          className={cn(`w-full h-full`, videoClassName)}
           style={{ opacity: error ? 0 : 1, objectFit: fit }}
-          alt="load failed"
+          controls={controls}
+          autoPlay={autoPlay}
         />
         <Show.Const when={error}>
           {defaultSrc ? (
-            <Image
+            <Video
               src={defaultSrc}
               className="absolute top-0 left-0 w-full h-full"
-              imgClassName="w-full h-full"
+              videoClassName="w-full h-full"
             />
           ) : (
             <div className="absolute left-0 top-0 w-full h-full flex items-center justify-center p-[20%] text-gray_500">
-              <Icon name="image" className="w-full h-full" />
+              <VideoIcon className="w-full h-full" />
             </div>
           )}
         </Show.Const>
-        <Show.Const when={loading}>
+
+        {/* TODO: Because function onload in ref of video take too many time => Temporary not show loading */}
+        <Show.Const when={false}>
           <Skeleton className="absolute left-0 top-0 w-full h-full rounded-none" />
         </Show.Const>
         {children}
@@ -102,23 +106,4 @@ const Image = memo(
   }),
 );
 
-// const Placeholder = styled('div', {
-//   baseStyle: {
-//     position: 'absolute',
-//     left: 0,
-//     top: 0,
-//     width: '100%',
-//     h: '100%',
-//     background: '#F5F5F5',
-
-//     display: 'flex',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     padding: '10%',
-//     color: 'gray',
-//   },
-// });
-
-Image.displayName = 'ImageLoader';
-
-export { Image };
+export default Video;
