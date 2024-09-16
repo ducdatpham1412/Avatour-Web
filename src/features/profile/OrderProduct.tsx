@@ -1,7 +1,4 @@
 'use client';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-import dayjs from 'dayjs';
 import { isNumber } from 'lodash';
 import { useRouter } from 'next/navigation';
 import { useMemo, useRef, useState } from 'react';
@@ -9,74 +6,57 @@ import { useMemo, useRef, useState } from 'react';
 import Container from '@/app/container';
 import { useAppContext } from '@/app/provider';
 import { SuccessScreen } from '@/components';
-import { Button, Checkbox, Input, Textarea } from '@/components/ui';
-import { toast } from '@/hooks';
-import { parseErrorMessage } from '@/lib';
-import { formatUTCTime } from '@/lib/format';
-import { getPhone, setPhone as setPhoneStorage } from '@/lib/storage';
+import { Button, Checkbox, Image, Input, Textarea } from '@/components/ui';
+import { getPhone } from '@/lib/storage';
+import { formatPrice } from '@/lib/format';
+import { toastErr } from '@/hooks';
 
-import { useBuddies } from '../buddy/hooks';
-import { useProfile } from './hooks';
+import { useProduct } from './hooks';
 
-type Props = PageProps<{ buddy_id: number }>;
+type Props = PageProps<{ product_id: string }>;
 
-const OrderBuddy = ({ params }: Props) => {
+const OrderProduct = ({ params }: Props) => {
   const router = useRouter();
   const [{ profile }, { setProfile }] = useAppContext();
-  const [{ data }] = useProfile(params.buddy_id);
-  const [{ loadingOrderBuddy }, { orderBuddy }] = useBuddies();
+  const [{ data, loadingOrderProduct }, { orderProduct }] = useProduct(params.product_id);
+
   const defaultPhone = useMemo(() => profile?.phone ?? getPhone() ?? '', []);
 
-  const [people, setPeople] = useState('');
-  const [date, setDate] = useState<dayjs.Dayjs>();
-  const [hour, setHour] = useState<dayjs.Dayjs>();
+  const [numberOrder, setNumberOrder] = useState('1');
+  const [address, setAddress] = useState(profile?.location ?? '');
   const [phone, setPhone] = useState(defaultPhone);
   const [checked, setChecked] = useState(true);
   const note = useRef('');
+
   const [success, setSuccess] = useState(false);
 
-  const isValid = people && date && hour && phone;
+  const isValid = numberOrder && address && phone;
 
   const onOrder = async () => {
-    // if (1 === 1) {
-    //   const element = document.getElementById('scrollTop');
-    //   if (element) {
-    //     element.scrollTo({ top: 0, behavior: 'instant' });
-    //   }
-    //   return;
-    // }
-
-    if (isValid && data) {
+    if (data) {
       try {
-        await orderBuddy({
-          time: formatUTCTime(date.hour(hour.hour()).minute(hour.minute())),
+        await orderProduct({
+          product_id: data.id,
+          number_order: Number(numberOrder),
+          address,
           phone,
           is_save: checked,
           note: note.current,
-          supplier: data.id,
-          number_people: Number(people),
         });
-        if (checked) {
-          setPhoneStorage(phone);
-          setProfile(pre => {
-            if (pre) {
-              return {
-                ...pre,
-                phone,
-              };
-            }
-          });
-        }
-        const element = document.getElementById('scrollTop');
-        if (element) {
-          element.scrollTo({ top: 0 });
-        }
+
+        setProfile(pre => {
+          if (pre) {
+            return {
+              ...pre,
+              location: address,
+              phone,
+            };
+          }
+        });
+
         setSuccess(true);
       } catch (err) {
-        toast({
-          variant: 'destructive',
-          description: parseErrorMessage(err),
-        });
+        toastErr(err);
       }
     }
   };
@@ -86,74 +66,72 @@ const OrderBuddy = ({ params }: Props) => {
       if (success) {
         return (
           <SuccessScreen
-            title="Đặt lịch thành công"
+            title="Đặt mua thành công"
             description={`Chúng tôi sẽ liên hệ lại với bạn qua số ${phone}, Avatour xin chân thành cảm ơn bạn đã quan tâm đến dịch vụ của chúng tôi`}
             onOk={() => router.back()}
           />
         );
       }
 
-      const [activity, name] = data.name.split(', ');
-
       return (
         <div className="w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] mx-auto pb-[100px]">
           <div className="w-full inline-flex flex-col gap-8">
+            <div className="w-full inline-flex gap-x-2 overflow-x-auto overflow-y-hidden beautiful-scrollbar">
+              {data.images.map((img, i) => {
+                return (
+                  <Image
+                    key={i}
+                    src={img}
+                    className="w-[150px] h-[150px] rounded-[14px] hover-slow"
+                  />
+                );
+              })}
+            </div>
+
             <p className="text-[20px]">
-              Đặt lịch <span className="font-semibold">{activity}</span> cùng{' '}
-              <span className="font-semibold">{name}</span>
+              Đặt mua <span className="font-semibold">{data.name}</span>
             </p>
 
             <div className="w-full inline-flex flex-col gap-2">
               <p className="font-semibold text-[16px]">
                 <span className="text-red">* </span>
-                Bạn đi bao nhiêu người?
+                Số lượng mua
               </p>
               <div className="w-full inline-flex flex-col md:flex-row gap-2 items-start md:items-center">
                 <Input
                   className="w-full md:w-[30%] border-gray_400 h-12 text-[16px]"
                   type="tel"
                   placeholder="Số người"
-                  value={people}
+                  value={numberOrder}
                   onChange={e => {
                     const value = e.target.value;
                     if (isNumber(Number(value))) {
-                      setPeople(value);
+                      setNumberOrder(value);
                     }
                   }}
                 />
-                <p className="text-[12px]">{data.info?.info_cost}</p>
+                <p>
+                  Tổng giá: {}
+                  <span className="text-p_700 font-semibold">
+                    {formatPrice(data.price * Number(numberOrder))}đ
+                  </span>
+                </p>
               </div>
             </div>
 
             <div className="w-full inline-flex flex-col gap-2">
               <p className="font-semibold text-[16px]">
                 <span className="text-red">* </span>
-                Chọn thời gian
+                Chọn địa chỉ nhận hàng
               </p>
-              <div className="w-full inline-flex flex-col md:flex-row gap-4">
-                <DatePicker
-                  minDate={dayjs()}
-                  value={date}
-                  onChange={v => {
-                    if (v) {
-                      setDate(v);
-                    }
-                  }}
-                  label="Ngày đặt lịch"
-                  format="dddd, DD/MM/YY"
-                  className="flex flex-1"
-                />
-                <TimePicker
-                  value={hour}
-                  label="Giờ đến"
-                  className="flex flex-2"
-                  onChange={v => {
-                    if (v) {
-                      setHour(v);
-                    }
-                  }}
-                />
-              </div>
+              <Input
+                className="border-gray_400 text-[14px] h-12"
+                placeholder="Địa chỉ"
+                defaultValue={address}
+                onChange={e => {
+                  setAddress(e.target.value);
+                }}
+              />
             </div>
 
             <div className="w-full inline-flex flex-col gap-2">
@@ -185,15 +163,15 @@ const OrderBuddy = ({ params }: Props) => {
               <p className="font-semibold text-[16px]">Thêm ghi chú</p>
               <Textarea
                 className="border-gray_400 text-[14px]"
-                placeholder="Ghi chú thêm để chúng tôi giúp bạn trải nghiệm chuyến đi tốt hơn"
+                placeholder="Bạn có gì cần ghi chú thêm không?"
                 onChange={e => {
                   note.current = e.target.value;
                 }}
               />
             </div>
 
-            <Button loading={loadingOrderBuddy} disabled={!isValid} onClick={onOrder}>
-              Đặt lịch
+            <Button loading={loadingOrderProduct} disabled={!isValid} onClick={onOrder}>
+              Đặt mua
             </Button>
           </div>
         </div>
@@ -208,4 +186,4 @@ const OrderBuddy = ({ params }: Props) => {
   );
 };
 
-export default OrderBuddy;
+export default OrderProduct;

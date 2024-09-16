@@ -17,6 +17,15 @@ export type OrderBuddyParams = {
   supplier: number;
 };
 
+export type OrderProductParams = {
+  product_id: string;
+  number_order: number;
+  address: string;
+  phone: string;
+  is_save: boolean;
+  note: string;
+};
+
 export type CreateProductParams = Omit<TypeProduct, 'id'> & {
   creator?: number;
 };
@@ -46,6 +55,19 @@ export const apiOrderBuddy = async (params: OrderBuddyParams, authorize: boolean
     {
       type: 'buddy',
       ...params,
+    },
+    {
+      authorize,
+    },
+  );
+};
+
+export const apiOrderProduct = async (body: OrderProductParams, authorize: boolean) => {
+  await request.post(
+    '/profile/order',
+    {
+      type: 'product',
+      ...body,
     },
     {
       authorize,

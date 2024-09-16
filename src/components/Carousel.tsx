@@ -29,16 +29,27 @@ const Carousel = <T extends any>({
   duration = 2000,
 }: Props<T>) => {
   const [index, setIndex] = useState(0);
+  const [hover, setHover] = useState(false);
+
+  const shouldShowArrow = showArrow && hover;
 
   return (
-    <div className={cn('slide-container relative w-full', className)}>
+    <div
+      className={cn('slide-container relative w-full', className)}
+      onMouseOver={() => {
+        setHover(true);
+      }}
+      onMouseLeave={() => {
+        setHover(false);
+      }}
+    >
       <Slide
         transitionDuration={450}
         // indicators={showIndicator}
         duration={duration}
         pauseOnHover
         prevArrow={
-          showArrow ? (
+          shouldShowArrow ? (
             <div
               className="rounded-full ml-[10px] p-2"
               style={{ backgroundColor: 'rgba(0, 0, 0, 0.20)' }}
@@ -50,7 +61,7 @@ const Carousel = <T extends any>({
           )
         }
         nextArrow={
-          showArrow ? (
+          shouldShowArrow ? (
             <div
               className="rounded-full mr-[10px] p-2"
               style={{ backgroundColor: 'rgba(0, 0, 0, 0.20)' }}

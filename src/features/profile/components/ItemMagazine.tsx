@@ -19,7 +19,7 @@ const ItemMagazine = ({ item, className }: Props) => {
   return (
     <button
       className={cn(
-        'w-full inline-flex flex-col md:flex-row gap-6 bg-white rounded-[14px] hover-scale',
+        'w-full inline-flex flex-col md:flex-row gap-2 md:gap-6 bg-white rounded-[14px] hover-scale',
         className,
       )}
       onClick={() => router.push(MAGAZINE_ROUTES.magazineDetail(item.id))}

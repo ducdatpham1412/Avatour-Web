@@ -1,11 +1,11 @@
 import { ChevronRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
-import { CameraIcon, LocationIcon, PencilIcon } from '@/components/icon';
-import { serviceDataDetail } from '@/features/search/constants';
+import { useAppContext } from '@/app/provider';
+import { CameraIcon, PencilIcon } from '@/components/icon';
 import { Image } from '@/components/ui';
 import { PROFILE_ROUTES } from '@/configs/routes';
-import { useAppContext } from '@/app/provider';
+import { serviceDataDetail } from '@/features/search/constants';
 
 interface Props {
   profile: TypeProfile;
@@ -66,10 +66,10 @@ const InfoProfile = ({ profile, onGoToCheckIn }: Props) => {
             </button>
           )}
         </div>
-        <div className="flex gap-[2px] items-center">
+        {/* <div className="flex gap-[2px] items-center">
           <LocationIcon size={17} />
           <p className="text-gray_500">{profile.location}</p>
-        </div>
+        </div> */}
       </div>
 
       <div className="w-full rounded-[16px] border-[1px] border-gray_300 mt-[24px] p-[16px] inline-flex flex-col gap-[12px]">
