@@ -30,7 +30,8 @@ export const SEARCH_ROUTES = {
 };
 
 export const ORDER_ROUTES = {
-  buddy: (buddyId: number) => `/order/buddy/${buddyId}`,
+  buddy: (buddyId: number | string) => `/order/buddy/${buddyId}`,
+  product: (productId: string) => `/order/product/${productId}`,
 };
 
 export const MAGAZINE_ROUTES = {

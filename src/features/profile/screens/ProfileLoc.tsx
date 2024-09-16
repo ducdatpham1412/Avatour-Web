@@ -162,7 +162,7 @@ const ProfileLoc = ({ userId }: Props) => {
 
         {!!data.info.tag && (
           <div className="w-full rounded-[12px] p-[16px] bg-p_50 border-p_600 border-[1px] inline-flex items-center">
-            <RewardIcon />
+            <RewardIcon className="shrink-0" />
             <p className="text-p_800 font-medium ml-[8px]">{data.info.tag}</p>
           </div>
         )}
