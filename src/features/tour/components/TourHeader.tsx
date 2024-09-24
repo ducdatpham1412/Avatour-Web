@@ -125,7 +125,7 @@ const TourHeader = ({ tour, onLike, onDelete }: TourHeaderProps) => {
           {!!tour.description && (
             <TruncatedText
               headerTitle={tour.name}
-              className="text-black whitespace-pre-line font-light text-[14px]"
+              className="text-black whitespace-pre-line text-[14px]"
             >
               {tour.description}
             </TruncatedText>

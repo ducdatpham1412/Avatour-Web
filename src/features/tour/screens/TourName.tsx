@@ -18,6 +18,7 @@ const TourName = ({ onNext, register, errorMessage }: Props) => {
         <Input
           className="border-gray_300 mt-[16px] px-[16px] rounded-full h-14 text-[14px]"
           placeholder="Mùa hè tại Đà Nẵng"
+          maxLength={70}
           onKeyDown={e => {
             if (e.key === 'Enter') {
               onNext();

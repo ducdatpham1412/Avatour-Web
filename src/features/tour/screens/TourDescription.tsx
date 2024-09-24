@@ -16,6 +16,7 @@ const TourDescription = ({ register }: Props) => {
         <Textarea
           className="w-full border-[1px] border-gray_300 mt-[16px] px-[16px] py-[12px] rounded-[16px] h-[200px] text-[14px] text-start"
           placeholder="Một số lưu ý, Thời gian đẹp nhất,..."
+          maxLength={5000}
           {...register}
         />
       </div>

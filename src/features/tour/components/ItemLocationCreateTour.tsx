@@ -89,12 +89,12 @@ const ItemLocationCreateTour = ({
 
         <div className="w-full inline-flex gap-[6px] items-center">
           <Icon color={twConfigs.theme?.colors?.gray_500 as string} size={16} />
-          <div className="flex flex-1 items-center flex-wrap">
+          <div className="flex flex-1 items-center overflow-hidden">
             {item.services.map((s, i) => {
               const isLast = i === item.services.length - 1;
 
               return (
-                <p key={s} className="text-gray_500 text-[14px]">
+                <p key={s} className="text-gray_500 text-[14px] shrink-0">
                   {serviceDataDetail[s].name || ''}
                   {isLast ? '' : '・'}
                 </p>
