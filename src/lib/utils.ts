@@ -273,7 +273,9 @@ export function convertDecimalToTime(decimalHours: number) {
 }
 
 export const navigateNewTab = (path: string) => {
-  window.open(`${window.origin}/${path}`, '_blank');
+  const lastCharacter = path[path.length - 1];
+  const link = lastCharacter === '/' ? `${window.origin}${path}` : `${window.origin}/${path}`;
+  window.open(link, '_blank');
 };
 
 export const getTourName = (tour: TypeTour) => {
