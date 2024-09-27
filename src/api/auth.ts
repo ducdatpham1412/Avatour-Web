@@ -2,10 +2,14 @@
 import { deleteTokenCookies, getTokenCookies, setTokenCookies } from './cookies';
 import { request } from './request/api';
 
-interface Login {
-  username: string;
-  password: string;
-}
+type Login =
+  | {
+      username: string;
+      password: string;
+    }
+  | {
+      type: 'google';
+    };
 
 interface Register {
   name: string;
@@ -21,6 +25,19 @@ type RequestOTP = {
 };
 
 export const apiLogin = async (p: Login) => {
+  if ('type' in p) {
+    const { token } = getTokenCookies();
+    const res: TypeApi<LoginResponse> = await request.post('/auth/login', undefined, {
+      params: {
+        access_token: token,
+        type: p.type,
+      },
+      authorize: false,
+    });
+    setTokenCookies(res.data);
+    return res;
+  }
+
   const res: TypeApi<LoginResponse> = await request.post('/auth/login', p, {
     authorize: false,
   });

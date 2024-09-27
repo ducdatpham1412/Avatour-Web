@@ -1,6 +1,6 @@
 {
   "name": "avatour-web-new",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -42,6 +42,7 @@
     "lodash": "^4.17.21",
     "lucide-react": "^0.408.0",
     "next": "14.0.4",
+    "next-auth": "^4.24.7",
     "next-nprogress-bar": "^2.0.3",
     "nodemailer": "^6.9.7",
     "react": "18.2.0",
