@@ -76,21 +76,31 @@ export const apiOrderProduct = async (body: OrderProductParams, authorize: boole
 };
 
 export const apiCreateMagazine = async (
-  body: Pick<TypeMagazine, 'title' | 'content' | 'description' | 'keywords'>,
+  body: Pick<TypeMagazine, 'title' | 'content' | 'description' | 'keywords' | 'buddies'>,
 ) => {
-  const res: TypeApi<{ magazine_id: string }> = await request.post('/profile/magazines', body);
+  const res: TypeApi<{ magazine_id: string }> = await request.post('/profile/magazines', {
+    ...body,
+    buddies: body.buddies.map(b => b.id),
+  });
   return res.data;
 };
 
 export const apiEditMagazine = async (
   magazineId: string,
-  body: Pick<TypeMagazine, 'title' | 'content' | 'description' | 'keywords'>,
+  body: Pick<TypeMagazine, 'title' | 'content' | 'description' | 'keywords' | 'buddies'>,
 ) => {
-  await request.put('/profile/magazines', body, {
-    params: {
-      magazine_id: magazineId,
+  await request.put(
+    '/profile/magazines',
+    {
+      ...body,
+      buddies: body.buddies.map(b => b.id),
     },
-  });
+    {
+      params: {
+        magazine_id: magazineId,
+      },
+    },
+  );
 };
 
 export const apiDeleteMagazine = async (magazineId: string) => {

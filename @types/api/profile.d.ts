@@ -56,7 +56,7 @@ type Service =
   | 'other-service'; // Dịch vụ khác
 
 type MagazineContent = {
-  type: 'title' | 'content' | 'image';
+  type: 'title' | 'subtitle' | 'content' | 'image';
   content: string;
   description?: string;
 };
@@ -67,6 +67,7 @@ type TypeMagazine = {
   description: string;
   keywords: string;
   content: Array<MagazineContent>;
+  buddies: Array<TypeProfile>;
   creator: number;
   creator_name: string;
   creator_avatar: string;

@@ -11,6 +11,7 @@ import { getMarginContentMagazine, parseErrorMessage, twColors } from '@/lib';
 import { deleteMagazine, getMagazine } from '@/lib/storage';
 
 import { useMagazines } from './hooks';
+import { Buddies } from './screens';
 
 interface ContentProps {
   content: MagazineContent;
@@ -25,6 +26,10 @@ const Content = ({ content, onChange, onDelete }: ContentProps) => {
       return 'Tiêu đề đoạn';
     }
 
+    if (content.type === 'subtitle') {
+      return 'Phụ đề';
+    }
+
     if (content.type === 'content') {
       return 'Nội dung';
     }
@@ -34,7 +39,7 @@ const Content = ({ content, onChange, onDelete }: ContentProps) => {
   const isTitle = content.type === 'title';
 
   const renderRight = () => {
-    if (content.type === 'title') {
+    if (content.type === 'title' || content.type === 'subtitle') {
       return (
         <Input
           placeholder="Nhập tiêu đề"
@@ -124,6 +129,11 @@ const Content = ({ content, onChange, onDelete }: ContentProps) => {
             check: content.type === 'title',
           },
           {
+            label: 'Phụ đề',
+            value: 'subtitle',
+            check: content.type === 'subtitle',
+          },
+          {
             label: 'Nội dung',
             value: 'content',
             check: content.type === 'content',
@@ -165,6 +175,7 @@ const CreateMagazine = () => {
   const [description, setDescription] = useState(initMagazine?.description ?? '');
   const [keywords, setKeywords] = useState(initMagazine?.keywords ?? '');
   const [content, setContent] = useState<TypeMagazine['content']>(initMagazine?.content ?? []);
+  const [buddies, setBuddies] = useState<TypeMagazine['buddies']>(initMagazine?.buddies ?? []);
 
   const onCreate = async () => {
     try {
@@ -175,6 +186,7 @@ const CreateMagazine = () => {
           keywords,
           content,
           magazineId: initMagazine.id,
+          buddies,
         });
       } else {
         await create({
@@ -182,6 +194,7 @@ const CreateMagazine = () => {
           description,
           keywords,
           content,
+          buddies,
         });
       }
 
@@ -264,6 +277,10 @@ const CreateMagazine = () => {
         >
           + Thêm nội dung
         </Button>
+
+        <h2 className="text-[24px] mt-[40px]">Gợi ý một số buddy cho bài viết của bạn</h2>
+        <Buddies buddies={buddies} onChangeBuddies={v => setBuddies(v)} />
+
         <Button
           className="w-[90%] md:w-[50%] mt-[60px]"
           loading={loadingCreate || loadingEdit}

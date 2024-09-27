@@ -14,6 +14,7 @@ import { cn, getMarginContentMagazine, goToProfile, logger, parseErrorMessage } 
 import { setMagazine } from '@/lib/storage';
 
 import { useMagazines } from './hooks';
+import { ItemBuddy } from '../buddy/components';
 
 type Props = PageProps<{ magazine_id: string }>;
 
@@ -30,7 +31,7 @@ const TableOfContent = ({ listTitles, className }: TableOfContentProps) => {
   return (
     <div
       className={cn(
-        'rounded-[14px] border-[1px] border-gray_300 bg-white px-[12px] py-[8px] flex-col gap-y-2',
+        'rounded-[14px] border-[1px] border-gray_300 bg-white px-[12px] pt-[8px] pb-[12px] flex-col gap-y-2',
         className,
       )}
     >
@@ -90,6 +91,14 @@ const DetailMagazine = ({ params }: Props) => {
           className="font-normal whitespace-pre-line"
           style={{ marginTop: top, marginBottom: bottom }}
         >
+          {content.content}
+        </p>
+      );
+    }
+
+    if (content.type === 'subtitle') {
+      return (
+        <p className="text-[16px] font-medium" style={{ marginTop: top, marginBottom: bottom }}>
           {content.content}
         </p>
       );
@@ -204,6 +213,19 @@ const DetailMagazine = ({ params }: Props) => {
           className="w-[270px] hidden lg:inline-flex sticky top-8 max-h-[60vh] self-start"
         />
       </div>
+
+      {!!magazine.buddies.length && (
+        <>
+          <p className="text-[20px] font-medium mt-[28px]">
+            Một số trải nghiệm cùng buddy địa phương bạn có thể tham khảo
+          </p>
+          <div className="w-full inline-flex flex-wrap sm:gap-x-[4%] lg:gap-x-[3.5%] gap-y-7 sm:gap-y-8 mt-[20px]">
+            {magazine.buddies.map(buddy => {
+              return <ItemBuddy item={buddy} key={buddy.id} />;
+            })}
+          </div>
+        </>
+      )}
     </Container>
   );
 };
