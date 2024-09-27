@@ -86,7 +86,10 @@ const DetailMagazine = ({ params }: Props) => {
 
     if (content.type === 'content') {
       return (
-        <p className="font-normal" style={{ marginTop: top, marginBottom: bottom }}>
+        <p
+          className="font-normal whitespace-pre-line"
+          style={{ marginTop: top, marginBottom: bottom }}
+        >
           {content.content}
         </p>
       );
@@ -181,7 +184,9 @@ const DetailMagazine = ({ params }: Props) => {
           </div>
 
           {!!magazine.description && (
-            <p className="mt-[20px] mb-[4px] font-medium">{magazine.description}</p>
+            <p className="mt-[20px] mb-[4px] font-medium whitespace-pre-line">
+              {magazine.description}
+            </p>
           )}
 
           <TableOfContent
