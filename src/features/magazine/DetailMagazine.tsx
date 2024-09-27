@@ -8,7 +8,7 @@ import { useAppContext } from '@/app/provider';
 import { DropDown } from '@/components';
 import { DialogConfirm } from '@/components/dialogs';
 import { Avatar, Image } from '@/components/ui';
-import { MAGAZINE_ROUTES } from '@/configs/routes';
+import { MAGAZINE_ROUTES, PROFILE_ROUTES } from '@/configs/routes';
 import { toast } from '@/hooks';
 import { cn, getMarginContentMagazine, goToProfile, logger, parseErrorMessage } from '@/lib';
 import { setMagazine } from '@/lib/storage';
@@ -221,7 +221,15 @@ const DetailMagazine = ({ params }: Props) => {
           </p>
           <div className="w-full inline-flex flex-wrap sm:gap-x-[4%] lg:gap-x-[3.5%] gap-y-7 sm:gap-y-8 mt-[20px]">
             {magazine.buddies.map(buddy => {
-              return <ItemBuddy item={buddy} key={buddy.id} />;
+              return (
+                <ItemBuddy
+                  item={buddy}
+                  key={buddy.id}
+                  onClick={() => {
+                    router.push(PROFILE_ROUTES.profileId(buddy.id));
+                  }}
+                />
+              );
             })}
           </div>
         </>

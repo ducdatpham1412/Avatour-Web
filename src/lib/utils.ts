@@ -273,7 +273,7 @@ export function convertDecimalToTime(decimalHours: number) {
 }
 
 export const navigateNewTab = (path: string) => {
-  const lastCharacter = path[path.length - 1];
+  const lastCharacter = window.origin[window.origin.length - 1];
   const link = lastCharacter === '/' ? `${window.origin}${path}` : `${window.origin}/${path}`;
   window.open(link, '_blank');
 };
