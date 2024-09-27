@@ -28,6 +28,7 @@ type Refs = ForwardedRef<DialogRefs<ContentProps>>;
 interface ContentProps {
   currentLocs: TypeProfile[];
   onSave: (locs: TypeProfile[]) => void;
+  accountType?: TypeProfile['account_type'];
 }
 
 interface ItemLocationProps {
@@ -86,12 +87,12 @@ const ButtonFilter = ({ children, isActive, onClick }: ButtonFilterProps) => {
   );
 };
 
-const Content = ({ currentLocs, onSave }: ContentProps) => {
+const Content = ({ currentLocs, onSave, accountType }: ContentProps) => {
   const [{ data, loading, error }] = useLocations();
   const timeOut = useRef<NodeJS.Timeout>();
   const [displayLocs, setDisplayLocs] = useState<TypeProfile[]>([]);
   const [chosenLocs, setChosenLocs] = useState<TypeProfile[]>(currentLocs);
-  const [accType, setAccType] = useState<TypeProfile['account_type']>();
+  const [accType, setAccType] = useState(accountType);
 
   const dataFollowAccType = useMemo(() => {
     if (!accType) {
@@ -177,18 +178,20 @@ const Content = ({ currentLocs, onSave }: ContentProps) => {
         }}
       />
 
-      <div className="w-full inline-flex flex-row items-center gap-x-[12px] px-[12px]">
-        <SlidersHorizontal size={16} />
-        <ButtonFilter isActive={accType === undefined} onClick={() => setAccType(undefined)}>
-          Tất cả
-        </ButtonFilter>
-        <ButtonFilter isActive={accType === 'location'} onClick={() => setAccType('location')}>
-          Địa điểm
-        </ButtonFilter>
-        <ButtonFilter isActive={accType === 'buddy'} onClick={() => setAccType('buddy')}>
-          Buddy
-        </ButtonFilter>
-      </div>
+      {!accountType && (
+        <div className="w-full inline-flex flex-row items-center gap-x-[12px] px-[12px]">
+          <SlidersHorizontal size={16} />
+          <ButtonFilter isActive={accType === undefined} onClick={() => setAccType(undefined)}>
+            Tất cả
+          </ButtonFilter>
+          <ButtonFilter isActive={accType === 'location'} onClick={() => setAccType('location')}>
+            Địa điểm
+          </ButtonFilter>
+          <ButtonFilter isActive={accType === 'buddy'} onClick={() => setAccType('buddy')}>
+            Buddy
+          </ButtonFilter>
+        </div>
+      )}
 
       {!!chosenLocs.length && (
         <div className="w-full inline-flex flex-wrap gap-[12px] max-h-[10vh] overflow-y-auto beautiful-scrollbar">
@@ -223,6 +226,7 @@ const Content = ({ currentLocs, onSave }: ContentProps) => {
 const DialogLocations = forwardRef((_: any, ref: Refs) => {
   const content = useRef<ContentProps>();
   const [open, setOpen] = useState(false);
+  const [accountType, setAccountType] = useState<TypeProfile['account_type']>();
 
   useImperativeHandle(
     ref,
@@ -230,6 +234,7 @@ const DialogLocations = forwardRef((_: any, ref: Refs) => {
       open: v => {
         if (v) {
           content.current = v;
+          setAccountType(v.accountType);
           setOpen(true);
         }
       },
@@ -258,6 +263,7 @@ const DialogLocations = forwardRef((_: any, ref: Refs) => {
             setOpen(false);
           }}
           currentLocs={content.current?.currentLocs ?? []}
+          accountType={accountType}
         />
       </DialogContent>
     </Dialog>

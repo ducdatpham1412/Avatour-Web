@@ -14,7 +14,9 @@ const useMagazines = () => {
     'api.createMagazine',
     async (
       _,
-      { arg }: { arg: Pick<TypeMagazine, 'title' | 'description' | 'keywords' | 'content'> },
+      {
+        arg,
+      }: { arg: Pick<TypeMagazine, 'title' | 'description' | 'keywords' | 'content' | 'buddies'> },
     ) => {
       const res = await apiCreateMagazine(arg);
       return res;
@@ -28,7 +30,7 @@ const useMagazines = () => {
       {
         arg,
       }: {
-        arg: Pick<TypeMagazine, 'title' | 'description' | 'keywords' | 'content'> & {
+        arg: Pick<TypeMagazine, 'title' | 'description' | 'keywords' | 'content' | 'buddies'> & {
           magazineId: string;
         };
       },

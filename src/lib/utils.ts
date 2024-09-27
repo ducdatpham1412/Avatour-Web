@@ -304,6 +304,13 @@ export const getMarginContentMagazine = (content: TypeMagazine['content'][number
     };
   }
 
+  if (content.type === 'subtitle') {
+    return {
+      top: 16,
+      bottom: 0,
+    };
+  }
+
   return {
     top: 16,
     bottom: 16,

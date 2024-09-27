@@ -34,7 +34,10 @@ const Container = ({
 const ItemBuddy = ({ isEmpty, onClick, item }: Props) => {
   const [activity, name] = item.name.split(', ');
   const ServiceIcon = serviceDataDetail[item.services[0]].icon;
-  const textServices = item.services.map(s => serviceDataDetail[s].name).join(', ');
+  const textServices = item.services
+    .slice(0, 3)
+    .map(s => serviceDataDetail[s].name)
+    .join(', ');
 
   return (
     <Container isEmpty={isEmpty} onClick={onClick}>
