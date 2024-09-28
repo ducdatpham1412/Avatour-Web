@@ -1,3 +1,4 @@
+import { useAppContext } from '@/app/provider';
 import { useTours } from '@/features/profile/hooks';
 import logger from '@/lib/logger';
 
@@ -6,6 +7,7 @@ type Options = {
 };
 
 const useAllTours = () => {
+  const [, { setResource }] = useAppContext();
   const [, { mutate: mutateHome }] = useTours(undefined, 'home');
   const [, { mutate: mutateList }] = useTours(undefined, 'list');
   const [, { mutate: mutateFavorite }] = useTours(undefined, 'favorite');
@@ -47,6 +49,31 @@ const useAllTours = () => {
       },
       { revalidate: false },
     );
+
+    setResource(pre => {
+      if (pre) {
+        const check = pre.favorite_tours.find(tour => tour.id === tourId);
+
+        if (!check) {
+          return pre;
+        }
+
+        pre.favorite_tours = pre.favorite_tours.map(tour => {
+          if (tour.id !== tourId) {
+            return tour;
+          }
+
+          return {
+            ...tour,
+            is_liked: isLiked,
+          };
+        });
+
+        return {
+          ...pre,
+        };
+      }
+    });
 
     if (shouldFavorite) {
       mutateFavorite().catch(logger.log);

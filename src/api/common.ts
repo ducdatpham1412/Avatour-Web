@@ -7,9 +7,9 @@ export const apiGetPassport = async () => {
   return res.data;
 };
 
-export const apiGetResource = async () => {
+export const apiGetResource = async (authorize: boolean) => {
   const res: TypeApi<Resource> = await request.get('/common/resource', undefined, {
-    authorize: false,
+    authorize,
     // next: {
     //   revalidate: 10,
     // },

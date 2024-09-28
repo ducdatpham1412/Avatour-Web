@@ -43,6 +43,7 @@ type TypeContext = [
     setProfile: Dispatch<SetStateAction<TypeProfile | undefined>>;
     setTourSearches: Dispatch<SetStateAction<TourSearches | undefined>>;
     setHistory: Dispatch<SetStateAction<string[]>>;
+    setResource: Dispatch<SetStateAction<Resource | undefined>>;
   },
 ];
 
@@ -98,16 +99,18 @@ const Provider = ({ children }: Props) => {
       //     setProfile(value.profile);
       //     setResource(value.resource);
       //   }
+      let authorize = false;
 
       try {
         const res = await apiGetPassport();
         setProfile(res.profile);
+        authorize = true;
       } catch (err) {
         logger.log('Not have profile => Init anonymous');
       }
 
       try {
-        const resResource = await apiGetResource();
+        const resResource = await apiGetResource(authorize);
         setResource(resResource);
       } catch (err) {
         logger.log('Get resource failed: ', err);
@@ -131,6 +134,7 @@ const Provider = ({ children }: Props) => {
           setProfile,
           setTourSearches,
           setHistory,
+          setResource,
         },
       ]}
     >

@@ -16,10 +16,10 @@ import { SearchInputBase } from '../../components';
 const Body = () => {
   const router = useRouter();
   const text = useRef('');
-  const [{ profile }] = useAppContext();
+  const [{ profile, resource }] = useAppContext();
   const { mutateLikeTour } = useAllTours();
   const [{ data: magazines }] = useMagazines();
-  const [{ data: tours }, { likeTour }] = useTours(undefined, 'home');
+  const [, { likeTour }] = useTours(undefined, 'home');
 
   const onLikeTour = async (tourId: string) => {
     if (!profile) {
@@ -60,7 +60,7 @@ const Body = () => {
       />
 
       <div className="w-[min(100%,_1000px)] inline-flex justify-between flex-wrap mt-4 gap-y-8">
-        {tours?.map(item => {
+        {resource?.favorite_tours.map(item => {
           return (
             <ItemTour
               key={item.id}
@@ -76,13 +76,13 @@ const Body = () => {
 
       {!!magazines?.length && (
         <div className="w-[min(100%,_1000px)] inline-flex flex-col items-start mt-[60px]">
-        <p className="text-black text-[26px] font-medium">Tạp chí du lịch</p>
-        <div className="flex flex-1 gap-y-10 flex-col mt-8">
-          {magazines.map(m => {
-            return <ItemMagazine key={m.id} item={m} />;
-          })}
+          <p className="text-black text-[26px] font-medium">Tạp chí du lịch</p>
+          <div className="flex flex-1 gap-y-10 flex-col mt-8">
+            {magazines.map(m => {
+              return <ItemMagazine key={m.id} item={m} />;
+            })}
+          </div>
         </div>
-      </div>
       )}
 
       {/* <div className="min-h-[200px] w-full flex flex-col items-center gap-y-7">
