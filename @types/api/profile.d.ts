@@ -56,6 +56,7 @@ type Service =
   | 'other-service'; // Dịch vụ khác
 
 type MagazineContent = {
+  id?: string;
   type: 'title' | 'subtitle' | 'content' | 'image';
   content: string;
   description?: string;

@@ -329,3 +329,7 @@ export const isVideo = (fileName: string) => {
   }
   return false;
 };
+
+export const getTimestamp = () => {
+  return dayjs().valueOf().toString();
+};
