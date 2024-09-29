@@ -1,7 +1,7 @@
 import { ClassValue } from 'clsx';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { PropsWithChildren, ReactElement } from 'react';
+import { PropsWithChildren, ReactElement, useMemo } from 'react';
 
 import { Carousel, VideoImage } from '@/components';
 import {
@@ -143,17 +143,27 @@ const ProfileLoc = ({ userId }: Props) => {
     return null;
   }
 
-  const isOpen =
-    checkOpenTime({ startTime: data.info.start_time, endTime: data.info.end_time }) === 'open';
   const isBuddy = data.account_type === 'buddy';
   const displayTag = !!data.parent || !!data.info.tag || !!data.info.value;
-  const imagesProduct = data.info.products.reduce((pre: string[], cur) => {
-    pre.push(...cur.images);
-    return pre;
-  }, [] as string[]);
-  const images = data.avatar
-    ? [data.avatar, ...data.link.map(l => l.img), ...imagesProduct]
-    : [...data.link.map(l => l.img), ...imagesProduct];
+
+  const { images, isOpen } = useMemo(() => {
+    const imagesProduct = data.info.products.reduce((pre: string[], cur) => {
+      pre.push(...cur.images);
+      return pre;
+    }, [] as string[]);
+    const images__ = [data.link[0].img, ...data.link.slice(1).map(l => l.img), ...imagesProduct];
+    if (data.avatar && !images__.includes(data.avatar)) {
+      images__.splice(1, 0, data.avatar);
+    }
+
+    const isOpen__ =
+      checkOpenTime({ startTime: data.info.start_time, endTime: data.info.end_time }) === 'open';
+
+    return {
+      images: images__,
+      isOpen: isOpen__,
+    };
+  }, [data]);
 
   const renderContentTag = () => {
     return (
