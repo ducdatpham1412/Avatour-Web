@@ -37,13 +37,13 @@ const Navbar = () => {
     if (width >= CONTAINER_WIDTH.lg) {
       return {
         icon: 20,
-        logo: 80,
+        logo: 70,
       };
     }
 
     return {
       icon: 30,
-      logo: 60,
+      logo: 50,
     };
   }, [width]);
 
