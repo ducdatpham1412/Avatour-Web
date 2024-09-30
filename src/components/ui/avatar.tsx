@@ -13,7 +13,7 @@ const Avatar = ({ src, size = 35, className }: Props) => {
     <Image
       src={src}
       className={cn('rounded-full', className)}
-      defaultSrc="https://vietflag.vn/ckfinder/userfiles/images/tin-tuc/quoc-ky-viet-nam-1.jpg"
+      defaultSrc="https://media.istockphoto.com/id/864417828/vector/vietnamese-flag.jpg?s=612x612&w=0&k=20&c=xVk7OhKcyDwQz1oY7hPcXTqxviz9KGW9tJAeDEhmgz8="
       style={{ width: size, height: size }}
     />
   );

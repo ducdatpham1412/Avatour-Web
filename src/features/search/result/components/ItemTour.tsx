@@ -99,7 +99,10 @@ const ItemTour = ({ item, onHover, isActive, onPreview, onClick }: Props) => {
       onClick={onClick}
     >
       <div className="lg:w-1/2 w-full shrink-0 rounded-xl overflow-hidden aspect-[3/2]">
-        <Image src={item.schedule[0][0].avatar} className="h-full w-full [&_>_img]:!object-cover" />
+        <Image
+          src={item.schedule[0][0].link[0]?.img}
+          className="h-full w-full [&_>_img]:!object-cover"
+        />
       </div>
       <div className="flex flex-col justify-between py-[6px] gap-y-1 px-2 lg:px-0">
         <div className="flex flex-col">

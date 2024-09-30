@@ -53,7 +53,7 @@ const ItemTour = ({ item, onClick, onLike, className, showAvatar = false }: Prop
     >
       <div className="relative w-full">
         <Image
-          src={item.schedule[0][0].avatar}
+          src={item.schedule[0][0].link[0]?.img}
           className="w-full aspect-[306/204] rounded-[14px] hover:shadow-all"
         />
         <ButtonAbsolute isLiked={item.is_liked} onClick={onLike} />

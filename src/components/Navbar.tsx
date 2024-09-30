@@ -15,7 +15,7 @@ import { logger, parseErrorMessage, twColors } from '@/lib';
 import { DialogAuth } from './dialogs';
 import DropDown from './DropDown';
 import { BookUserIcon, IconAvatour, MapPinIcon } from './icon';
-import { Image } from './ui';
+import { Avatar } from './ui';
 
 const Navbar = () => {
   const [{ profile, initLoading }, { setProfile }] = useAppContext();
@@ -91,11 +91,7 @@ const Navbar = () => {
     return (
       <div className="px-[10px] py-[6px] border-[1px] border-gray_300 rounded-full flex gap-[10px] items-center">
         <Link href={PROFILE_ROUTES.myProfile}>
-          <Image
-            src={profile.avatar}
-            defaultSrc="https://vietflag.vn/ckfinder/userfiles/images/tin-tuc/quoc-ky-viet-nam-1.jpg"
-            className="w-[36px] h-[36px] rounded-full hover-scale"
-          />
+          <Avatar src={profile.avatar} className="w-[36px] h-[36px] rounded-full hover-scale" />
         </Link>
         <DropDown
           trigger={<MenuIcon size={18} className="hover-scale" />}
