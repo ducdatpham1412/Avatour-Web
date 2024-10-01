@@ -23,13 +23,13 @@ type Props = PropsWithChildren & {
 
 export const Footer = () => {
   return (
-    <div className="absolute px-[10%] w-full md:w-full h-[160px] md:h-[65px] bottom-0 bg-p_600 inline-flex items-start md:items-center justify-between flex-col md:flex-row py-6">
+    <div className="absolute px-[10%] w-full md:w-full h-[160px] md:h-[80px] bottom-0 bg-p_600 inline-flex items-start md:items-center justify-between flex-col md:flex-row py-6">
       <Link href="/about-us" target="_blank" className="text-[12px] hover-scale">
         Về chúng tôi
       </Link>
-      <Link href="/tuyen-dung.pdf" target="_blank" className="text-[12px] hover-scale">
+      {/* <Link href="/tuyen-dung.pdf" target="_blank" className="text-[12px] hover-scale">
         Tuyển dụng
-      </Link>
+      </Link> */}
       <Link href="/policy" target="_blank" className="text-[12px] hover-scale">
         Chính sách bảo mật
       </Link>
@@ -38,7 +38,10 @@ export const Footer = () => {
       </Link>
       <div>
         <p className="text-[12px] hover-scale">
-          SĐT: (+84) 886141200 | Email: service.avatour@gmail.com
+          SĐT: (+84) 862 938 350 | Email: service.avatour@gmail.com
+        </p>
+        <p className="text-[12px] hover-scale mt-[4px]">
+          Trụ sở: Số 9/28 Liễu Giai, Ba Đình, Hà Nội
         </p>
       </div>
     </div>
