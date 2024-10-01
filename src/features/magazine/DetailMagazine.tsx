@@ -22,6 +22,17 @@ type Props = PageProps<{ magazine_id: string }>;
 const renderContent = (content: MagazineContent) => {
   const { top, bottom } = getMarginContentMagazine(content);
 
+  if (content.type === 'content') {
+    return (
+      <p
+        className="font-normal whitespace-pre-line text-justify"
+        style={{ marginTop: top, marginBottom: bottom }}
+      >
+        {content.content}
+      </p>
+    );
+  }
+
   if (content.type === 'image') {
     return (
       <div className="w-full text-center" style={{ marginTop: top, marginBottom: bottom }}>
@@ -30,17 +41,6 @@ const renderContent = (content: MagazineContent) => {
           <p className="text-[13px] italic font-light mt-[8px]">{content.description}</p>
         )}
       </div>
-    );
-  }
-
-  if (content.type === 'content') {
-    return (
-      <p
-        className="font-normal whitespace-pre-line"
-        style={{ marginTop: top, marginBottom: bottom }}
-      >
-        {content.content}
-      </p>
     );
   }
 
@@ -154,7 +154,7 @@ const DetailMagazine = ({ params }: Props) => {
           </div>
 
           {!!magazine.description && (
-            <p className="mt-[20px] mb-[4px] font-medium whitespace-pre-line">
+            <p className="mt-[20px] mb-[4px] font-medium whitespace-pre-line text-justify">
               {magazine.description}
             </p>
           )}
