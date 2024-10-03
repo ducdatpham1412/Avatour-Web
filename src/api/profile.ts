@@ -15,6 +15,7 @@ export type OrderBuddyParams = {
   is_save: boolean;
   note: string;
   supplier: number;
+  voucher: string | undefined;
 };
 
 export type OrderProductParams = {

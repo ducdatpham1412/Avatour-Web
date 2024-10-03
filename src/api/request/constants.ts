@@ -9,6 +9,7 @@ export const ERROR_MESSAGE = {
   password_invalid: 'password_invalid',
   old_password_not_true: 'old_password_not_true',
   input_invalid: 'input_invalid',
+  voucher_max: 'voucher_max',
 
   // authentication
   register_fail: 'register_fail',
@@ -53,6 +54,7 @@ export const PARSE_ERROR_MESSAGE = {
   [ERROR_MESSAGE.input_invalid]: 'Dữ liệu nhập sai',
   [ERROR_MESSAGE.username_existed]: 'Tài khoản đã tồn tại',
   [ERROR_MESSAGE.otp_invalid]: 'Mã OTP không hợp lệ',
+  [ERROR_MESSAGE.voucher_max]: 'Opp, voucher này đã được mọi người dùng hết rồi ^^',
 };
 
 // const statusText = {
