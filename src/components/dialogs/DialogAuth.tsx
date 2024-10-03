@@ -18,6 +18,7 @@ type Mode = 'sign-in' | 'sign-up';
 type Params = {
   mode: Mode;
   canClose?: boolean;
+  title?: string;
 };
 type Ref = ForwardedRef<DialogRefs<Params>>;
 
@@ -27,6 +28,7 @@ const DialogAuth = forwardRef((_: any, ref: Ref) => {
   const [mode, setMode] = useState<Mode>('sign-in');
   const [open, setOpen] = useState(false);
   const [canClose, setCanClose] = useState(true);
+  const [title, setTitle] = useState<string>();
 
   useImperativeHandle(
     ref ?? authRef,
@@ -40,6 +42,7 @@ const DialogAuth = forwardRef((_: any, ref: Ref) => {
           } else {
             setCanClose(true);
           }
+          setTitle(v.title);
         }
       },
       close: () => {
@@ -52,7 +55,11 @@ const DialogAuth = forwardRef((_: any, ref: Ref) => {
   const renderContent = () => {
     if (mode === 'sign-in') {
       return (
-        <SignIn onChangeMode={() => setMode('sign-up')} onLoginSuccess={() => setOpen(false)} />
+        <SignIn
+          onChangeMode={() => setMode('sign-up')}
+          onLoginSuccess={() => setOpen(false)}
+          title={title}
+        />
       );
     }
     return <SignUp onChangeMode={() => setMode('sign-in')} onSuccess={() => setOpen(false)} />;

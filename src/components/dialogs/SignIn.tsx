@@ -6,15 +6,15 @@ import { useAppContext } from '@/app/provider';
 import { useLoading, useToast } from '@/hooks';
 import { parseErrorMessage } from '@/lib';
 
-import { Icon } from '../icon';
 import { Button, Input } from '../ui';
 
-interface ChildrenProps {
+interface Props {
   onChangeMode: () => void;
   onLoginSuccess: () => void;
+  title?: string;
 }
 
-const SignIn = ({ onChangeMode, onLoginSuccess }: ChildrenProps) => {
+const SignIn = ({ onChangeMode, onLoginSuccess, title }: Props) => {
   const { toast } = useToast();
   const { loading, setLoading } = useLoading();
   const [, { setProfile }] = useAppContext();
@@ -43,11 +43,15 @@ const SignIn = ({ onChangeMode, onLoginSuccess }: ChildrenProps) => {
 
   return (
     <div className="flex flex-col gap-[24px] mt-[40px] mb-[20px]">
-      <p className="text-[20px] font-medium">
-        Bạn hãy
-        <span className="text-p_700"> đăng nhập </span>
-        để lưu lại lịch trình yêu thích của mình nhé!
-      </p>
+      {title ? (
+        <p className="text-[20px] font-medium">{title}</p>
+      ) : (
+        <p className="text-[20px] font-medium">
+          Bạn hãy
+          <span className="text-p_700"> đăng nhập </span>
+          để lưu lại lịch trình yêu thích của mình nhé!
+        </p>
+      )}
 
       <div className="">
         <input type="text" autoFocus className="hidden" />
@@ -73,12 +77,12 @@ const SignIn = ({ onChangeMode, onLoginSuccess }: ChildrenProps) => {
         Đăng nhập
       </Button>
 
-      <p className="self-center text-[13px] text-gray_500 font-normal">hoặc</p>
+      {/* <p className="self-center text-[13px] text-gray_500 font-normal">hoặc</p>
 
       <Button className="bg-gray_200">
         <Icon name="google" />
         Đăng nhập với Google
-      </Button>
+      </Button> */}
 
       <p className="self-center">
         Bạn chưa có tài khoản?

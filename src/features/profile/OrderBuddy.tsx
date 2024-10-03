@@ -9,14 +9,15 @@ import { useMemo, useRef, useState } from 'react';
 import Container from '@/app/container';
 import { useAppContext } from '@/app/provider';
 import { SuccessScreen } from '@/components';
+import { DialogAuth } from '@/components/dialogs';
 import { Button, Checkbox, Input, Textarea } from '@/components/ui';
-import { toast } from '@/hooks';
-import { parseErrorMessage } from '@/lib';
+import { toastErr } from '@/hooks';
 import { formatUTCTime } from '@/lib/format';
 import { getPhone, setPhone as setPhoneStorage } from '@/lib/storage';
 
 import { useBuddies } from '../buddy/hooks';
-import { useProfile } from './hooks';
+import { ItemVoucher } from './components';
+import { useProfile, useVouchers } from './hooks';
 
 type Props = PageProps<{ buddy_id: number }>;
 
@@ -25,6 +26,7 @@ const OrderBuddy = ({ params }: Props) => {
   const [{ profile }, { setProfile }] = useAppContext();
   const [{ data }] = useProfile(params.buddy_id);
   const [{ loadingOrderBuddy }, { orderBuddy }] = useBuddies();
+  const [{ data: vouchers }, { mutate: mutateVouchers }] = useVouchers(params.buddy_id, 'buddy');
   const defaultPhone = useMemo(() => profile?.phone ?? getPhone() ?? '', []);
 
   const [people, setPeople] = useState('');
@@ -33,19 +35,12 @@ const OrderBuddy = ({ params }: Props) => {
   const [phone, setPhone] = useState(defaultPhone);
   const [checked, setChecked] = useState(true);
   const note = useRef('');
+  const [voucherUsed, setVoucherUsed] = useState<TypeVoucher['id']>();
   const [success, setSuccess] = useState(false);
 
   const isValid = people && date && hour && phone;
 
   const onOrder = async () => {
-    // if (1 === 1) {
-    //   const element = document.getElementById('scrollTop');
-    //   if (element) {
-    //     element.scrollTo({ top: 0, behavior: 'instant' });
-    //   }
-    //   return;
-    // }
-
     if (isValid && data) {
       try {
         await orderBuddy({
@@ -55,7 +50,11 @@ const OrderBuddy = ({ params }: Props) => {
           note: note.current,
           supplier: data.id,
           number_people: Number(people),
+          voucher: voucherUsed,
         });
+        if (voucherUsed) {
+          await mutateVouchers();
+        }
         if (checked) {
           setPhoneStorage(phone);
           setProfile(pre => {
@@ -73,10 +72,7 @@ const OrderBuddy = ({ params }: Props) => {
         }
         setSuccess(true);
       } catch (err) {
-        toast({
-          variant: 'destructive',
-          description: parseErrorMessage(err),
-        });
+        toastErr(err);
       }
     }
   };
@@ -191,6 +187,44 @@ const OrderBuddy = ({ params }: Props) => {
                 }}
               />
             </div>
+
+            {!!vouchers?.length && (
+              <div className="w-full inline-flex flex-col gap-2">
+                <p className="font-semibold text-[16px]">Ưu đãi dành cho bạn</p>
+                <div className="w-full inline-flex gap-x-[20px] overflow-x-auto pt-[4px] px-[4px] pb-[12px] beautiful-scrollbar">
+                  {vouchers.map(voucher => {
+                    return (
+                      <ItemVoucher
+                        key={voucher.id}
+                        item={voucher}
+                        hasChosen
+                        status={
+                          voucher.status === 'used'
+                            ? 'disable'
+                            : voucher.id === voucherUsed
+                            ? 'chosen'
+                            : undefined
+                        }
+                        onClick={() => {
+                          if (!profile) {
+                            DialogAuth.open({
+                              title: 'Bạn hãy đăng nhập để nhận nhiều khuyến mãi ưu đãi nhé',
+                              mode: 'sign-in',
+                            });
+                          } else {
+                            if (voucher.id === voucherUsed) {
+                              setVoucherUsed(undefined);
+                            } else {
+                              setVoucherUsed(voucher.id);
+                            }
+                          }
+                        }}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             <Button loading={loadingOrderBuddy} disabled={!isValid} onClick={onOrder}>
               Đặt lịch

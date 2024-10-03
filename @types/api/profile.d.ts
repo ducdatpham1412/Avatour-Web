@@ -155,3 +155,29 @@ type TypeProfile = {
       setting: ProfileSetting;
     }
 );
+
+type TypeVoucher = {
+  id: string;
+  subtype: 'decrease-percent' | 'decrease-value';
+  value: number;
+  title: string;
+  description: string;
+  avatar: string;
+  max_number: number;
+  used_number: number;
+  created: string;
+  modified: string;
+  expired: string;
+  status: 'ready' | 'used';
+} & (
+  | {
+      type: 'buddy';
+      buddy: number;
+      product: null;
+    }
+  | {
+      type: 'product';
+      buddy: null;
+      product: string;
+    }
+);

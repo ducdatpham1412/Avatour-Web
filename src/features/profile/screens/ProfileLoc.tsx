@@ -20,8 +20,8 @@ import { checkOpenTime, cn, convertDecimalToTime, navigateNewTab, twConfigs } fr
 import { formatTourPrice } from '@/lib/format';
 import { setAlbum } from '@/lib/storage';
 
-import { ItemProduct, LocationTag } from '../components';
-import { useProfile } from '../hooks';
+import { ItemProduct, ItemVoucher, LocationTag } from '../components';
+import { useProfile, useVouchers } from '../hooks';
 import ChildrenLocs from './ChildrenLocs';
 import ToursHaveProfile from './ToursHaveProfile';
 
@@ -127,6 +127,33 @@ const ParentTag = ({ userId }: Props) => {
         onClick={() => navigateNewTab(PROFILE_ROUTES.profileId(userId))}
       />
     </div>
+  );
+};
+
+const Voucher = ({ userId }: Props) => {
+  const router = useRouter();
+  const [{ data }] = useVouchers(userId, 'buddy');
+
+  if (!data?.length) {
+    return null;
+  }
+
+  return (
+    <>
+      <Line />
+      <Title title="Ưu đãi dành cho bạn" />
+      <div className="w-full inline-flex gap-x-[20px] overflow-x-auto pt-[4px] px-[4px] pb-[12px] beautiful-scrollbar">
+        {data.map(voucher => {
+          return (
+            <ItemVoucher
+              key={voucher.id}
+              item={voucher}
+              onClick={() => router.push(ORDER_ROUTES.buddy(userId))}
+            />
+          );
+        })}
+      </div>
+    </>
   );
 };
 
@@ -331,13 +358,16 @@ const ProfileLoc = ({ userId }: Props) => {
           </Block>
 
           {isBuddy && (
-            <Button
-              className="w-full md:w-[70%] inline-flex gap-2"
-              onClick={() => router.push(ORDER_ROUTES.buddy(data.id))}
-            >
-              <BookUserIcon size={20} />
-              <p className="font-medium">Đặt lịch ngay</p>
-            </Button>
+            <>
+              <Voucher userId={data.id} />
+              <Button
+                className="w-full md:w-[70%] inline-flex gap-2 shadow-all"
+                onClick={() => router.push(ORDER_ROUTES.buddy(data.id))}
+              >
+                <BookUserIcon size={20} />
+                <p className="font-medium">Đặt lịch ngay</p>
+              </Button>
+            </>
           )}
 
           <Line />
