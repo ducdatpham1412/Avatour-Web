@@ -5,11 +5,11 @@ import { useRef } from 'react';
 import { useAppContext } from '@/app/provider';
 import { DialogAuth } from '@/components/dialogs';
 import { SEARCH_ROUTES, TOUR_ROUTES } from '@/configs/routes';
+import { useMagazines } from '@/features/magazine/hooks';
 import { ItemMagazine, ItemTour } from '@/features/profile/components';
 import { useTours } from '@/features/profile/hooks';
 import { toast, useAllTours, useRouter } from '@/hooks';
 import { parseErrorMessage } from '@/lib/utils';
-import { useMagazines } from '@/features/magazine/hooks';
 
 import { SearchInputBase } from '../../components';
 
@@ -19,7 +19,7 @@ const Body = () => {
   const [{ profile, resource }] = useAppContext();
   const { mutateLikeTour } = useAllTours();
   const [{ data: magazines }] = useMagazines();
-  const [, { likeTour }] = useTours(undefined, 'home');
+  const [, { likeTour }] = useTours();
 
   const onLikeTour = async (tourId: string) => {
     if (!profile) {

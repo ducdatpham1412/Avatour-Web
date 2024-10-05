@@ -11,10 +11,12 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { useSWRConfig } from 'swr';
 
 import { apiGetPassport, apiGetResource } from '@/api/common';
 import '@/configs/bootstrap';
 import { isDev, logger } from '@/lib';
+
 import 'dayjs/locale/vi';
 
 interface Props {
@@ -54,6 +56,8 @@ export const useAppContext = () => useContext(Context);
 const Provider = ({ children }: Props) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const { mutate } = useSWRConfig();
+
   const [initLoading, setInitLoading] = useState(true);
   const [profile, setProfile] = useState<TypeProfile>();
   const [resource, setResource] = useState<Resource>();
@@ -121,6 +125,15 @@ const Provider = ({ children }: Props) => {
 
     init().catch(() => null);
   }, [setProfile, setResource, setInitLoading]);
+
+  useEffect(() => {
+    mutate(() => true).catch(logger.log);
+    apiGetResource(!!profile)
+      .then(res => {
+        setResource(res);
+      })
+      .catch(logger.log);
+  }, [!!profile, mutate]);
 
   //   useEffect(() => {
   //     localStorage.setItem('context', JSON.stringify(contextValue));
