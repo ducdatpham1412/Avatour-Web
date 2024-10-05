@@ -8,30 +8,30 @@ type Options = {
 
 const useAllTours = () => {
   const [, { setResource }] = useAppContext();
-  const [, { mutate: mutateHome }] = useTours(undefined, 'home');
+  //   const [, { mutate: mutateHome }] = useTours(undefined, 'home');
   const [, { mutate: mutateList }] = useTours(undefined, 'list');
   const [, { mutate: mutateFavorite }] = useTours(undefined, 'favorite');
 
   const mutateLikeTour = async (tourId: string, isLiked: boolean, options?: Options) => {
     const { shouldFavorite = true } = options ?? {};
 
-    await mutateHome(
-      pre => {
-        if (pre) {
-          return pre.map(item => {
-            if (item.id !== tourId) {
-              return item;
-            }
+    // await mutateHome(
+    //   pre => {
+    //     if (pre) {
+    //       return pre.map(item => {
+    //         if (item.id !== tourId) {
+    //           return item;
+    //         }
 
-            return {
-              ...item,
-              is_liked: isLiked,
-            };
-          });
-        }
-      },
-      { revalidate: false },
-    );
+    //         return {
+    //           ...item,
+    //           is_liked: isLiked,
+    //         };
+    //       });
+    //     }
+    //   },
+    //   { revalidate: false },
+    // );
     await mutateList(
       pre => {
         if (pre) {

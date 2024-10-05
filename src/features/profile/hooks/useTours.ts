@@ -38,7 +38,7 @@ const handleTourForm = (arg: CreateTourForm) => {
 
 const useTours = (
   userId?: number,
-  type: 'list' | 'favorite' | 'home' | 'of-location' = 'list',
+  type: 'list' | 'favorite' | 'of-location' = 'list',
   options?: Options,
 ) => {
   const [{ profile, initLoading }] = useAppContext();
@@ -54,7 +54,7 @@ const useTours = (
       return !!profile;
     }
 
-    if (type === 'home' || type === 'of-location') {
+    if (type === 'of-location') {
       return true;
     }
 
