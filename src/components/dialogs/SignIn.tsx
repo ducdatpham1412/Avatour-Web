@@ -1,11 +1,14 @@
+import { signIn } from 'next-auth/react';
 import { useRef } from 'react';
 
 import { apiLogin } from '@/api/auth';
 import { apiGetPassport } from '@/api/common';
 import { useAppContext } from '@/app/provider';
 import { useLoading, useToast } from '@/hooks';
-import { parseErrorMessage } from '@/lib';
+import { logger, parseErrorMessage } from '@/lib';
+import { NEXTAUTH_URL } from '@/configs';
 
+import { GoogleIcon } from '../icon';
 import { Button, Input } from '../ui';
 
 interface Props {
@@ -77,12 +80,20 @@ const SignIn = ({ onChangeMode, onLoginSuccess, title }: Props) => {
         Đăng nhập
       </Button>
 
-      {/* <p className="self-center text-[13px] text-gray_500 font-normal">hoặc</p>
+      <p className="self-center text-[13px] text-gray_500 font-normal">hoặc</p>
 
-      <Button className="bg-gray_200">
-        <Icon name="google" />
+      <Button
+        className="bg-gray_200"
+        onClick={e => {
+          e.preventDefault();
+          signIn('google', {
+            callbackUrl: NEXTAUTH_URL,
+          }).catch(logger.log);
+        }}
+      >
+        <GoogleIcon />
         Đăng nhập với Google
-      </Button> */}
+      </Button>
 
       <p className="self-center">
         Bạn chưa có tài khoản?

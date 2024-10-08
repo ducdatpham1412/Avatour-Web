@@ -2,7 +2,7 @@ import '@/styles/global.css';
 import { Lexend } from 'next/font/google';
 import { ReactNode } from 'react';
 
-import { AppModals, ProgressBar } from '@/components';
+import { AppModals, ProgressBar, SocialAuth } from '@/components';
 import { Toaster } from '@/components/ui';
 
 import Provider from './provider';
@@ -24,16 +24,17 @@ const lexendFont = Lexend({
 
 const RootLayout = ({ children }: Props) => {
   return (
-    <Provider>
-      <html lang="en" className={lexendFont.className}>
-        <body>
+    <html lang="en" className={lexendFont.className}>
+      <body>
+        <Provider>
           {children}
           <Toaster />
           <ProgressBar />
           <AppModals />
-        </body>
-      </html>
-    </Provider>
+          <SocialAuth />
+        </Provider>
+      </body>
+    </html>
   );
 };
 

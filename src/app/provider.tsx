@@ -1,6 +1,7 @@
 'use client';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { SessionProvider } from 'next-auth/react';
 import { redirect, usePathname, useSearchParams } from 'next/navigation';
 import {
   Dispatch,
@@ -46,6 +47,7 @@ type TypeContext = [
     setTourSearches: Dispatch<SetStateAction<TourSearches | undefined>>;
     setHistory: Dispatch<SetStateAction<string[]>>;
     setResource: Dispatch<SetStateAction<Resource | undefined>>;
+    setInitLoading: Dispatch<SetStateAction<boolean>>;
   },
 ];
 
@@ -140,21 +142,24 @@ const Provider = ({ children }: Props) => {
   //   }, [contextValue]);
 
   return (
-    <Context.Provider
-      value={[
-        contextValue,
-        {
-          setProfile,
-          setTourSearches,
-          setHistory,
-          setResource,
-        },
-      ]}
-    >
-      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="vi">
-        {children}
-      </LocalizationProvider>
-    </Context.Provider>
+    <SessionProvider>
+      <Context.Provider
+        value={[
+          contextValue,
+          {
+            setProfile,
+            setTourSearches,
+            setHistory,
+            setResource,
+            setInitLoading,
+          },
+        ]}
+      >
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="vi">
+          {children}
+        </LocalizationProvider>
+      </Context.Provider>
+    </SessionProvider>
   );
 };
 
