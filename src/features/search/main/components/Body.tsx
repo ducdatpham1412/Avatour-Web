@@ -5,8 +5,8 @@ import { useRef } from 'react';
 import { useAppContext } from '@/app/provider';
 import { DialogAuth } from '@/components/dialogs';
 import { SEARCH_ROUTES, TOUR_ROUTES } from '@/configs/routes';
-import { useMagazines } from '@/features/magazine/hooks';
-import { ItemMagazine, ItemTour } from '@/features/profile/components';
+import { ListMagazines } from '@/features/buddy/screens';
+import { ItemTour } from '@/features/profile/components';
 import { useTours } from '@/features/profile/hooks';
 import { toast, useAllTours, useRouter } from '@/hooks';
 import { parseErrorMessage } from '@/lib/utils';
@@ -18,7 +18,6 @@ const Body = () => {
   const text = useRef('');
   const [{ profile, resource }] = useAppContext();
   const { mutateLikeTour } = useAllTours();
-  const [{ data: magazines }] = useMagazines();
   const [, { likeTour }] = useTours();
 
   const onLikeTour = async (tourId: string) => {
@@ -74,16 +73,10 @@ const Body = () => {
         })}
       </div>
 
-      {!!magazines?.length && (
-        <div className="w-[min(100%,_1000px)] inline-flex flex-col items-start mt-[60px]">
-          <p className="text-black text-[26px] font-medium">Tạp chí du lịch</p>
-          <div className="flex flex-1 gap-y-10 flex-col mt-8">
-            {magazines.map(m => {
-              return <ItemMagazine key={m.id} item={m} />;
-            })}
-          </div>
-        </div>
-      )}
+      <ListMagazines
+        showPreview={false}
+        className="w-[min(100%,_1000px)] inline-flex flex-col items-start"
+      />
 
       {/* <div className="min-h-[200px] w-full flex flex-col items-center gap-y-7">
         {!!resource && (
