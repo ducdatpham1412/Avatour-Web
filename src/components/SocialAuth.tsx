@@ -9,13 +9,13 @@ import { logger, parseErrorMessage } from '@/lib';
 import { apiGetPassport } from '@/api/common';
 
 const SocialAuth = () => {
-  const [, { setInitLoading, setProfile }] = useAppContext();
+  const [, { setLoadingLogin, setProfile }] = useAppContext();
   const { data: session } = useSession();
 
   useEffect(() => {
     const onSignIn = async () => {
       try {
-        setInitLoading(true);
+        setLoadingLogin(true);
         await apiLogin({
           type: 'google',
         });
@@ -27,7 +27,7 @@ const SocialAuth = () => {
           description: parseErrorMessage(err),
         });
       } finally {
-        setInitLoading(false);
+        setLoadingLogin(false);
       }
     };
 

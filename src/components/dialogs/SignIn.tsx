@@ -6,7 +6,6 @@ import { apiGetPassport } from '@/api/common';
 import { useAppContext } from '@/app/provider';
 import { useLoading, useToast } from '@/hooks';
 import { logger, parseErrorMessage } from '@/lib';
-import { NEXTAUTH_URL } from '@/configs';
 
 import { GoogleIcon } from '../icon';
 import { Button, Input } from '../ui';
@@ -20,7 +19,7 @@ interface Props {
 const SignIn = ({ onChangeMode, onLoginSuccess, title }: Props) => {
   const { toast } = useToast();
   const { loading, setLoading } = useLoading();
-  const [, { setProfile }] = useAppContext();
+  const [{ tailUrl }, { setProfile }] = useAppContext();
 
   const form = useRef({
     username: '',
@@ -87,7 +86,7 @@ const SignIn = ({ onChangeMode, onLoginSuccess, title }: Props) => {
         onClick={e => {
           e.preventDefault();
           signIn('google', {
-            callbackUrl: NEXTAUTH_URL,
+            callbackUrl: tailUrl,
           }).catch(logger.log);
         }}
       >
