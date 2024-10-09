@@ -34,7 +34,7 @@ export const USER_STATUS = {
 };
 
 export const ACCOUNT_TYPE = {
-  superAdmin: 'holder',
+  holder: 'holder',
   user: 'user',
   shop: 'shop',
   admin: 'admin',

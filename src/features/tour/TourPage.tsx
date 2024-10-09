@@ -98,7 +98,7 @@ const TourPage = ({ params, searchParams }: PageProps<Params, SearchParams>) => 
     };
   }, [saveTourId]);
 
-  if (loading || validating) {
+  if (loading || validating || !data) {
     return (
       <div className="flex flex-1 items-center justify-center">
         <TourLoadingIcon className="w-[300px] h-[300px]" />
@@ -106,7 +106,7 @@ const TourPage = ({ params, searchParams }: PageProps<Params, SearchParams>) => 
     );
   }
 
-  if (error || !data) {
+  if (error) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center">
         <ErrorIcon size={300} />

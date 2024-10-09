@@ -12,7 +12,6 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { useSWRConfig } from 'swr';
 
 import { apiGetPassport, apiGetResource } from '@/api/common';
 import '@/configs/bootstrap';
@@ -31,6 +30,8 @@ type TourSearches = {
 
 type ContextValue = {
   initLoading: boolean;
+  loadingLogin: boolean;
+  tailUrl: string;
   profile: TypeProfile | undefined;
   resource: Resource | undefined;
   tourSearches: TourSearches | undefined;
@@ -47,7 +48,7 @@ type TypeContext = [
     setTourSearches: Dispatch<SetStateAction<TourSearches | undefined>>;
     setHistory: Dispatch<SetStateAction<string[]>>;
     setResource: Dispatch<SetStateAction<Resource | undefined>>;
-    setInitLoading: Dispatch<SetStateAction<boolean>>;
+    setLoadingLogin: Dispatch<SetStateAction<boolean>>;
   },
 ];
 
@@ -58,16 +59,21 @@ export const useAppContext = () => useContext(Context);
 const Provider = ({ children }: Props) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { mutate } = useSWRConfig();
+  //   const { mutate } = useSWRConfig();
 
   const [initLoading, setInitLoading] = useState(true);
+  const [loadingLogin, setLoadingLogin] = useState(false);
   const [profile, setProfile] = useState<TypeProfile>();
   const [resource, setResource] = useState<Resource>();
   const [tourSearches, setTourSearches] = useState<TourSearches>();
   const [history, setHistory] = useState<string[]>([]);
 
+  const tailUrl = `${pathname}${searchParams.toString() ? `?${searchParams}` : ''}`;
+
   const contextValue: ContextValue = {
     initLoading,
+    loadingLogin,
+    tailUrl,
     profile,
     resource,
     tourSearches,
@@ -78,24 +84,21 @@ const Provider = ({ children }: Props) => {
   };
 
   useEffect(() => {
-    const params = searchParams.toString();
-    const tail = `${pathname}${params ? `?${searchParams}` : ''}`;
-
     if (!isDev) {
-      const host = window.location.href.replace(tail, '');
+      const host = window.location.href.replace(tailUrl, '');
       if (!host.includes('www.avatour.life')) {
-        redirect(`http://www.avatour.life${tail}`);
+        redirect(`http://www.avatour.life${tailUrl}`);
       }
     }
 
     setHistory(pre => {
-      pre.push(tail);
+      pre.push(tailUrl);
       if (pre.length > 5) {
         pre.splice(0, 1);
       }
       return [...pre];
     });
-  }, [pathname, searchParams, setHistory]);
+  }, [tailUrl, setHistory]);
 
   useEffect(() => {
     const init = async () => {
@@ -129,17 +132,13 @@ const Provider = ({ children }: Props) => {
   }, [setProfile, setResource, setInitLoading]);
 
   useEffect(() => {
-    mutate(() => true).catch(logger.log);
+    //   mutate(() => true).catch(logger.log); => Not need to use this anymore, we set profile.id is one key in "useApi"
     apiGetResource(!!profile)
       .then(res => {
         setResource(res);
       })
       .catch(logger.log);
-  }, [!!profile, mutate]);
-
-  //   useEffect(() => {
-  //     localStorage.setItem('context', JSON.stringify(contextValue));
-  //   }, [contextValue]);
+  }, [!!profile]);
 
   return (
     <SessionProvider>
@@ -151,7 +150,7 @@ const Provider = ({ children }: Props) => {
             setTourSearches,
             setHistory,
             setResource,
-            setInitLoading,
+            setLoadingLogin,
           },
         ]}
       >

@@ -2,7 +2,7 @@
 import { MenuIcon } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useMemo } from 'react';
+import { ReactElement, useMemo } from 'react';
 
 import { apiLogOut } from '@/api/auth';
 import { useAppContext } from '@/app/provider';
@@ -10,15 +10,33 @@ import LogoIcon from '@/components/icon/LogoIcon';
 import { ACCOUNT_TYPE, CONTAINER_WIDTH } from '@/configs/constants';
 import { ADMIN_ROUTES, PROFILE_ROUTES } from '@/configs/routes';
 import { toast, useWindowSize } from '@/hooks';
-import { logger, parseErrorMessage, twColors } from '@/lib';
+import { cn, logger, parseErrorMessage, twColors } from '@/lib';
 
 import { DialogAuth } from './dialogs';
 import DropDown from './DropDown';
 import { BookUserIcon, IconAvatour, MapPinIcon } from './icon';
-import { Avatar } from './ui';
+import { Avatar, Skeleton } from './ui';
+
+interface TabElementProps {
+  loading: boolean;
+  children: ReactElement;
+  className?: string;
+}
+
+const TabElement = ({ loading, children, className }: TabElementProps) => {
+  if (loading) {
+    return (
+      <Skeleton
+        className={cn('w-[30px] h-[30px] md:w-[100px] md:h-[20px] rounded-full', className)}
+      />
+    );
+  }
+
+  return children;
+};
 
 const Navbar = () => {
-  const [{ profile, initLoading }, { setProfile }] = useAppContext();
+  const [{ profile, initLoading, loadingLogin }, { setProfile }] = useAppContext();
   const pathname = usePathname();
   const { width } = useWindowSize();
   const router = useRouter();
@@ -129,8 +147,9 @@ const Navbar = () => {
           </>
         )}
       </Link>
-      {!initLoading && (
-        <div className="flex items-center gap-8">
+
+      <div className="flex items-center gap-8">
+        <TabElement loading={initLoading}>
           <Link
             href="/"
             className="hover-scale inline-flex gap-1 items-center"
@@ -141,7 +160,9 @@ const Navbar = () => {
               Buddy bản địa
             </p>
           </Link>
+        </TabElement>
 
+        <TabElement loading={initLoading}>
           <Link
             href="/search"
             className="hover-scale inline-flex gap-1 items-center"
@@ -152,20 +173,30 @@ const Navbar = () => {
               Gợi ý lịch trình
             </p>
           </Link>
+        </TabElement>
 
+        <TabElement loading={initLoading} className="hidden md:block">
           <Link href="/tuyen-dung.pdf" className="hidden lg:block hover-scale">
             Tuyển dụng
           </Link>
+        </TabElement>
 
-          {(profile?.account_type === ACCOUNT_TYPE.admin ||
-            profile?.account_type === ACCOUNT_TYPE.superAdmin) && (
+        {(profile?.account_type === ACCOUNT_TYPE.admin ||
+          profile?.account_type === ACCOUNT_TYPE.holder) && (
+          <TabElement loading={initLoading}>
             <Link href={ADMIN_ROUTES.suppliers} className="font-medium hidden md:block hover-scale">
               CMS
             </Link>
-          )}
+          </TabElement>
+        )}
+
+        <TabElement
+          loading={initLoading || loadingLogin}
+          className="w-[50px] h-[40px] md:w-[80px] md:h-[40px]"
+        >
           {renderAuth()}
-        </div>
-      )}
+        </TabElement>
+      </div>
     </div>
   );
 };

@@ -39,7 +39,7 @@ export const getProfile = async (): Promise<ActionResponse<ProfileResponse['data
 
     if (
       res.data.profile.account_type !== ACCOUNT_TYPE.admin &&
-      res.data.profile.account_type !== ACCOUNT_TYPE.superAdmin
+      res.data.profile.account_type !== ACCOUNT_TYPE.holder
     ) {
       return {
         error: {
