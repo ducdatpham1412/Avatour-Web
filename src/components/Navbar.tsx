@@ -6,7 +6,6 @@ import { ReactElement, useMemo } from 'react';
 
 import { apiLogOut } from '@/api/auth';
 import { useAppContext } from '@/app/provider';
-import LogoIcon from '@/components/icon/LogoIcon';
 import { ACCOUNT_TYPE, CONTAINER_WIDTH } from '@/configs/constants';
 import { ADMIN_ROUTES, PROFILE_ROUTES } from '@/configs/routes';
 import { toast, useWindowSize } from '@/hooks';
@@ -14,7 +13,7 @@ import { cn, logger, parseErrorMessage, twColors } from '@/lib';
 
 import { DialogAuth } from './dialogs';
 import DropDown from './DropDown';
-import { BookUserIcon, IconAvatour, MapPinIcon } from './icon';
+import { BookUserIcon, MapPinIcon } from './icon';
 import { Avatar, Skeleton } from './ui';
 
 interface TabElementProps {
@@ -41,8 +40,10 @@ const Navbar = () => {
   const { width } = useWindowSize();
   const router = useRouter();
 
-  const colorSuggest = pathname === '/search' ? twColors.p_700 : twColors.black;
-  const colorBuddy = pathname === '/' ? twColors.p_700 : twColors.black;
+  console.log('Path name: ', pathname);
+
+  const colorSuggest = pathname === '/' ? twColors.p_700 : twColors.black;
+  const colorBuddy = pathname === '/buddy' ? twColors.p_700 : twColors.black;
 
   const size = useMemo(() => {
     if (!width) {
@@ -142,8 +143,9 @@ const Navbar = () => {
       <Link href="/" className="hover-scale inline-flex flex-row items-center gap-[8px]">
         {!!size.logo && (
           <>
-            <LogoIcon size={size.logo} />
-            <IconAvatour className="hidden sm:block" />
+            {/* <LogoIcon size={size.logo} />
+            <IconAvatour className="hidden sm:block" /> */}
+            <p className="font-bold text-[20px]">KLTN</p>
           </>
         )}
       </Link>
@@ -153,24 +155,24 @@ const Navbar = () => {
           <Link
             href="/"
             className="hover-scale inline-flex gap-1 items-center"
-            title="Buddy bản địa"
+            title="Gợi ý lịch trình"
           >
-            <BookUserIcon size={size.icon} color={colorBuddy} />
-            <p className="hidden md:block font-medium" style={{ color: colorBuddy }}>
-              Buddy bản địa
+            <MapPinIcon size={size.icon} color={colorSuggest} />
+            <p className="hidden md:block font-medium" style={{ color: colorSuggest }}>
+              Gợi ý lịch trình
             </p>
           </Link>
         </TabElement>
 
         <TabElement loading={initLoading}>
           <Link
-            href="/search"
+            href="/buddy"
             className="hover-scale inline-flex gap-1 items-center"
-            title="Gợi ý lịch trình"
+            title="Buddy bản địa"
           >
-            <MapPinIcon size={size.icon} color={colorSuggest} />
-            <p className="hidden md:block font-medium" style={{ color: colorSuggest }}>
-              Gợi ý lịch trình
+            <BookUserIcon size={size.icon} color={colorBuddy} />
+            <p className="hidden md:block font-medium" style={{ color: colorBuddy }}>
+              Buddy bản địa
             </p>
           </Link>
         </TabElement>

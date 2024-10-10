@@ -44,7 +44,7 @@ const Body = () => {
     <div className="relative w-full inline-flex flex-col gap-y-6 items-center">
       <p className="mt-[12px]">
         <span className="text-p_600 text-[20px] md:text-[26px] sm:leading-[44px] font-medium">
-          Avatour xin chào,
+          Xin chào,
         </span>
         <span className="text-black text-[18px] md:text-[22px] sm:leading-[38px] font-normal text-center w-3/5 sm:w-auto">
           {' '}

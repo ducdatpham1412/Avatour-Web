@@ -4,7 +4,7 @@ const nextConfig = {
     return [
       {
         source: '/',
-        destination: '/buddy',
+        destination: '/search',
       },
       {
         source: '/about-us',
