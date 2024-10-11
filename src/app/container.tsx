@@ -23,13 +23,13 @@ type Props = PropsWithChildren & {
 
 export const Footer = () => {
   return (
-    <div className="absolute px-[10%] w-full md:w-full h-[160px] md:h-[80px] bottom-0 bg-p_600 inline-flex items-start md:items-center justify-between flex-col md:flex-row py-6">
+    <div className="absolute px-[10%] w-full md:w-full h-[220px] md:h-[80px] bottom-0 bg-p_600 inline-flex items-start md:items-center justify-between flex-col md:flex-row py-6 gap-y-[10px]">
       <Link href="/about-us" target="_blank" className="text-[12px] hover-scale">
         Về chúng tôi
       </Link>
-      {/* <Link href="/tuyen-dung.pdf" target="_blank" className="text-[12px] hover-scale">
+      <Link href="/tuyen-dung.pdf" target="_blank" className="text-[12px] hover-scale">
         Tuyển dụng
-      </Link> */}
+      </Link>
       <Link href="/policy" target="_blank" className="text-[12px] hover-scale">
         Chính sách bảo mật
       </Link>

@@ -175,11 +175,11 @@ const Navbar = () => {
           </Link>
         </TabElement>
 
-        <TabElement loading={initLoading} className="hidden md:block">
+        {/* <TabElement loading={initLoading} className="hidden md:block">
           <Link href="/tuyen-dung.pdf" className="hidden lg:block hover-scale">
             Tuyển dụng
           </Link>
-        </TabElement>
+        </TabElement> */}
 
         {(profile?.account_type === ACCOUNT_TYPE.admin ||
           profile?.account_type === ACCOUNT_TYPE.holder) && (
