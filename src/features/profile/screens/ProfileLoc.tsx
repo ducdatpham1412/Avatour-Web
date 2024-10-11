@@ -100,7 +100,9 @@ const BlockCard = ({ title, data, renderItem, BottomElement, className }: BlockC
   return (
     <Block>
       <Title title={title} />
-      <div className={cn('w-full inline-flex flex-col', className)}>{data.map(renderItem)}</div>
+      {!!data.length && (
+        <div className={cn('w-full inline-flex flex-col', className)}>{data.map(renderItem)}</div>
+      )}
       {BottomElement}
     </Block>
   );

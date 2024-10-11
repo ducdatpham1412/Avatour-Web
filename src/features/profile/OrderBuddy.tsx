@@ -193,18 +193,20 @@ const OrderBuddy = ({ params }: Props) => {
                 <p className="font-semibold text-[16px]">Ưu đãi dành cho bạn</p>
                 <div className="w-full inline-flex gap-x-[20px] overflow-x-auto pt-[4px] px-[4px] pb-[12px] beautiful-scrollbar">
                   {vouchers.map(voucher => {
+                    const status =
+                      voucher.status === 'used'
+                        ? 'disable'
+                        : voucher.id === voucherUsed
+                        ? 'chosen'
+                        : undefined;
+
                     return (
                       <ItemVoucher
                         key={voucher.id}
                         item={voucher}
                         hasChosen
-                        status={
-                          voucher.status === 'used'
-                            ? 'disable'
-                            : voucher.id === voucherUsed
-                            ? 'chosen'
-                            : undefined
-                        }
+                        status={status}
+                        showBackground={status === 'chosen'}
                         onClick={() => {
                           if (!profile) {
                             DialogAuth.open({

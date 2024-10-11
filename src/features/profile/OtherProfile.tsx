@@ -43,7 +43,7 @@ const OtherProfile = ({ userId }: Props) => {
       HeaderRight={
         isBuddy ? (
           <Button
-            className="px-[50px] inline-flex gap-2"
+            className="px-[50px] inline-flex gap-2 shadow-all"
             onClick={() => {
               router.push(ORDER_ROUTES.buddy(data.id));
             }}
