@@ -1,25 +1,30 @@
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
+import { logger } from '@/lib';
+
 import en from './en.json';
 import vi from './vi.json';
 
-i18next.use(initReactI18next).init({
-  compatibilityJSON: 'v3',
-  resources: {
-    en: {
-      translation: en,
+i18next
+  .use(initReactI18next)
+  .init({
+    compatibilityJSON: 'v3',
+    resources: {
+      en: {
+        translation: en,
+      },
+      vi: {
+        translation: vi,
+      },
     },
-    vi: {
-      translation: vi,
+    fallbackLng: 'vi',
+    interpolation: {
+      escapeValue: false,
     },
-  },
-  fallbackLng: 'vi',
-  interpolation: {
-    escapeValue: false,
-  },
-  nsSeparator: false,
-});
+    nsSeparator: false,
+  })
+  .catch(logger.log);
 
 type ResourceLanguage = typeof en & typeof vi;
 export type I18Normalize = RecursiveKeyOf<ResourceLanguage>;
