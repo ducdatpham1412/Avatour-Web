@@ -12,11 +12,12 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { I18nextProvider } from 'react-i18next';
 
 import { apiGetPassport, apiGetResource } from '@/api/common';
+import i18next from '@/assets/languages/i18next';
 import '@/configs/bootstrap';
 import { isDev, logger } from '@/lib';
-
 import 'dayjs/locale/vi';
 
 interface Props {
@@ -28,6 +29,8 @@ type TourSearches = {
   data: TypeTour[];
 };
 
+type Language = 'vi' | 'en';
+
 type ContextValue = {
   initLoading: boolean;
   loadingLogin: boolean;
@@ -35,6 +38,7 @@ type ContextValue = {
   profile: TypeProfile | undefined;
   resource: Resource | undefined;
   tourSearches: TourSearches | undefined;
+  language: Language;
   router: {
     history: string[];
     canGoBack: boolean;
@@ -49,6 +53,7 @@ type TypeContext = [
     setHistory: Dispatch<SetStateAction<string[]>>;
     setResource: Dispatch<SetStateAction<Resource | undefined>>;
     setLoadingLogin: Dispatch<SetStateAction<boolean>>;
+    setLanguage: Dispatch<SetStateAction<Language>>;
   },
 ];
 
@@ -67,6 +72,9 @@ const Provider = ({ children }: Props) => {
   const [resource, setResource] = useState<Resource>();
   const [tourSearches, setTourSearches] = useState<TourSearches>();
   const [history, setHistory] = useState<string[]>([]);
+  const [language, setLanguage] = useState<'vi' | 'en'>(
+    navigator.language.includes('vi') ? 'vi' : 'en',
+  );
 
   const tailUrl = `${pathname}${searchParams.toString() ? `?${searchParams}` : ''}`;
 
@@ -77,6 +85,7 @@ const Provider = ({ children }: Props) => {
     profile,
     resource,
     tourSearches,
+    language,
     router: {
       history,
       canGoBack: history.length > 1,
@@ -142,22 +151,25 @@ const Provider = ({ children }: Props) => {
 
   return (
     <SessionProvider>
-      <Context.Provider
-        value={[
-          contextValue,
-          {
-            setProfile,
-            setTourSearches,
-            setHistory,
-            setResource,
-            setLoadingLogin,
-          },
-        ]}
-      >
-        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="vi">
-          {children}
-        </LocalizationProvider>
-      </Context.Provider>
+      <I18nextProvider i18n={i18next}>
+        <Context.Provider
+          value={[
+            contextValue,
+            {
+              setProfile,
+              setTourSearches,
+              setHistory,
+              setResource,
+              setLoadingLogin,
+              setLanguage,
+            },
+          ]}
+        >
+          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="vi">
+            {children}
+          </LocalizationProvider>
+        </Context.Provider>
+      </I18nextProvider>
     </SessionProvider>
   );
 };
