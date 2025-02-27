@@ -13,8 +13,9 @@ import { cn, logger, parseErrorMessage, twColors } from '@/lib';
 
 import { DialogAuth } from './dialogs';
 import DropDown from './DropDown';
-import { BookUserIcon, MapPinIcon } from './icon';
+import { BookUserIcon, IconAvatour, MapPinIcon } from './icon';
 import { Avatar, Skeleton } from './ui';
+import LogoIcon from './icon/LogoIcon';
 
 interface TabElementProps {
   loading: boolean;
@@ -143,9 +144,8 @@ const Navbar = () => {
       <Link href="/" className="hover-scale inline-flex flex-row items-center gap-[8px]">
         {!!size.logo && (
           <>
-            {/* <LogoIcon size={size.logo} />
-            <IconAvatour className="hidden sm:block" /> */}
-            <p className="font-bold text-[20px]">KLTN</p>
+            <LogoIcon size={size.logo} />
+            <IconAvatour className="hidden sm:block" />
           </>
         )}
       </Link>

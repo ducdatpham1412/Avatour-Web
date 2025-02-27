@@ -24,7 +24,7 @@ type Props = PropsWithChildren & {
 export const Footer = () => {
   return (
     <div className="absolute px-[10%] w-full md:w-full h-[220px] md:h-[80px] bottom-0 bg-p_600 inline-flex items-start md:items-center justify-between flex-col md:flex-row py-6 gap-y-[10px]">
-      {/* <Link href="/about-us" target="_blank" className="text-[12px] hover-scale">
+      <Link href="/about-us" target="_blank" className="text-[12px] hover-scale">
         Về chúng tôi
       </Link>
       <Link href="/tuyen-dung.pdf" target="_blank" className="text-[12px] hover-scale">
@@ -43,7 +43,7 @@ export const Footer = () => {
         <p className="text-[12px] hover-scale mt-[4px]">
           Trụ sở: Số 9/28 Liễu Giai, Ba Đình, Hà Nội
         </p>
-      </div> */}
+      </div>
     </div>
   );
 };
