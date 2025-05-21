@@ -10,12 +10,12 @@ import { DialogConfirm } from '@/components/dialogs';
 import { Avatar, Image } from '@/components/ui';
 import { MAGAZINE_ROUTES, PROFILE_ROUTES } from '@/configs/routes';
 import { toast } from '@/hooks';
-import { cn, getMarginContentMagazine, goToProfile, logger, parseErrorMessage } from '@/lib';
+import { getMarginContentMagazine, goToProfile, logger, parseErrorMessage } from '@/lib';
 import { setMagazine } from '@/lib/storage';
 
-import { useMagazines } from './hooks';
 import { ItemBuddy } from '../buddy/components';
 import { getElementTitleId, TableOfContent } from './components';
+import { useMagazines } from './hooks';
 
 type Props = PageProps<{ magazine_id: string }>;
 

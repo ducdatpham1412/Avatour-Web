@@ -1,9 +1,12 @@
 export { default as AppModals } from './AppModals';
+export { default as Auth } from './Auth';
 export { default as Background } from './Background';
 export { default as BackgroundSun } from './BackgroundSun';
 export { default as ButtonAbsolute } from './ButtonAbsolute';
 export { default as Carousel } from './Carousel';
+export { default as CreateBtn } from './CreateBtn';
 export { default as DropDown } from './DropDown';
+export { default as HeaderTitle } from './HeaderTitle';
 export * from './icon';
 export { default as Navbar } from './Navbar';
 export { default as NumberStars } from './NumberStars';

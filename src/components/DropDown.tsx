@@ -10,19 +10,21 @@ import {
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu';
 
-interface Props {
+export interface DropDownProps {
   trigger?: string | ReactElement;
   label?: string;
   options: Array<{
     value: string;
     label: string;
+    icon?: ReactElement;
     check?: boolean;
     type?: 'box-item' | 'menu-item';
+    onClick?: () => void;
   }>;
   onCheck?: (v: string) => void;
 }
 
-const DropDown = ({ trigger, label, options, onCheck }: Props) => {
+const DropDown = ({ trigger, label, options, onCheck }: DropDownProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>{trigger}</DropdownMenuTrigger>
@@ -38,10 +40,16 @@ const DropDown = ({ trigger, label, options, onCheck }: Props) => {
             return (
               <DropdownMenuItem
                 key={ot.value}
-                onClick={() => onCheck?.(ot.value)}
+                onClick={() => {
+                  ot.onClick?.();
+                  onCheck?.(ot.value);
+                }}
                 className="cursor-pointer"
               >
-                {ot.label}
+                <div className="inline-flex items-center gap-x-2">
+                  {ot.icon}
+                  {ot.label}
+                </div>
               </DropdownMenuItem>
             );
           }
@@ -49,11 +57,17 @@ const DropDown = ({ trigger, label, options, onCheck }: Props) => {
           return (
             <DropdownMenuCheckboxItem
               checked={ot.check}
-              onCheckedChange={() => onCheck?.(ot.value)}
+              onCheckedChange={() => {
+                ot.onClick?.();
+                onCheck?.(ot.value);
+              }}
               key={ot.value}
               className="cursor-pointer"
             >
-              {ot.label}
+              <div className="inline-flex items-center gap-x-2">
+                {ot.icon}
+                {ot.label}
+              </div>
             </DropdownMenuCheckboxItem>
           );
         })}

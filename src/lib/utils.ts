@@ -7,6 +7,7 @@ import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.share
 
 import { PARSE_ERROR_MESSAGE } from '@/api/request/constants';
 import { PROFILE_ROUTES } from '@/configs/routes';
+import { toast } from '@/hooks/useToast';
 
 import tailwindConfig from '../../tailwind.config';
 
@@ -332,4 +333,15 @@ export const isVideo = (fileName: string) => {
 
 export const getTimestamp = () => {
   return dayjs().valueOf().toString();
+};
+
+export const copyText = (text: string) => {
+  navigator.clipboard
+    .writeText(text)
+    .then(() => {
+      toast({
+        title: 'Copied',
+      });
+    })
+    .catch(console.log);
 };

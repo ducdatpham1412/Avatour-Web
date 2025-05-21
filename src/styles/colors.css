@@ -1,9 +1,8 @@
 @tailwind base;
 
-/* FIXME: Missing text colors */
 @layer base {
   :root {
-    --avatour-background: #ffffff;
+    --background: #ffffff;
     --avatour-white: #ffffff;;
     --avatour-black: #110B0B;
     --avatour-p_50: #FFFBF0;
@@ -32,72 +31,3 @@
     --avatour-orange: #FA6C00;
   }
 }
-
-/* @layer base {
-  :root {
-    --avatour-background: #f5f6f8;
-    --avatour-white: #ffffff;
-    --avatour-black: #110b0b;
-    --avatour-p_50: #fffce5;
-    --avatour-p_100: #fff7bf;
-    --avatour-p_200: #fef293;
-    --avatour-p_300: #fded67;
-    --avatour-p_400: #fbe840;
-    --avatour-p_500: #f9e203;
-    --avatour-p_600: #fbd305;
-    --avatour-p_700: #fab900;
-    --avatour-p_800: #f9a000;
-    --avatour-p_900: #f87400;
-    --avatour-gray_900: #1e1e1e;
-    --avatour-gray_800: #3f3f3f;
-    --avatour-gray_700: #5e5e5e;
-    --avatour-gray_600: #717171;
-    --avatour-gray_500: #9a9a9a;
-    --avatour-gray_400: #b9b9b9;
-    --avatour-gray_300: #dddddd;
-    --avatour-gray_200: #ececec;
-    --avatour-gray_100: #f4f4f4;
-    --avatour-gray_50: #f9f9f9;
-    --avatour-green: #3cdf21;
-    --avatour-red: #f34119;
-    --avatour-pink: #f94b68;
-    --avatour-blue: #54b3e9;
-    --avatour-blue_800: #90bee9;
-    --avatour-orange: orange;
-  }
-} */
-
-/* @layer base {
-  :root {
-    --avatour-background: 220 18% 97%;
-    --avatour-white: 0 0% 100%;
-    --avatour-black: 0 21% 5%;
-    --avatour-p-100: #ffd6a5;
-    --avatour-p_50: 53 100% 95%;
-    --avatour-p_100: 53 100% 87%;
-    --avatour-p_200: 53 98% 79%;
-    --avatour-p_300: 54 97% 70%;
-    --avatour-p_400: 54 96% 62%;
-    --avatour-p_500: 54 98% 49%;
-    --avatour-p_600: 50 97% 50%;
-    --avatour-p_700: 44 100% 49%;
-    --avatour-p_800: 39 100% 49%;
-    --avatour-p_900: 28 100% 49%;
-    --avatour-gray_900: 0 0% 12%;
-    --avatour-gray_800: 0 0% 25%;
-    --avatour-gray_700: 0 0% 37%;
-    --avatour-gray_600: 0 0% 44%;
-    --avatour-gray_500: 0 0% 60%;
-    --avatour-gray_400: 0 0% 73%;
-    --avatour-gray_300: 0 0% 87%;
-    --avatour-gray_200: 0 0% 93%;
-    --avatour-gray_100: 0 0% 96%;
-    --avatour-gray_50: 0 0% 98%;
-    --avatour-green: 111 75% 50%;
-    --avatour-red: 11 90% 53%;
-    --avatour-pink: 350 94% 64%;
-    --avatour-blue: 202 77% 62%;
-    --avatour-blue_800: 209 67% 74%;
-    --avatour-orange: 39 100% 50%;
-  }
-} */

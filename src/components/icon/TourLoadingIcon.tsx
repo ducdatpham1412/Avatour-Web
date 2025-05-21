@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-import { omit } from '@/lib';
+import { cn, omit } from '@/lib';
 
 function svgToElement(element: SVGElement | undefined, data: any) {
   let currentElement;
@@ -52,8 +52,7 @@ const TourLoadingIcon = ({ className }: PropsWithClassName) => {
           ref.appendChild(svgToElement(undefined, animationFrames[currentFrame]));
         }
       }}
-      className={className}
-    ></div>
+      className={cn("w-[200px] h-[200px] mx-auto mt-[10vh]",className)}/>
   );
 };
 

@@ -42,3 +42,19 @@ export const MAGAZINE_ROUTES = {
 export const ALBUM_ROUTES = {
   album: '/album',
 };
+
+export const PROJECT_ROUTES = {
+  list: '/project',
+  projectDetail: (id: string) => `/project/${id}`,
+  create: '/project/create',
+};
+
+export const POST_ROUTES = {
+  postId: (postId: string) => `/project/post/${postId}`,
+  createPost: '/project/post',
+};
+
+export const TOPIC_ROUTES = {
+  topicId: (id: string) => `/project/topic/${id}`,
+  createTopic: '/project/topic',
+};

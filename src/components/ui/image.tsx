@@ -27,6 +27,8 @@ export type ImageProps = {
   height?: number;
   children?: React.ReactElement | React.ReactElement[];
   fit?: CSSProperties['objectFit'];
+  onError?: () => void;
+  onSuccess?: () => void;
 };
 
 export function loadUrl(element: HTMLImageElement | HTMLVideoElement, url: string) {
@@ -48,6 +50,8 @@ const Image = memo(
       style,
       children,
       fit = 'cover',
+      onError,
+      onSuccess,
     } = props;
     const ref = useRef<HTMLImageElement | null>(null);
     const [loading, setLoading] = useState(true);
@@ -58,10 +62,14 @@ const Image = memo(
       setLoading(true);
       if (ref.current) {
         loadUrl(ref.current, src)
-          .then(() => setLoading(false))
+          .then(() => {
+            setLoading(false);
+            onSuccess?.();
+          })
           .catch(() => {
             setError(true);
             setLoading(false);
+            onError?.();
           });
       }
     }, [src]);

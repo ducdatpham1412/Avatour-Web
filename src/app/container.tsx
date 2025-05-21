@@ -66,6 +66,10 @@ const renderBackground = (background: Props['background'], showFooter: boolean) 
   return null;
 };
 
+/**
+ * @deprecated
+ * Not used => Move to container in components/layout
+ */
 const Container = ({
   children,
   HeaderRight,

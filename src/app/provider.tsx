@@ -50,7 +50,7 @@ type TypeContext = [
   {
     setProfile: Dispatch<SetStateAction<TypeProfile | undefined>>;
     setTourSearches: Dispatch<SetStateAction<TourSearches | undefined>>;
-    setHistory: Dispatch<SetStateAction<string[]>>;
+    resetHistory: () => void;
     setResource: Dispatch<SetStateAction<Resource | undefined>>;
     setLoadingLogin: Dispatch<SetStateAction<boolean>>;
     setLanguage: Dispatch<SetStateAction<Language>>;
@@ -149,6 +149,10 @@ const Provider = ({ children }: Props) => {
       .catch(logger.log);
   }, [!!profile]);
 
+  const resetHistory = () => {
+    setHistory(history.length > 1 ? [history[history.length - 1]] : []);
+  };
+
   return (
     <SessionProvider>
       <I18nextProvider i18n={i18next}>
@@ -158,7 +162,7 @@ const Provider = ({ children }: Props) => {
             {
               setProfile,
               setTourSearches,
-              setHistory,
+              resetHistory,
               setResource,
               setLoadingLogin,
               setLanguage,
